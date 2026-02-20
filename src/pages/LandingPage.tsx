@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { Shield, MessageSquare, Sliders, Sparkles, Upload } from 'lucide-react';
+import { Shield, MessageSquare, Sliders, Sparkles, Upload, Tag } from 'lucide-react';
 import { ClayCard, ClayButton } from '@/components/clay';
 import { toast } from 'sonner';
 import { OpenClawConfig } from '@/lib/openclaw/schema';
@@ -11,6 +11,7 @@ interface LandingPageProps {
   onOpenBuilder: () => void;
   onLogoTap: () => void;
   onImportConfig: (config: OpenClawConfigType) => void;
+  onOpenBlog: () => void;
 }
 
 export const LandingPage: React.FC<LandingPageProps> = ({
@@ -19,6 +20,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
   onOpenBuilder,
   onLogoTap,
   onImportConfig,
+  onOpenBlog,
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -61,7 +63,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             <span className="text-xl font-bold text-clay-charcoal">OpenCLAW</span>
           </button>
           
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-6">
+            <button 
+              onClick={onOpenBlog}
+              className="text-sm font-semibold text-clay-charcoal/60 hover:text-clay-coral transition-colors hidden md:block"
+            >
+              Intelligence Lab
+            </button>
+            <div className="flex items-center gap-3">
             <ClayButton
               variant="pill"
               color="stone"
@@ -85,7 +94,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             </span>
           </div>
         </div>
-      </header>
+      </div>
+    </header>
 
       {/* Hero Section */}
       <section className="flex-1 flex flex-col items-center justify-center px-6 py-12">
@@ -113,7 +123,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           </p>
 
           {/* Entry Points */}
-          <div className="grid sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
             {/* Preset Card */}
             <ClayCard 
               isInteractive 
@@ -162,6 +172,23 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               </h3>
               <p className="text-sm text-clay-charcoal/60">
                 Fine-tune all 8 dimensions with live preview and optional diff.
+              </p>
+            </ClayCard>
+
+            {/* Blog Card */}
+            <ClayCard 
+              isInteractive 
+              onClick={onOpenBlog}
+              className="text-left group bg-clay-sand/30"
+            >
+              <div className="w-12 h-12 rounded-full bg-clay-peach shadow-clay flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <Tag className="w-6 h-6 text-clay-charcoal" />
+              </div>
+              <h3 className="text-lg font-semibold text-clay-charcoal mb-2">
+                Intelligence Lab
+              </h3>
+              <p className="text-sm text-clay-charcoal/60">
+                Read deep dives on AI agent technology and the OpenCLAW standard.
               </p>
             </ClayCard>
           </div>

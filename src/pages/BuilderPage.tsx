@@ -85,6 +85,7 @@ export const BuilderPage: React.FC<BuilderPageProps> = ({
             color="stone"
             size="sm"
             onClick={onBack}
+            aria-label="Go back"
           >
             <ArrowLeft className="w-5 h-5" />
           </ClayButton>

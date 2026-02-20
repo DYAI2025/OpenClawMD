@@ -5,6 +5,7 @@ import { PresetsPage } from './pages/PresetsPage';
 import { InterviewPage } from './pages/InterviewPage';
 import { BuilderPage } from './pages/BuilderPage';
 import { ExportPage } from './pages/ExportPage';
+import { BlogPage } from './pages/BlogPage';
 import type { OpenClawConfigType, PresetIdType } from './lib/openclaw/schema';
 import { createEmptyConfig } from './lib/openclaw/schema';
 import { createConfigFromPreset } from './lib/openclaw/presets';
@@ -12,7 +13,7 @@ import { ConfigModeOverlay } from './components/ConfigModeOverlay';
 import { Toaster } from '@/components/ui/sonner';
 import { ClayFlowBreadcrumb } from '@/components/clay';
 
-export type AppView = 'landing' | 'presets' | 'interview' | 'builder' | 'export';
+export type AppView = 'landing' | 'presets' | 'interview' | 'builder' | 'export' | 'blog';
 
 export interface HistoryEntry {
   view: AppView;
@@ -121,6 +122,7 @@ function App() {
             onOpenBuilder={() => startBuilder()}
             onLogoTap={handleLogoTap}
             onImportConfig={importConfig}
+            onOpenBlog={() => pushView('blog')}
           />
         );
 
@@ -157,6 +159,13 @@ function App() {
             config={currentEntry.config || createEmptyConfig()}
             onBack={goBack}
             onNewConfig={resetToLanding}
+          />
+        );
+
+      case 'blog':
+        return (
+          <BlogPage
+            onBack={goBack}
           />
         );
 
