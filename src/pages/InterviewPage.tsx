@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ArrowLeft, ArrowRight, Check, AlertTriangle } from 'lucide-react';
-import { ClayButton, ClayStepper, ClayCard, ClayErrorBanner } from '@/components/clay';
+import { ClayButton, ClayStepper, ClayCard, ClayErrorBanner, ClaySlider } from '@/components/clay';
 import type { OpenClawConfigType, DimensionConfigType, DimensionName } from '@/lib/openclaw/schema';
 import { DimensionInfo, validateLegalBoundaries } from '@/lib/openclaw/schema';
 import { detectPresetFromDimensions } from '@/lib/openclaw/presets';
@@ -52,6 +52,13 @@ const interviewQuestions: Question[] = [
     ],
   },
   {
+    id: 'communication',
+    dimension: 'communicationAuthority',
+    type: 'slider',
+    question: 'How much communication autonomy?',
+    description: 'Determines autonomy in external communications.',
+  },
+  {
     id: 'initiative',
     dimension: 'strategicInitiative',
     type: 'slider',
@@ -64,13 +71,6 @@ const interviewQuestions: Question[] = [
     type: 'slider',
     question: 'What data should the system access?',
     description: 'Defines the breadth of data the system can analyze.',
-  },
-  {
-    id: 'communication',
-    dimension: 'communicationAuthority',
-    type: 'slider',
-    question: 'How much communication autonomy?',
-    description: 'Determines autonomy in external communications.',
   },
   {
     id: 'uncertainty',
@@ -95,12 +95,16 @@ const interviewQuestions: Question[] = [
   },
 ];
 
+// Fix #9: 4 balanced question steps (2 questions each) + 1 review step
 const steps = [
-  { id: 'risk', label: 'Risk', description: 'Tolerance & approval' },
-  { id: 'communication', label: 'Comm', description: 'Heartbeat & authority' },
-  { id: 'scope', label: 'Scope', description: 'Data & execution' },
-  { id: 'review', label: 'Review', description: 'Finalize config' },
+  { id: 'risk',      label: 'Risk',    description: 'Tolerance & approval' },
+  { id: 'comm',      label: 'Comm',    description: 'Heartbeat & authority' },
+  { id: 'data',      label: 'Data',    description: 'Initiative & access' },
+  { id: 'execution', label: 'Execute', description: 'Scope & uncertainty' },
+  { id: 'review',    label: 'Review',  description: 'Finalize config' },
 ];
+
+const REVIEW_STEP = steps.length - 1; // index 4
 
 export const InterviewPage: React.FC<InterviewPageProps> = ({
   initialConfig,
@@ -116,22 +120,24 @@ export const InterviewPage: React.FC<InterviewPageProps> = ({
     setValidationError(null);
   };
 
+  // Fix #9: evenly distribute 8 dimensions across 4 question steps (2 each)
   const getStepQuestions = (stepIndex: number): Question[] => {
     switch (stepIndex) {
-      case 0:
-        return interviewQuestions.filter(q => 
+      case 0: // Risk
+        return interviewQuestions.filter(q =>
           q.dimension === 'riskTolerance' || q.dimension === 'approvalThreshold'
         );
-      case 1:
-        return interviewQuestions.filter(q => 
+      case 1: // Comm
+        return interviewQuestions.filter(q =>
           q.dimension === 'heartbeatAggressiveness' || q.dimension === 'communicationAuthority'
         );
-      case 2:
-        return interviewQuestions.filter(q => 
-          q.dimension === 'dataAccessScope' || 
-          q.dimension === 'executionScope' ||
-          q.dimension === 'strategicInitiative' ||
-          q.dimension === 'uncertaintyHandling'
+      case 2: // Data
+        return interviewQuestions.filter(q =>
+          q.dimension === 'strategicInitiative' || q.dimension === 'dataAccessScope'
+        );
+      case 3: // Execute
+        return interviewQuestions.filter(q =>
+          q.dimension === 'uncertaintyHandling' || q.dimension === 'executionScope'
         );
       default:
         return [];
@@ -139,16 +145,15 @@ export const InterviewPage: React.FC<InterviewPageProps> = ({
   };
 
   const handleNext = () => {
-    if (currentStep < steps.length - 1) {
+    if (currentStep < REVIEW_STEP) {
       setCurrentStep(prev => prev + 1);
     } else {
-      // Validate before completing
       const validation = validateLegalBoundaries(dimensions);
       if (!validation.valid) {
         setValidationError(validation.violations.map(v => v.message).join('. '));
         return;
       }
-      
+
       const config: OpenClawConfigType = {
         presetId: detectPresetFromDimensions(dimensions),
         dimensions,
@@ -171,7 +176,7 @@ export const InterviewPage: React.FC<InterviewPageProps> = ({
     }
   };
 
-  const isLastStep = currentStep === steps.length - 1;
+  const isLastStep = currentStep === REVIEW_STEP;
   const currentQuestions = getStepQuestions(currentStep);
 
   return (
@@ -184,6 +189,7 @@ export const InterviewPage: React.FC<InterviewPageProps> = ({
             color="stone"
             size="sm"
             onClick={handleBack}
+            aria-label="Go back"
           >
             <ArrowLeft className="w-5 h-5" />
           </ClayButton>
@@ -199,10 +205,7 @@ export const InterviewPage: React.FC<InterviewPageProps> = ({
 
         {/* Stepper */}
         <div className="mb-8">
-          <ClayStepper
-            steps={steps}
-            currentStep={currentStep}
-          />
+          <ClayStepper steps={steps} currentStep={currentStep} />
         </div>
 
         {/* Validation Error */}
@@ -216,7 +219,7 @@ export const InterviewPage: React.FC<InterviewPageProps> = ({
         )}
 
         {/* Questions */}
-        {currentStep < 3 ? (
+        {currentStep < REVIEW_STEP ? (
           <div className="space-y-6">
             {currentQuestions.map((question) => (
               <ClayCard key={question.id} padding="lg">
@@ -227,29 +230,18 @@ export const InterviewPage: React.FC<InterviewPageProps> = ({
                   {question.description}
                 </p>
 
+                {/* Fix #5: use ClaySlider instead of raw <input type="range"> */}
                 {question.type === 'slider' && (
-                  <div className="px-2">
-                    <input
-                      type="range"
-                      min={1}
-                      max={5}
-                      step={1}
-                      value={dimensions[question.dimension]}
-                      onChange={(e) => updateDimension(question.dimension, Number(e.target.value))}
-                      className="clay-slider"
-                    />
-                    <div className="flex justify-between mt-3 text-sm text-clay-charcoal/60">
-                      <span>{DimensionInfo[question.dimension].lowLabel}</span>
-                      <span className="font-medium text-clay-charcoal bg-clay-sand px-3 py-1 rounded-full">
-                        {dimensions[question.dimension]} - {
-                          dimensions[question.dimension] === 1 ? DimensionInfo[question.dimension].lowLabel :
-                          dimensions[question.dimension] === 5 ? DimensionInfo[question.dimension].highLabel :
-                          'Moderate'
-                        }
-                      </span>
-                      <span>{DimensionInfo[question.dimension].highLabel}</span>
-                    </div>
-                  </div>
+                  <ClaySlider
+                    value={dimensions[question.dimension]}
+                    onChange={(value) => updateDimension(question.dimension, value)}
+                    min={1}
+                    max={5}
+                    labels={[
+                      DimensionInfo[question.dimension].lowLabel,
+                      DimensionInfo[question.dimension].highLabel,
+                    ]}
+                  />
                 )}
 
                 {question.type === 'choice' && question.options && (
@@ -269,7 +261,7 @@ export const InterviewPage: React.FC<InterviewPageProps> = ({
                       >
                         <div className="flex items-center gap-3">
                           <div className={`
-                            w-5 h-5 rounded-full border-2 flex items-center justify-center
+                            w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0
                             ${dimensions[question.dimension] === option.value
                               ? 'border-clay-coral bg-clay-coral'
                               : 'border-clay-stone'
@@ -301,10 +293,10 @@ export const InterviewPage: React.FC<InterviewPageProps> = ({
             <h3 className="text-lg font-semibold text-clay-charcoal mb-4">
               Review Your Configuration
             </h3>
-            
+
             <div className="grid sm:grid-cols-2 gap-4">
               {(Object.keys(dimensions) as DimensionName[]).map((dim) => (
-                <div 
+                <div
                   key={dim}
                   className="flex items-center justify-between p-3 bg-clay-sand/50 rounded-lg"
                 >
@@ -347,7 +339,7 @@ export const InterviewPage: React.FC<InterviewPageProps> = ({
             <ArrowLeft className="w-4 h-4" />
             {currentStep === 0 ? 'Back to Start' : 'Previous'}
           </ClayButton>
-          
+
           <ClayButton
             variant="pill"
             color={isLastStep ? 'coral' : 'mint'}

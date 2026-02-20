@@ -125,5 +125,30 @@ module.exports = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    require("@tailwindcss/typography"),
+  ],
+  typography: {
+    clay: {
+      css: {
+        '--tw-prose-body': '#3D3A36',
+        '--tw-prose-headings': '#3D3A36',
+        '--tw-prose-lead': '#3D3A36cc',
+        '--tw-prose-links': '#E8B4A8',
+        '--tw-prose-bold': '#3D3A36',
+        '--tw-prose-counters': '#C5D5C8',
+        '--tw-prose-bullets': '#C5D5C8',
+        '--tw-prose-hr': '#D4CFC7',
+        '--tw-prose-quotes': '#3D3A36',
+        '--tw-prose-quote-borders': '#D4E5DD',
+        '--tw-prose-captions': '#3D3A3680',
+        '--tw-prose-code': '#E8B4A8',
+        '--tw-prose-pre-code': '#3D3A36',
+        '--tw-prose-pre-bg': '#F5F0E8',
+        '--tw-prose-th-borders': '#D4CFC7',
+        '--tw-prose-td-borders': '#E8DDD4',
+      },
+    },
+  },
 }

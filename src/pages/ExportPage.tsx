@@ -1,5 +1,10 @@
 import { useState, useMemo } from 'react';
-import { ArrowLeft, Download, FileText, Sparkles, Copy, Check } from 'lucide-react';
+import {
+  ArrowLeft, Download, FileText, Sparkles, Copy, Check,
+  Code, Eye, FileJson, Shield, Globe, Zap,
+} from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { ClayButton, ClayCard, ClayTabs } from '@/components/clay';
 import type { OpenClawConfigType } from '@/lib/openclaw/schema';
 import type { OutputFileName } from '@/lib/openclaw/generator';
@@ -12,6 +17,14 @@ interface ExportPageProps {
   onBack: () => void;
   onNewConfig: () => void;
 }
+
+// Fix #6: preset-specific icons instead of always Sparkles
+const PRESET_ICONS: Record<string, React.ReactNode> = {
+  security: <Shield className="w-6 h-6" />,
+  open: <Globe className="w-6 h-6" />,
+  crazy: <Zap className="w-6 h-6" />,
+  custom: <Sparkles className="w-6 h-6" />,
+};
 
 const fileIcons: Record<OutputFileName, React.ReactNode> = {
   'soul.md': <Sparkles className="w-4 h-4" />,
@@ -27,10 +40,21 @@ export const ExportPage: React.FC<ExportPageProps> = ({
   onNewConfig,
 }) => {
   const [copiedFile, setCopiedFile] = useState<string | null>(null);
+  // Fix #7: per-file view mode instead of shared state
+  const [viewModes, setViewModes] = useState<Record<string, 'rendered' | 'raw'>>({});
+
   const files = useMemo(() => generateMarkdownFiles(config), [config]);
   const preset = useMemo(() => getPresetById(config.presetId), [config.presetId]);
 
-  const downloadFile = (file: { name: string; content: string }) => {
+  const getViewMode = (fileName: string): 'rendered' | 'raw' =>
+    viewModes[fileName] ?? 'rendered';
+
+  const setViewMode = (fileName: string, mode: 'rendered' | 'raw') => {
+    setViewModes(prev => ({ ...prev, [fileName]: mode }));
+  };
+
+  // Fix #4: silent flag so downloadAll can suppress per-file toasts
+  const downloadFile = (file: { name: string; content: string }, silent = false) => {
     const blob = new Blob([file.content], { type: 'text/markdown' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -40,15 +64,32 @@ export const ExportPage: React.FC<ExportPageProps> = ({
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    
-    toast.success(`Downloaded ${file.name}`);
+    if (!silent) toast.success(`Downloaded ${file.name}`);
   };
 
+  // Fix #4: single summary toast fires after the last download
   const downloadAll = () => {
     files.forEach((file, index) => {
-      setTimeout(() => downloadFile(file), index * 200);
+      setTimeout(() => {
+        downloadFile(file, true);
+        if (index === files.length - 1) {
+          toast.success(`All ${files.length} files downloaded`);
+        }
+      }, index * 200);
     });
-    toast.success('All files downloaded');
+  };
+
+  const exportConfigJson = () => {
+    const blob = new Blob([JSON.stringify(config, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `openclaw-config-${config.presetId}-${Date.now()}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    toast.success('Config JSON exported');
   };
 
   const copyToClipboard = async (file: { name: string; content: string }) => {
@@ -62,58 +103,105 @@ export const ExportPage: React.FC<ExportPageProps> = ({
     }
   };
 
-  const tabs = files.map((file) => ({
-    id: file.name,
-    label: file.name,
-    icon: fileIcons[file.name as OutputFileName],
-    content: (
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h3 className="text-lg font-semibold text-clay-charcoal">
-            {file.name}
-          </h3>
-          <div className="flex gap-2">
-            <ClayButton
-              variant="pill"
-              color="stone"
-              size="sm"
-              onClick={() => copyToClipboard(file)}
-            >
-              {copiedFile === file.name ? (
-                <Check className="w-4 h-4" />
-              ) : (
-                <Copy className="w-4 h-4" />
-              )}
-              {copiedFile === file.name ? 'Copied' : 'Copy'}
-            </ClayButton>
-            <ClayButton
-              variant="pill"
-              color="mint"
-              size="sm"
-              onClick={() => downloadFile(file)}
-            >
-              <Download className="w-4 h-4" />
-              Download
-            </ClayButton>
+  // Fix #7: each tab reads its own viewMode
+  const tabs = files.map((file) => {
+    const fileViewMode = getViewMode(file.name);
+    return {
+      id: file.name,
+      label: file.name,
+      icon: fileIcons[file.name as OutputFileName],
+      content: (
+        <div className="space-y-4">
+          {/* File header + actions */}
+          <div className="flex items-center justify-between flex-wrap gap-3">
+            <h3 className="text-lg font-semibold text-clay-charcoal">
+              {file.name}
+            </h3>
+            <div className="flex gap-2 flex-wrap">
+              {/* Per-file view mode toggle */}
+              <div className="flex items-center bg-clay-sand rounded-full p-1 shadow-clay-inset">
+                <button
+                  onClick={() => setViewMode(file.name, 'rendered')}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                    fileViewMode === 'rendered'
+                      ? 'bg-white shadow-clay text-clay-charcoal'
+                      : 'text-clay-charcoal/50 hover:text-clay-charcoal'
+                  }`}
+                  title="Rendered preview"
+                >
+                  <Eye className="w-3.5 h-3.5" />
+                  Preview
+                </button>
+                <button
+                  onClick={() => setViewMode(file.name, 'raw')}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                    fileViewMode === 'raw'
+                      ? 'bg-white shadow-clay text-clay-charcoal'
+                      : 'text-clay-charcoal/50 hover:text-clay-charcoal'
+                  }`}
+                  title="Raw Markdown"
+                >
+                  <Code className="w-3.5 h-3.5" />
+                  Raw
+                </button>
+              </div>
+
+              <ClayButton
+                variant="pill"
+                color="stone"
+                size="sm"
+                onClick={() => copyToClipboard(file)}
+              >
+                {copiedFile === file.name ? (
+                  <Check className="w-4 h-4" />
+                ) : (
+                  <Copy className="w-4 h-4" />
+                )}
+                {copiedFile === file.name ? 'Copied' : 'Copy'}
+              </ClayButton>
+              <ClayButton
+                variant="pill"
+                color="mint"
+                size="sm"
+                onClick={() => downloadFile(file)}
+              >
+                <Download className="w-4 h-4" />
+                Download
+              </ClayButton>
+            </div>
           </div>
+
+          {/* Content area */}
+          {fileViewMode === 'rendered' ? (
+            <div className="bg-white/60 rounded-xl p-6 border border-white/70 shadow-clay-inset min-h-48 max-h-[32rem] overflow-y-auto">
+              {/* Fix #2: prose-clay uses the typography plugin theme we configured */}
+              <div className="prose prose-sm prose-clay max-w-none">
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                  {file.content}
+                </ReactMarkdown>
+              </div>
+            </div>
+          ) : (
+            <pre className="bg-clay-charcoal/5 rounded-xl p-4 overflow-x-auto text-sm font-mono text-clay-charcoal/80 max-h-[32rem] overflow-y-auto border border-clay-stone/20">
+              {file.content}
+            </pre>
+          )}
         </div>
-        <pre className="bg-clay-charcoal/5 rounded-lg p-4 overflow-x-auto text-sm font-mono text-clay-charcoal/80 max-h-96 overflow-y-auto">
-          {file.content}
-        </pre>
-      </div>
-    ),
-  }));
+      ),
+    };
+  });
 
   return (
     <div className="min-h-screen px-6 py-8">
       <div className="max-w-5xl mx-auto">
         {/* Header */}
-        <div className="flex items-center gap-4 mb-8">
+        <div className="flex items-center gap-4 mb-8 flex-wrap">
           <ClayButton
             variant="round"
             color="stone"
             size="sm"
             onClick={onBack}
+            aria-label="Go back"
           >
             <ArrowLeft className="w-5 h-5" />
           </ClayButton>
@@ -125,28 +213,39 @@ export const ExportPage: React.FC<ExportPageProps> = ({
               Preview and download your configuration files
             </p>
           </div>
-          <ClayButton
-            variant="pill"
-            color="coral"
-            onClick={downloadAll}
-          >
-            <Download className="w-4 h-4" />
-            Download All
-          </ClayButton>
+          <div className="flex gap-2 flex-wrap">
+            <ClayButton
+              variant="pill"
+              color="sage"
+              onClick={exportConfigJson}
+            >
+              <FileJson className="w-4 h-4" />
+              Export JSON
+            </ClayButton>
+            <ClayButton
+              variant="pill"
+              color="coral"
+              onClick={downloadAll}
+            >
+              <Download className="w-4 h-4" />
+              Download All
+            </ClayButton>
+          </div>
         </div>
 
         {/* Config Summary */}
         <ClayCard padding="md" className="mb-6">
           <div className="flex flex-col sm:flex-row sm:items-center gap-4">
             <div className="flex items-center gap-3">
+              {/* Fix #6: use preset-specific icon */}
               <div className={`
                 w-12 h-12 rounded-full shadow-clay flex items-center justify-center
-                ${preset.color === 'peach' ? 'bg-clay-peach' : ''}
-                ${preset.color === 'mint' ? 'bg-clay-mint' : ''}
+                ${preset.color === 'peach' ? 'bg-clay-peach text-clay-charcoal' : ''}
+                ${preset.color === 'mint' ? 'bg-clay-mint text-clay-charcoal' : ''}
                 ${preset.color === 'coral' ? 'bg-clay-coral text-white' : ''}
-                ${preset.color === 'sage' ? 'bg-clay-sage' : ''}
+                ${preset.color === 'sage' ? 'bg-clay-sage text-clay-charcoal' : ''}
               `}>
-                <Sparkles className="w-6 h-6" />
+                {PRESET_ICONS[config.presetId] ?? <Sparkles className="w-6 h-6" />}
               </div>
               <div>
                 <h2 className="font-semibold text-clay-charcoal">
@@ -157,7 +256,7 @@ export const ExportPage: React.FC<ExportPageProps> = ({
                 </p>
               </div>
             </div>
-            
+
             <div className="sm:ml-auto flex flex-wrap gap-2">
               <span className="px-3 py-1 rounded-full text-xs font-medium bg-clay-sand text-clay-charcoal">
                 Risk: {preset.metadata.riskProfile}
@@ -172,7 +271,7 @@ export const ExportPage: React.FC<ExportPageProps> = ({
         {/* File Preview Tabs */}
         <ClayTabs tabs={tabs} defaultTab="soul.md" />
 
-        {/* File List */}
+        {/* Quick Download Grid */}
         <div className="mt-8">
           <h3 className="text-lg font-semibold text-clay-charcoal mb-4">
             Quick Download

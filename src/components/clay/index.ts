@@ -12,3 +12,5 @@ export { ClayStepper } from './ClayStepper';
 export { ClayErrorBanner } from './ClayErrorBanner';
 
 export { ClayTabs } from './ClayTabs';
+
+export { ClayFlowBreadcrumb } from './ClayFlowBreadcrumb';

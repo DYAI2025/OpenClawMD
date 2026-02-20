@@ -82,7 +82,7 @@ const CRAZY_PRESET: PresetDefinition = {
   color: 'coral',
   dimensions: {
     riskTolerance: 5,
-    approvalThreshold: 2,
+    approvalThreshold: 3,  // was 2 — raised to satisfy LEGAL_BOUNDARY_001 (Risk 5 + Approval ≤2 blocked)
     heartbeatAggressiveness: 5,
     strategicInitiative: 5,
     dataAccessScope: 5,

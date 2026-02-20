@@ -174,7 +174,7 @@ export const DimensionInfo: Record<DimensionName, { label: string; description: 
   },
   dataAccessScope: {
     label: 'Data Access Scope',
-    description: ' breadth of data the system can access and analyze',
+    description: 'Breadth of data the system can access and analyze',
     lowLabel: 'Minimal',
     highLabel: 'Comprehensive',
   },

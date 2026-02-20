@@ -1,11 +1,16 @@
-import { Shield, MessageSquare, Sliders, Sparkles } from 'lucide-react';
-import { ClayCard } from '@/components/clay';
+import { useRef } from 'react';
+import { Shield, MessageSquare, Sliders, Sparkles, Upload } from 'lucide-react';
+import { ClayCard, ClayButton } from '@/components/clay';
+import { toast } from 'sonner';
+import { OpenClawConfig } from '@/lib/openclaw/schema';
+import type { OpenClawConfigType } from '@/lib/openclaw/schema';
 
 interface LandingPageProps {
   onSelectPreset: () => void;
   onStartInterview: () => void;
   onOpenBuilder: () => void;
   onLogoTap: () => void;
+  onImportConfig: (config: OpenClawConfigType) => void;
 }
 
 export const LandingPage: React.FC<LandingPageProps> = ({
@@ -13,7 +18,34 @@ export const LandingPage: React.FC<LandingPageProps> = ({
   onStartInterview,
   onOpenBuilder,
   onLogoTap,
+  onImportConfig,
 }) => {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleImportClick = () => fileInputRef.current?.click();
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const raw = JSON.parse(event.target?.result as string);
+        const parsed = OpenClawConfig.safeParse(raw);
+        if (!parsed.success) {
+          toast.error('Invalid config file — schema validation failed');
+          return;
+        }
+        toast.success(`Loaded config: ${parsed.data.metadata.name}`);
+        onImportConfig(parsed.data);
+      } catch {
+        toast.error('Could not parse JSON file');
+      }
+    };
+    reader.readAsText(file);
+    // Reset so same file can be re-imported
+    e.target.value = '';
+  };
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}
@@ -29,8 +61,28 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             <span className="text-xl font-bold text-clay-charcoal">OpenCLAW</span>
           </button>
           
-          <div className="text-sm text-clay-charcoal/60">
-            Preset System v1.0
+          <div className="flex items-center gap-3">
+            <ClayButton
+              variant="pill"
+              color="stone"
+              size="sm"
+              onClick={handleImportClick}
+              title="Import a previously exported openclaw-config.json"
+            >
+              <Upload className="w-4 h-4" />
+              Import Config
+            </ClayButton>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".json,application/json"
+              onChange={handleFileChange}
+              className="hidden"
+              aria-label="Import OpenCLAW configuration JSON file"
+            />
+            <span className="text-sm text-clay-charcoal/60 hidden sm:block">
+              Preset System v1.0
+            </span>
           </div>
         </div>
       </header>

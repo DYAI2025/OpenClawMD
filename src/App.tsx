@@ -10,25 +10,55 @@ import { createEmptyConfig } from './lib/openclaw/schema';
 import { createConfigFromPreset } from './lib/openclaw/presets';
 import { ConfigModeOverlay } from './components/ConfigModeOverlay';
 import { Toaster } from '@/components/ui/sonner';
+import { ClayFlowBreadcrumb } from '@/components/clay';
 
 export type AppView = 'landing' | 'presets' | 'interview' | 'builder' | 'export';
 
-interface AppState {
+export interface HistoryEntry {
   view: AppView;
   config: OpenClawConfigType | null;
 }
 
 function App() {
-  const [state, setState] = useState<AppState>({
-    view: 'landing',
-    config: null,
-  });
-  
+  // History stack – index 0 is always the origin (landing)
+  const [history, setHistory] = useState<HistoryEntry[]>([
+    { view: 'landing', config: null },
+  ]);
+
   const [configModeOpen, setConfigModeOpen] = useState(false);
   const [tapCount, setTapCount] = useState(0);
   const [lastTapTime, setLastTapTime] = useState(0);
 
-  // Hidden config mode activation (7 taps within 3 seconds)
+  const currentEntry = history[history.length - 1];
+
+  // Push a new view onto the history stack
+  const pushView = useCallback((view: AppView, config?: OpenClawConfigType | null) => {
+    setHistory(prev => {
+      const prevConfig = prev[prev.length - 1].config;
+      return [...prev, { view, config: config !== undefined ? config : prevConfig }];
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
+  // Jump to a specific history index (breadcrumb navigation)
+  const goToHistoryIndex = useCallback((index: number) => {
+    setHistory(prev => prev.slice(0, index + 1));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
+  // Pop the top of the history stack
+  const goBack = useCallback(() => {
+    setHistory(prev => (prev.length > 1 ? prev.slice(0, -1) : prev));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
+  // Reset to landing (used by "Create New Configuration")
+  const resetToLanding = useCallback(() => {
+    setHistory([{ view: 'landing', config: null }]);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
+  // Hidden config mode: 7 taps within 3 seconds
   const handleLogoTap = useCallback(() => {
     const now = Date.now();
     if (now - lastTapTime > 3000) {
@@ -47,56 +77,42 @@ function App() {
 
   // Navigation handlers
   const navigateTo = useCallback((view: AppView) => {
-    setState(prev => ({ ...prev, view }));
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, []);
+    pushView(view);
+  }, [pushView]);
 
   const selectPreset = useCallback((presetId: PresetIdType) => {
     const config = createConfigFromPreset(presetId);
-    setState({ view: 'export', config });
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, []);
+    pushView('export', config);
+  }, [pushView]);
 
   const startInterview = useCallback(() => {
-    setState({ view: 'interview', config: createEmptyConfig() });
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, []);
+    pushView('interview', createEmptyConfig());
+  }, [pushView]);
 
   const startBuilder = useCallback((basePreset?: PresetIdType) => {
     const config = basePreset ? createConfigFromPreset(basePreset) : createEmptyConfig();
-    setState({ view: 'builder', config });
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, []);
+    pushView('builder', config);
+  }, [pushView]);
 
   const finishInterview = useCallback((config: OpenClawConfigType) => {
-    setState({ view: 'export', config });
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, []);
+    pushView('export', config);
+  }, [pushView]);
 
   const finishBuilder = useCallback((config: OpenClawConfigType) => {
-    setState({ view: 'export', config });
+    pushView('export', config);
+  }, [pushView]);
+
+  // Import: reset history to landing → export so Back returns to Landing
+  const importConfig = useCallback((config: OpenClawConfigType) => {
+    setHistory([
+      { view: 'landing', config: null },
+      { view: 'export', config },
+    ]);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
-  const goBack = useCallback(() => {
-    setState(prev => {
-      switch (prev.view) {
-        case 'presets':
-        case 'interview':
-        case 'builder':
-          return { ...prev, view: 'landing' };
-        case 'export':
-          return { ...prev, view: 'landing' };
-        default:
-          return prev;
-      }
-    });
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, []);
-
-  // Render current view
   const renderView = () => {
-    switch (state.view) {
+    switch (currentEntry.view) {
       case 'landing':
         return (
           <LandingPage
@@ -104,9 +120,10 @@ function App() {
             onStartInterview={startInterview}
             onOpenBuilder={() => startBuilder()}
             onLogoTap={handleLogoTap}
+            onImportConfig={importConfig}
           />
         );
-      
+
       case 'presets':
         return (
           <PresetsPage
@@ -115,34 +132,34 @@ function App() {
             onBack={goBack}
           />
         );
-      
+
       case 'interview':
         return (
           <InterviewPage
-            initialConfig={state.config || createEmptyConfig()}
+            initialConfig={currentEntry.config || createEmptyConfig()}
             onComplete={finishInterview}
             onBack={goBack}
           />
         );
-      
+
       case 'builder':
         return (
           <BuilderPage
-            initialConfig={state.config || createEmptyConfig()}
+            initialConfig={currentEntry.config || createEmptyConfig()}
             onComplete={finishBuilder}
             onBack={goBack}
           />
         );
-      
+
       case 'export':
         return (
           <ExportPage
-            config={state.config || createEmptyConfig()}
+            config={currentEntry.config || createEmptyConfig()}
             onBack={goBack}
-            onNewConfig={() => navigateTo('landing')}
+            onNewConfig={resetToLanding}
           />
         );
-      
+
       default:
         return null;
     }
@@ -154,26 +171,32 @@ function App() {
       <div className="blob-bg blob-1" />
       <div className="blob-bg blob-2" />
       <div className="blob-bg blob-3" />
-      
-      {/* Main content */}
-      <main className="relative z-10">
+
+      {/* Breadcrumb – visible for all views beyond landing */}
+      {history.length > 1 && (
+        <div className="relative z-20 px-6 pt-3">
+          <ClayFlowBreadcrumb history={history} onNavigate={goToHistoryIndex} />
+        </div>
+      )}
+
+      {/* Main content – key triggers slide-up animation on every view change */}
+      <main key={currentEntry.view} className="relative z-10 animate-slide-up">
         {renderView()}
       </main>
-      
-      {/* Config Mode Overlay */}
-      <ConfigModeOverlay 
-        isOpen={configModeOpen} 
-        onClose={() => setConfigModeOpen(false)} 
+
+      <ConfigModeOverlay
+        isOpen={configModeOpen}
+        onClose={() => setConfigModeOpen(false)}
       />
-      
-      {/* Toast notifications */}
-      <Toaster 
+
+      <Toaster
         position="bottom-right"
         toastOptions={{
           style: {
             background: '#F5F0E8',
             border: '1px solid rgba(255,255,255,0.5)',
-            boxShadow: '0 2px 4px rgba(61, 58, 54, 0.04), 0 4px 8px rgba(61, 58, 54, 0.03), 0 8px 16px rgba(61, 58, 54, 0.02), 0 1px 2px rgba(61, 58, 54, 0.08)',
+            boxShadow:
+              '0 2px 4px rgba(61, 58, 54, 0.04), 0 4px 8px rgba(61, 58, 54, 0.03), 0 8px 16px rgba(61, 58, 54, 0.02), 0 1px 2px rgba(61, 58, 54, 0.08)',
             borderRadius: '1rem',
           },
         }}
