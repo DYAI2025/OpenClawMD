@@ -1,0 +1,82 @@
+SEO & Google Ads Strategy: OpenClaw Content Site
+Primary Keyword Clusters
+Cluster 1: AI Agent Fundamentals (High Volume, Broad)
+what is an ai agent
+how do ai agents work
+ai agent explained
+ai agent for beginners
+what can ai agents do
+ai agent vs chatbot
+Target page: 01-what-is-an-ai-agent.md
+
+Cluster 2: Types & Taxonomy (Medium Volume, Educational)
+types of ai agents
+autonomous ai agent
+fully autonomous ai agent
+ai agent classification
+multi-agent system
+ai agent framework comparison
+Target page: 02-types-of-ai-agents.md
+
+Cluster 3: OpenClaw Brand (Lower Volume, High Intent)
+openclaw ai agent
+openclaw setup
+
+openclaw configuration
+openclaw vs autogpt
+openclaw download
+openclaw tutorial
+Target page: 03-what-is-openclaw.md
+
+Cluster 4: Autonomous Agents (Growing, High Interest)
+fully autonomous ai agent
+autonomous ai agent 2024
+self-directing ai agent
+ai agent that works on its own
+ai agent no supervision
+ai agent runs automatically
+Target page: 04-autonomous-ai-agents.md
+
+Cluster 5: Getting Started / High Commercial Intent
+how to set up an ai agent
+ai agent beginner guide
+ai agent configuration files
+run ai agent locally
+ai agent without coding
+ai agent system prompt
+Target page: 05-getting-started.md
+
+Google Ads Campaign Structure Recommendation
+
+Campaign 1: Brand Awareness (Broad Match)
+Budget: Lower, awareness focus Keywords: “ai agent explained”, “what is an ai agent”,
+“how ai agents work” Ad copy angle: Educational — “Finally Understand AI Agents. Free
+Guides + Config Files.” Landing page: 01-what-is-an-ai-agent.md
+
+Campaign 2: High Intent (Exact Match)
+Budget: Higher, conversion focus Keywords: “openclaw ai”, “autonomous ai agent setup”,
+“ai agent config files” Ad copy angle: Solution — “Deploy OpenClaw in Under 1 Hour.
+Download Free Config Files.” Landing page: 05-getting-started.md or 03-what-isopenclaw.md
+
+Campaign 3: Competitor Comparison
+Budget: Medium Keywords: “autogpt alternative”, “agent zero alternative”, “best
+autonomous ai agent” Ad copy angle: Differentiation — “OpenClaw: The Fully Autonomous
+Agent That Actually Finishes the Job.” Landing page: 03-what-is-openclaw.md (the
+comparison table section)
+
+Meta Description Templates (per page)
+01: “What is an AI agent? This complete beginner’s guide explains how AI agents work, the
+observe-think-act loop, memory systems, and why agents are different from chatbots. Read
+now.”
+02: “Discover all types of AI agents — from simple reflex bots to fully autonomous systems.
+Learn which agent type fits your use case with clear examples and comparison tables.”
+03: “OpenClaw is a fully autonomous AI agent that completes complex tasks without
+supervision. Learn what makes it different, what it can do, and how to get started.”
+04: “How do fully autonomous AI agents actually work? Understand goal decomposition,
+tool use, memory, self-correction loops, and why autonomous agents are a threshold
+moment in software.”
+05: “Set up your first AI agent with no experience required. Step-by-step guide,
+configuration files, and 5 ready-to-use task playbooks for research, content, code, and
+more.”
+
+
