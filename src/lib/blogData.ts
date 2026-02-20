@@ -74,10 +74,10 @@ One of the biggest differences between a simple chatbot and a real AI agent is m
 | **External** | Files, databases, vector stores | A notes folder, a ChromaDB, a knowledge base |
 | **Procedural** | Instructions the agent always follows | “Always respond formally. Always check files first.” |
 
-Advanced agents like OpenClaw combine all three — giving them the ability to remember past sessions, learn from prior tasks, and apply rules consistently across time.
+Advanced agents like OpenForge combine all three — giving them the ability to remember past sessions, learn from prior tasks, and apply rules consistently across time.
 
 ## What Makes an Agent “Autonomous”?
-Autonomy is a spectrum. Level 3 is where OpenClaw operates:
+Autonomy is a spectrum. Level 3 is where OpenForge operates:
 - **Level 0 — Chatbot**: Responds to prompts. No memory. No tools. No initiative.
 - **Level 1 — Assisted Agent**: Has tools, but asks for permission before using them.
 - **Level 2 — Semi-Autonomous Agent**: Uses tools on its own, but checks in with the user at key decision points.
@@ -107,7 +107,7 @@ AI agents aren’t just faster assistants. They change what’s possible:
 
 ## Summary
 An AI agent is not just a smarter chatbot. It’s a goal-driven, tool-using, memory-equipped system that can operate independently over multiple steps to complete complex tasks. 
-Ready to go further? → Types of AI Agents | What Makes OpenClaw Special
+Ready to go further? → Types of AI Agents | What Makes OpenForge Special
     `
   },
   {
@@ -150,7 +150,7 @@ In 2025, the way we think about agents has evolved into these functional categor
 - **Research Agents**: Autonomously search, synthesize, and summarize information from the web.
 - **Coding Agents**: Write, run, test, and debug code. (e.g. Devin)
 - **Browsing / Web Agents**: Control a real web browser — clicking, scrolling, and logging in.
-- **Autonomous / Fully Agentic Systems**: Operate independently over long time horizons. (e.g. OpenClaw)
+- **Autonomous / Fully Agentic Systems**: Operate independently over long time horizons. (e.g. OpenForge)
 
 ## Multi-Agent Systems
 The next frontier is multiple specialized agents working in parallel or sequence, each handled by an "Orchestrator Agent". 
@@ -163,26 +163,26 @@ Each agent is an expert, making the whole system greater than the sum of its par
 
 ## Summary
 AI agents come in many forms. The most powerful combine reasoning, memory, and tools in a continuous loop that produces real results, not just replies. 
-→ Next: What Is OpenClaw? | How to Set Up Your First Agent
+→ Next: What Is OpenForge? | How to Set Up Your First Agent
     `
   },
   {
     slug: 'what-is-openclaw',
-    title: 'What Is OpenClaw? The Fully Autonomous AI Agent',
-    excerpt: 'One Agent. Any Task. Zero Babysitting. Learn why OpenClaw is the standard for autonomous work.',
+    title: 'What Is OpenForge? The Fully Autonomous AI Agent',
+    excerpt: 'One Agent. Any Task. Zero Babysitting. Learn why OpenForge is the standard for autonomous work.',
     date: 'February 15, 2026',
-    category: 'OpenCLAW',
+    category: 'OpenForge',
     readTime: '7 min read',
     content: `
-# What Is OpenClaw? The Fully Autonomous AI Agent
+# What Is OpenForge? The Fully Autonomous AI Agent
 
 **One Agent. Any Task. Zero Babysitting.**
 
-OpenClaw is a fully autonomous AI agent — built not to answer your questions, but to complete your goals. Where most AI tools wait for your next prompt, OpenClaw keeps going. It plans. It executes. It checks its own work.
+OpenForge is a fully autonomous AI agent — built not to answer your questions, but to complete your goals. Where most AI tools wait for your next prompt, OpenForge keeps going. It plans. It executes. It checks its own work.
 
 ## The Problem With Most AI Tools
 You type a request, get a draft, refine it, copy it elsewhere, and do the next step manually. YOU are the bridge.
-**OpenClaw removes you as the bottleneck.** It holds the goal in mind from start to finish and handles the handoffs between steps autonomously.
+**OpenForge removes you as the bottleneck.** It holds the goal in mind from start to finish and handles the handoffs between steps autonomously.
 
 ## What “Fully Autonomous” Really Means
 1. **Self-Directed Planning**: The agent creates its own route to the destination.
@@ -197,14 +197,14 @@ You type a request, get a draft, refine it, copy it elsewhere, and do the next s
 - **Code Projects**: Build, test, and debug scripts until they work.
 - **Data Collection**: Extract emails or profiles from websites to a CSV.
 
-## The Technology Behind OpenClaw
+## The Technology Behind OpenForge
 - **LLM Core**: Reasoning engine for decision-making.
 - **Tool Layer**: Web search, browsing, code execution, file system.
 - **Memory System**: Three layers (Working, External, Procedural).
 - **Agent Loop**: The Observe → Think → Act cycle.
 
 ## Summary
-The difference between a chatbot and a fully autonomous agent is the difference between having to micromanage and being able to genuinely delegate. OpenClaw is built for delegation. 
+The difference between a chatbot and a fully autonomous agent is the difference between having to micromanage and being able to genuinely delegate. OpenForge is built for delegation. 
 → Start Here: Setup Guide | Download Configuration Files
     `
   },
@@ -246,7 +246,7 @@ Each iteration is one “agent step.” Complex tasks may take 50 or 100+ steps,
 
 ## Summary
 A fully autonomous AI agent combines planning, tool use, and self-correction into a loop that operates independently. When delegation becomes real, the scope of what one person can do expands dramatically.
-→ What Is OpenClaw? | Getting Started Guide | Download Agent Configs
+→ What Is OpenForge? | Getting Started Guide | Download Agent Configs
     `
   }
 ];

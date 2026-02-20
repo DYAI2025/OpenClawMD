@@ -189,7 +189,7 @@ function App() {
       )}
 
       {/* Main content – key triggers slide-up animation on every view change */}
-      <main key={currentEntry.view} className="relative z-10 animate-slide-up">
+      <main key={currentEntry.view} className="relative z-10 animate-slide-up will-change-transform">
         {renderView()}
       </main>
 

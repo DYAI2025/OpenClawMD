@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { Shield, MessageSquare, Sliders, Sparkles, Upload, Tag } from 'lucide-react';
+import { Shield, MessageSquare, Sliders, Sparkles, Upload, Tag, Globe, ExternalLink } from 'lucide-react';
 import { ClayCard, ClayButton } from '@/components/clay';
 import { toast } from 'sonner';
 import { OpenClawConfig } from '@/lib/openclaw/schema';
@@ -60,7 +60,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-clay-coral to-clay-peach shadow-clay flex items-center justify-center">
               <Sparkles className="w-5 h-5 text-white" />
             </div>
-            <span className="text-xl font-bold text-clay-charcoal">OpenCLAW</span>
+            <span className="text-xl font-bold text-clay-charcoal">OpenForge</span>
           </button>
           
           <div className="flex items-center gap-6">
@@ -110,16 +110,16 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
           {/* Title */}
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-clay-charcoal mb-6 leading-tight">
-            Configure Your
+            OpenForge
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-clay-coral to-clay-peach">
-              AI Agent
+              Skill &amp; Soul
             </span>
           </h1>
 
           {/* Subtitle */}
           <p className="text-lg text-clay-charcoal/70 max-w-2xl mx-auto mb-12">
-            OpenCLAW Preset System helps you define clear boundaries, capabilities, 
-            and behaviors for AI agents. Choose a preset or build your own configuration.
+            Define the skill, shape the soul. OpenForge helps you craft precise boundaries, 
+            capabilities, and behaviors for AI agents — choose a preset or build your own.
           </p>
 
           {/* Entry Points */}
@@ -188,7 +188,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 Intelligence Lab
               </h3>
               <p className="text-sm text-clay-charcoal/60">
-                Read deep dives on AI agent technology and the OpenCLAW standard.
+                Read deep dives on AI agent technology and the OpenForge standard.
               </p>
             </ClayCard>
           </div>
@@ -231,6 +231,66 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         </div>
       </section>
 
+      {/* Ecosystem Section */}
+      <section className="px-6 py-16 bg-clay-base/30 relative border-y border-white/50">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-12">
+            <div className="max-w-xl">
+              <h2 className="text-3xl font-bold text-clay-charcoal mb-4">
+                The AI Agent <span className="text-clay-coral underline decoration-clay-coral/20">Ecosystem</span>
+              </h2>
+              <p className="text-clay-charcoal/60 mb-8 leading-relaxed">
+                OpenForge lives at the intersection of technical performance and legal safety. 
+                We are proud to build upon the <span className="text-clay-charcoal font-semibold">OpenCLAW 0.1</span> standard and collaborate with visionary projects 
+                redefining what it means to give AI a body and a purpose.
+              </p>
+              
+              <div className="flex flex-wrap gap-4">
+                <a 
+                  href="https://openclaw.ai" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="px-6 py-3 rounded-2xl bg-white/60 border border-white shadow-clay hover:shadow-clay-lifted hover:-translate-y-1 transition-all flex items-center gap-2 text-sm font-bold text-clay-charcoal group"
+                >
+                  <Globe className="w-4 h-4 text-clay-charcoal/40 group-hover:text-clay-coral transition-colors" />
+                  OpenCLAW.ai
+                  <ExternalLink className="w-3 h-3 text-clay-charcoal/20" />
+                </a>
+                <a 
+                  href="https://clawhub.ai/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="px-6 py-3 rounded-2xl bg-white/60 border border-white shadow-clay hover:shadow-clay-lifted hover:-translate-y-1 transition-all flex items-center gap-2 text-sm font-bold text-clay-charcoal group"
+                >
+                  <Shield className="w-4 h-4 text-clay-charcoal/40 group-hover:text-clay-mint transition-colors" />
+                  ClawHub
+                  <ExternalLink className="w-3 h-3 text-clay-charcoal/20" />
+                </a>
+              </div>
+            </div>
+
+            <div className="w-full md:w-auto">
+              <ClayCard className="p-8 max-w-sm border-white shadow-clay-lifted bg-gradient-to-br from-white/60 to-transparent relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-24 h-24 bg-clay-coral/5 rounded-full -mr-12 -mt-12 group-hover:scale-110 transition-transform" />
+                <span className="text-[10px] font-black text-clay-coral uppercase tracking-widest mb-3 block">Scientific Spotlight</span>
+                <h3 className="text-xl font-bold text-clay-charcoal mb-3">Neoform: I gave an AI a Body</h3>
+                <p className="text-sm text-clay-charcoal/60 mb-6 leading-relaxed">
+                  Deep research into embodied intelligence and the boundary where code meets physical reality.
+                </p>
+                <a 
+                  href="https://cyrusclarke.substack.com/p/i-gave-an-ai-a-body?r=1i4b97&utm_campaign=post&utm_medium=web&triedRedirect=true"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-clay-coral font-bold text-sm hover:gap-3 transition-all"
+                >
+                  Read the Publication <ExternalLink className="w-4 h-4" />
+                </a>
+              </ClayCard>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="px-6 py-8">
         <div className="max-w-6xl mx-auto">
@@ -242,7 +302,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           </div>
           
           <div className="mt-6 text-center text-xs text-clay-charcoal/40">
-            OpenCLAW Preset System • Stateless Client-First Generator • v1.0.0
+            OpenForge • Skill &amp; Soul • Stateless Client-First Generator • v1.0.0
           </div>
         </div>
       </footer>

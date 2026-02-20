@@ -56,10 +56,10 @@ export function BlogPage({ onBack }: BlogPageProps) {
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
         <div>
           <h1 className="text-4xl md:text-5xl font-black text-clay-charcoal tracking-tight mb-4">
-            Agent <span className="text-clay-coral">Intelligence</span> Lab
+            OpenForge <span className="text-clay-coral">Intelligence</span> Lab
           </h1>
           <p className="text-lg text-clay-charcoal/60 max-w-2xl">
-            Deep dives into autonomous systems, agency boundaries, and the technical core of the OpenCLAW standard.
+            Deep dives into autonomous systems, agency boundaries, and the technical core of the OpenForge standard.
           </p>
         </div>
         <ClayButton color="sand" onClick={onBack}>
