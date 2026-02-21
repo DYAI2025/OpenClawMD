@@ -17,6 +17,8 @@ const VIEW_LABELS: Record<string, string> = {
   interview: 'Interview',
   builder: 'Builder',
   export: 'Export',
+  'soulforge-interview': 'SoulForge Interview',
+  'soulforge-export': 'SoulForge Export',
 };
 
 export const ClayFlowBreadcrumb: React.FC<ClayFlowBreadcrumbProps> = ({

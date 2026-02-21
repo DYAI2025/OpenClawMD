@@ -5,6 +5,7 @@ import { PresetsPage } from './pages/PresetsPage';
 import { InterviewPage } from './pages/InterviewPage';
 import { BuilderPage } from './pages/BuilderPage';
 import { ExportPage } from './pages/ExportPage';
+import { SoulForgeExportPage } from './pages/SoulForgeExportPage';
 import { BlogPage } from './pages/BlogPage';
 import type { OpenClawConfigType, PresetIdType } from './lib/openclaw/schema';
 import { createEmptyConfig } from './lib/openclaw/schema';
@@ -12,8 +13,10 @@ import { createConfigFromPreset } from './lib/openclaw/presets';
 import { ConfigModeOverlay } from './components/ConfigModeOverlay';
 import { Toaster } from '@/components/ui/sonner';
 import { ClayFlowBreadcrumb } from '@/components/clay';
+import { SoulForgeInterviewPage } from './pages/SoulForgeInterviewPage';
+import type { GeneratedFile, CanonData } from './lib/soulforge/types';
 
-export type AppView = 'landing' | 'presets' | 'interview' | 'builder' | 'export' | 'blog';
+export type AppView = 'landing' | 'presets' | 'interview' | 'builder' | 'export' | 'blog' | 'soulforge-interview' | 'soulforge-export';
 
 export interface HistoryEntry {
   view: AppView;
@@ -33,6 +36,8 @@ function App() {
     }
     return [{ view: 'landing', config: null }];
   });
+
+  const [soulForgeData, setSoulForgeData] = useState<{ files: GeneratedFile[]; canon: CanonData } | null>(null);
 
   // Persist history to localStorage
   useEffect(() => {
@@ -132,6 +137,10 @@ function App() {
           <LandingPage
             onSelectPreset={() => navigateTo('presets')}
             onStartInterview={startInterview}
+            onStartSoulForge={() => {
+              setSoulForgeData(null);
+              pushView('soulforge-interview');
+            }}
             onOpenBuilder={() => startBuilder()}
             onLogoTap={handleLogoTap}
             onImportConfig={importConfig}
@@ -156,6 +165,26 @@ function App() {
             onBack={goBack}
           />
         );
+
+      case 'soulforge-interview':
+        return (
+          <SoulForgeInterviewPage
+            onComplete={(files, canon) => {
+              setSoulForgeData({ files, canon });
+              pushView('soulforge-export');
+            }}
+            onBack={goBack}
+          />
+        );
+
+      case 'soulforge-export':
+        return soulForgeData ? (
+          <SoulForgeExportPage
+            canon={soulForgeData.canon}
+            onBack={goBack}
+            onNewConfig={resetToLanding}
+          />
+        ) : null;
 
       case 'builder':
         return (

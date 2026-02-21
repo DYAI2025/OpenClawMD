@@ -25,7 +25,10 @@ export const ClaySlider: React.FC<ClaySliderProps> = ({
   const percentage = ((value - min) / (max - min)) * 100;
   
   return (
-    <div className={cn('w-full', disabled && 'opacity-50 pointer-events-none')}>
+    <div 
+      className={cn('w-full', disabled && 'opacity-50 pointer-events-none')}
+      style={{ '--percentage': `${percentage}%` } as React.CSSProperties}
+    >
       {(labels || showValue) && (
         <div className="flex justify-between items-center mb-2">
           {labels && (
@@ -49,7 +52,7 @@ export const ClaySlider: React.FC<ClaySliderProps> = ({
         {/* Fill */}
         <div 
           className="absolute left-0 top-0 h-full rounded-full bg-gradient-to-r from-clay-mint to-clay-sage"
-          style={{ width: `${percentage}%` }}
+          style={{ width: 'var(--percentage)' }}
         />
         
         {/* Input */}
@@ -68,7 +71,7 @@ export const ClaySlider: React.FC<ClaySliderProps> = ({
         {/* Thumb */}
         <div 
           className="absolute top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-gradient-to-br from-clay-peach to-clay-coral shadow-clay border-2 border-white/50 pointer-events-none transition-transform duration-150"
-          style={{ left: `calc(${percentage}% - 12px)` }}
+          style={{ left: 'calc(var(--percentage) - 12px)' }}
         />
         
         {/* Tick marks */}
