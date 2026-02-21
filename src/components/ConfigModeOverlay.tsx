@@ -13,6 +13,7 @@ interface ConfigItem {
 interface ConfigModeOverlayProps {
   isOpen: boolean;
   onClose: () => void;
+  onStartSoulForge?: () => void;
 }
 
 const STORAGE_KEY = 'openclaw-config-mode';
@@ -26,25 +27,23 @@ const defaultItems: ConfigItem[] = [
 export const ConfigModeOverlay: React.FC<ConfigModeOverlayProps> = ({
   isOpen,
   onClose,
+  onStartSoulForge,
 }) => {
-  const [items, setItems] = useState<ConfigItem[]>([]);
-  const [jsonImport, setJsonImport] = useState('');
-  const [showImport, setShowImport] = useState(false);
-
-  // Load from localStorage on mount
-  useEffect(() => {
+  const [items, setItems] = useState<ConfigItem[]>(() => {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
       try {
         const parsed = JSON.parse(stored);
-        setItems(parsed.items || defaultItems);
+        return parsed.items || defaultItems;
       } catch {
-        setItems(defaultItems);
+        return defaultItems;
       }
-    } else {
-      setItems(defaultItems);
     }
-  }, []);
+    return defaultItems;
+  });
+  
+  const [jsonImport, setJsonImport] = useState('');
+  const [showImport, setShowImport] = useState(false);
 
   // Save to localStorage when items change
   useEffect(() => {
@@ -133,10 +132,10 @@ export const ConfigModeOverlay: React.FC<ConfigModeOverlayProps> = ({
           <div className="flex items-center justify-between p-6 border-b border-clay-stone/30">
             <div>
               <h2 className="text-xl font-bold text-clay-charcoal">
-                Config Mode
+                Internal Config Mode
               </h2>
               <p className="text-sm text-clay-charcoal/60">
-                Customize navigation links and button styles
+                Architect Tools & Navigation Customization
               </p>
             </div>
             <ClayButton
@@ -151,6 +150,31 @@ export const ConfigModeOverlay: React.FC<ConfigModeOverlayProps> = ({
 
           {/* Content */}
           <div className="flex-1 overflow-y-auto p-6">
+            {/* Internal Tools Section */}
+            {onStartSoulForge && (
+              <div className="mb-8 p-4 bg-clay-coral/5 rounded-2xl border border-clay-coral/10">
+                <h3 className="text-xs font-bold text-clay-coral uppercase tracking-widest mb-3">
+                  Architect Tools
+                </h3>
+                <ClayButton
+                  variant="blob"
+                  color="coral"
+                  size="sm"
+                  onClick={() => {
+                    onStartSoulForge();
+                    onClose();
+                  }}
+                  className="w-full sm:w-auto"
+                >
+                  <Download className="w-4 h-4 rotate-180" />
+                  Launch SoulForge 1.2
+                </ClayButton>
+                <p className="text-[10px] text-clay-charcoal/40 mt-2">
+                  Internal third_embodiment pattern generator (9 Files).
+                </p>
+              </div>
+            )}
+
             {/* Actions */}
             <div className="flex flex-wrap gap-2 mb-6">
               <ClayButton
@@ -228,6 +252,8 @@ export const ConfigModeOverlay: React.FC<ConfigModeOverlayProps> = ({
                         value={item.label}
                         onChange={(e) => updateItem(item.id, { label: e.target.value })}
                         className="clay-input w-full text-sm"
+                        placeholder="Link Label"
+                        aria-label="Link Label"
                       />
                     </div>
                     <div>
@@ -239,6 +265,8 @@ export const ConfigModeOverlay: React.FC<ConfigModeOverlayProps> = ({
                         value={item.url}
                         onChange={(e) => updateItem(item.id, { url: e.target.value })}
                         className="clay-input w-full text-sm"
+                        placeholder="https://"
+                        aria-label="Link URL"
                       />
                     </div>
                   </div>
@@ -275,6 +303,8 @@ export const ConfigModeOverlay: React.FC<ConfigModeOverlayProps> = ({
                         onClick={() => moveItem(item.id, 'up')}
                         disabled={index === 0}
                         className="p-1.5 rounded-lg hover:bg-clay-stone/50 disabled:opacity-30 transition-colors"
+                        aria-label="Move Up"
+                        title="Move Up"
                       >
                         <ArrowUp className="w-4 h-4" />
                       </button>
@@ -283,6 +313,8 @@ export const ConfigModeOverlay: React.FC<ConfigModeOverlayProps> = ({
                         onClick={() => moveItem(item.id, 'down')}
                         disabled={index === items.length - 1}
                         className="p-1.5 rounded-lg hover:bg-clay-stone/50 disabled:opacity-30 transition-colors"
+                        aria-label="Move Down"
+                        title="Move Down"
                       >
                         <ArrowDown className="w-4 h-4" />
                       </button>
@@ -291,6 +323,8 @@ export const ConfigModeOverlay: React.FC<ConfigModeOverlayProps> = ({
                       type="button"
                       onClick={() => deleteItem(item.id)}
                       className="p-1.5 rounded-lg hover:bg-clay-coral/20 text-clay-coral transition-colors"
+                      aria-label="Delete Link"
+                      title="Delete Link"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>

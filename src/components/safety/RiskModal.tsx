@@ -40,10 +40,13 @@ export function RiskModal({ isOpen, onConfirm, onCancel, riskLevel }: RiskModalP
               </div>
             </div>
             <button 
+              type="button"
               onClick={onCancel}
               className="p-2 hover:bg-white/20 rounded-full transition-colors"
+              title="Close"
+              aria-label="Close"
             >
-              <X className="w-5 h-5" />
+              <X className="w-5 h-5" aria-hidden="true" />
             </button>
           </div>
         </div>

@@ -8,7 +8,6 @@ import type { OpenClawConfigType } from '@/lib/openclaw/schema';
 interface LandingPageProps {
   onSelectPreset: () => void;
   onStartInterview: () => void;
-  onStartSoulForge: () => void;
   onOpenBuilder: () => void;
   onLogoTap: () => void;
   onImportConfig: (config: OpenClawConfigType) => void;
@@ -18,7 +17,6 @@ interface LandingPageProps {
 export const LandingPage: React.FC<LandingPageProps> = ({
   onSelectPreset,
   onStartInterview,
-  onStartSoulForge,
   onOpenBuilder,
   onLogoTap,
   onImportConfig,
@@ -140,26 +138,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               </h3>
               <p className="text-sm text-clay-charcoal/60">
                 Select from SECURITY, OPEN, or CRAZY presets for quick configuration.
-              </p>
-            </ClayCard>
-
-            {/* Interview Card (SoulForge 1.2) */}
-            <ClayCard 
-              isInteractive 
-              onClick={onStartSoulForge}
-              className="text-left group border-2 border-clay-coral/20"
-            >
-              <div className="w-12 h-12 rounded-full bg-clay-coral/20 shadow-clay flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <Sparkles className="w-6 h-6 text-clay-coral" />
-              </div>
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="text-lg font-semibold text-clay-charcoal">
-                  SoulForge 1.2
-                </h3>
-                <span className="text-[10px] font-bold bg-clay-coral text-white px-2 py-0.5 rounded-full uppercase tracking-widest">New</span>
-              </div>
-              <p className="text-sm text-clay-charcoal/60">
-                Deep Socratic Interview. Implements the <b>third_embodiment</b> pattern (9 Files).
               </p>
             </ClayCard>
 

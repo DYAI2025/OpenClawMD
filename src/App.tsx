@@ -130,6 +130,21 @@ function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
+  // Check for hidden forge parameter in URL
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('forge') === 'true') {
+      setTimeout(() => {
+        setSoulForgeData(null);
+        pushView('soulforge-interview');
+      }, 0);
+      
+      // Clean up URL without reload
+      const newUrl = window.location.pathname;
+      window.history.replaceState({}, '', newUrl);
+    }
+  }, [pushView]);
+
   const renderView = () => {
     switch (currentEntry.view) {
       case 'landing':
@@ -137,10 +152,6 @@ function App() {
           <LandingPage
             onSelectPreset={() => navigateTo('presets')}
             onStartInterview={startInterview}
-            onStartSoulForge={() => {
-              setSoulForgeData(null);
-              pushView('soulforge-interview');
-            }}
             onOpenBuilder={() => startBuilder()}
             onLogoTap={handleLogoTap}
             onImportConfig={importConfig}
@@ -238,6 +249,10 @@ function App() {
       <ConfigModeOverlay
         isOpen={configModeOpen}
         onClose={() => setConfigModeOpen(false)}
+        onStartSoulForge={() => {
+          setSoulForgeData(null);
+          pushView('soulforge-interview');
+        }}
       />
 
       <Toaster
