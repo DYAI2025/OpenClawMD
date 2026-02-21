@@ -60,7 +60,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-clay-coral to-clay-peach shadow-clay flex items-center justify-center">
               <Sparkles className="w-5 h-5 text-white" />
             </div>
-            <span className="text-xl font-bold text-clay-charcoal">OpenForge</span>
+            <span className="text-xl font-bold text-clay-charcoal">SoulForge</span>
           </button>
           
           <div className="flex items-center gap-6">
@@ -110,16 +110,16 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
           {/* Title */}
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-clay-charcoal mb-6 leading-tight">
-            OpenForge
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-clay-coral to-clay-peach">
-              Skill &amp; Soul
+            SoulForge
+            <span className="block lg:text-[50px] text-transparent bg-clip-text bg-gradient-to-r from-clay-coral to-clay-peach">
+              Agentic Autopoesis
             </span>
           </h1>
 
           {/* Subtitle */}
-          <p className="text-lg text-clay-charcoal/70 max-w-2xl mx-auto mb-12">
-            Define the skill, shape the soul. OpenForge helps you craft precise boundaries, 
-            capabilities, and behaviors for AI agents — choose a preset or build your own.
+          <p className="text-xl text-clay-charcoal/70 max-w-2xl mx-auto mb-12">
+            Self-creating, self-defining. SoulForge generates the behavioral fabric of autonomous agents —
+            identity, values, boundaries and rhythm — from a single source of truth.
           </p>
 
           {/* Entry Points */}
@@ -188,7 +188,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 Intelligence Lab
               </h3>
               <p className="text-sm text-clay-charcoal/60">
-                Read deep dives on AI agent technology and the OpenForge standard.
+                Read deep dives on AI agent technology and the SoulForge standard.
               </p>
             </ClayCard>
           </div>
@@ -240,7 +240,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 The AI Agent <span className="text-clay-coral underline decoration-clay-coral/20">Ecosystem</span>
               </h2>
               <p className="text-clay-charcoal/60 mb-8 leading-relaxed">
-                OpenForge lives at the intersection of technical performance and legal safety. 
+                SoulForge lives at the intersection of technical performance and legal safety. 
                 We are proud to build upon the <span className="text-clay-charcoal font-semibold">OpenCLAW 0.1</span> standard and collaborate with visionary projects 
                 redefining what it means to give AI a body and a purpose.
               </p>
@@ -302,7 +302,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           </div>
           
           <div className="mt-6 text-center text-xs text-clay-charcoal/40">
-            OpenForge • Skill &amp; Soul • Stateless Client-First Generator • v1.0.0
+            SoulForge • Agentic Autopoesis • Stateless Client-First Generator • v1.0.0
           </div>
         </div>
       </footer>
