@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import './App.css';
 import { LandingPage } from './pages/LandingPage';
 import { PresetsPage } from './pages/PresetsPage';
@@ -22,9 +22,22 @@ export interface HistoryEntry {
 
 function App() {
   // History stack – index 0 is always the origin (landing)
-  const [history, setHistory] = useState<HistoryEntry[]>([
-    { view: 'landing', config: null },
-  ]);
+  const [history, setHistory] = useState<HistoryEntry[]>(() => {
+    const saved = localStorage.getItem('soulforge_session');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        console.error('Failed to parse saved session', e);
+      }
+    }
+    return [{ view: 'landing', config: null }];
+  });
+
+  // Persist history to localStorage
+  useEffect(() => {
+    localStorage.setItem('soulforge_session', JSON.stringify(history));
+  }, [history]);
 
   const [configModeOpen, setConfigModeOpen] = useState(false);
   const [tapCount, setTapCount] = useState(0);

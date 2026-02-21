@@ -61,7 +61,8 @@ export const ClaySlider: React.FC<ClaySliderProps> = ({
           value={value}
           onChange={(e) => onChange(Number(e.target.value))}
           disabled={disabled}
-          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+          title="Adjust dimension value"
+          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer appearance-none bg-transparent m-0 p-0 z-10"
         />
         
         {/* Thumb */}

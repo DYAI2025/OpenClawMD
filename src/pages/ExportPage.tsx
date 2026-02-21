@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 import {
   ArrowLeft, Download, FileText, Sparkles, Copy, Check,
   Code, Eye, FileJson, Shield, Globe, Zap,
@@ -40,11 +40,13 @@ export const ExportPage: React.FC<ExportPageProps> = ({
   onNewConfig,
 }) => {
   const [copiedFile, setCopiedFile] = useState<string | null>(null);
+  const [downloadedFiles, setDownloadedFiles] = useState<Set<string>>(new Set());
   // Fix #7: per-file view mode instead of shared state
   const [viewModes, setViewModes] = useState<Record<string, 'rendered' | 'raw'>>({});
 
   const files = useMemo(() => generateMarkdownFiles(config), [config]);
   const preset = useMemo(() => getPresetById(config.presetId), [config.presetId]);
+
 
   const getViewMode = (fileName: string): 'rendered' | 'raw' =>
     viewModes[fileName] ?? 'rendered';
@@ -54,7 +56,7 @@ export const ExportPage: React.FC<ExportPageProps> = ({
   };
 
   // Fix #4: silent flag so downloadAll can suppress per-file toasts
-  const downloadFile = (file: { name: string; content: string }, silent = false) => {
+  const downloadFile = useCallback((file: { name: string; content: string }, silent = false) => {
     const blob = new Blob([file.content], { type: 'text/markdown' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -64,11 +66,18 @@ export const ExportPage: React.FC<ExportPageProps> = ({
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
+    
+    setDownloadedFiles(prev => {
+      const next = new Set(prev);
+      next.add(file.name);
+      return next;
+    });
+
     if (!silent) toast.success(`Downloaded ${file.name}`);
-  };
+  }, []);
 
   // Fix #4: single summary toast fires after the last download
-  const downloadAll = () => {
+  const downloadAll = useCallback(() => {
     files.forEach((file, index) => {
       setTimeout(() => {
         downloadFile(file, true);
@@ -77,7 +86,15 @@ export const ExportPage: React.FC<ExportPageProps> = ({
         }
       }, index * 200);
     });
-  };
+  }, [files, downloadFile]);
+
+  // Auto-download all files on arrival to prevent data loss
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      downloadAll();
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [downloadAll]);
 
   const exportConfigJson = () => {
     const blob = new Blob([JSON.stringify(config, null, 2)], { type: 'application/json' });
@@ -277,22 +294,32 @@ export const ExportPage: React.FC<ExportPageProps> = ({
             Quick Download
           </h3>
           <div className="grid sm:grid-cols-5 gap-3">
-            {files.map((file) => (
-              <ClayCard
-                key={file.name}
-                isInteractive
-                onClick={() => downloadFile(file)}
-                padding="md"
-                className="text-center"
-              >
-                <div className="w-10 h-10 rounded-full bg-clay-mint shadow-clay flex items-center justify-center mx-auto mb-2">
-                  <Download className="w-5 h-5 text-clay-charcoal" />
-                </div>
-                <code className="text-xs font-mono text-clay-coral">
-                  {file.name}
-                </code>
-              </ClayCard>
-            ))}
+            {files.map((file) => {
+              const isDownloaded = downloadedFiles.has(file.name);
+              return (
+                <ClayCard
+                  key={file.name}
+                  isInteractive
+                  onClick={() => downloadFile(file)}
+                  padding="md"
+                  className={`text-center transition-all duration-300 ${
+                    isDownloaded 
+                      ? 'bg-clay-mint/40 border-clay-mint shadow-clay-inset' 
+                      : ''
+                  }`}
+                >
+                  <div className={`
+                    w-10 h-10 rounded-full shadow-clay flex items-center justify-center mx-auto mb-2 transition-colors
+                    ${isDownloaded ? 'bg-white text-clay-sage' : 'bg-clay-mint text-clay-charcoal'}
+                  `}>
+                    {isDownloaded ? <Check className="w-5 h-5" /> : <Download className="w-5 h-5" />}
+                  </div>
+                  <code className={`text-xs font-mono transition-colors ${isDownloaded ? 'text-clay-charcoal font-bold' : 'text-clay-coral'}`}>
+                    {file.name}
+                  </code>
+                </ClayCard>
+              );
+            })}
           </div>
         </div>
 
