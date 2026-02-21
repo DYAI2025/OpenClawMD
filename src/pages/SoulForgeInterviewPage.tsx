@@ -116,7 +116,7 @@ export function SoulForgeInterviewPage({ onComplete, onBack }: SoulForgeIntervie
           </div>
         );
 
-      case 'role':
+      case 'role': {
         const roles = canon.agentMode ? getRolesForMode(canon.agentMode) : [];
         return (
           <div className="space-y-4">
@@ -134,6 +134,7 @@ export function SoulForgeInterviewPage({ onComplete, onBack }: SoulForgeIntervie
             </div>
           </div>
         );
+      }
 
       case 'tone':
         return (
@@ -332,8 +333,14 @@ Never make commitments on my behalf`}
         {/* Progress */}
         <div className="h-2 bg-clay-sand rounded-full overflow-hidden mb-8">
           <div 
-            className="h-full bg-clay-mint transition-all duration-500"
-            style={{ width: `${((currentIndex + 1) / steps.length) * 100}%` }}
+            className={`h-full bg-clay-mint transition-all duration-500 ${
+              currentIndex === 0 ? 'w-1/6' :
+              currentIndex === 1 ? 'w-2/6' :
+              currentIndex === 2 ? 'w-3/6' :
+              currentIndex === 3 ? 'w-4/6' :
+              currentIndex === 4 ? 'w-5/6' :
+              'w-full'
+            }`}
           />
         </div>
 

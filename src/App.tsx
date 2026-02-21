@@ -7,6 +7,10 @@ import { BuilderPage } from './pages/BuilderPage';
 import { ExportPage } from './pages/ExportPage';
 import { SoulForgeExportPage } from './pages/SoulForgeExportPage';
 import { BlogPage } from './pages/BlogPage';
+import { LegalPage } from './pages/LegalPage';
+import { IMPRESSUM_DE, PRIVACY_POLICY_DE, TOS_DE } from './lib/legalData';
+import { GlobalFooter } from './components/GlobalFooter';
+import { CookieConsent } from './components/CookieConsent';
 import type { OpenClawConfigType, PresetIdType } from './lib/openclaw/schema';
 import { createEmptyConfig } from './lib/openclaw/schema';
 import { createConfigFromPreset } from './lib/openclaw/presets';
@@ -16,7 +20,7 @@ import { ClayFlowBreadcrumb } from '@/components/clay';
 import { SoulForgeInterviewPage } from './pages/SoulForgeInterviewPage';
 import type { GeneratedFile, CanonData } from './lib/soulforge/types';
 
-export type AppView = 'landing' | 'presets' | 'interview' | 'builder' | 'export' | 'blog' | 'soulforge-interview' | 'soulforge-export';
+export type AppView = 'landing' | 'presets' | 'interview' | 'builder' | 'export' | 'blog' | 'soulforge-interview' | 'soulforge-export' | 'legal-impressum' | 'legal-privacy' | 'legal-tos';
 
 export interface HistoryEntry {
   view: AppView;
@@ -214,10 +218,36 @@ function App() {
             onNewConfig={resetToLanding}
           />
         );
-
       case 'blog':
         return (
           <BlogPage
+            onBack={goBack}
+          />
+        );
+
+      case 'legal-impressum':
+        return (
+          <LegalPage
+            title="Impressum"
+            content={IMPRESSUM_DE}
+            onBack={goBack}
+          />
+        );
+
+      case 'legal-privacy':
+        return (
+          <LegalPage
+            title="Datenschutzerklärung"
+            content={PRIVACY_POLICY_DE}
+            onBack={goBack}
+          />
+        );
+
+      case 'legal-tos':
+        return (
+          <LegalPage
+            title="Terms & Conditions"
+            content={TOS_DE}
             onBack={goBack}
           />
         );
@@ -245,6 +275,16 @@ function App() {
       <main key={currentEntry.view} className="relative z-10 animate-slide-up will-change-transform">
         {renderView()}
       </main>
+
+      <GlobalFooter 
+        onOpenLegal={(type) => {
+          if (type === 'impressum') pushView('legal-impressum');
+          if (type === 'privacy') pushView('legal-privacy');
+          if (type === 'tos') pushView('legal-tos');
+        }} 
+      />
+
+      <CookieConsent />
 
       <ConfigModeOverlay
         isOpen={configModeOpen}

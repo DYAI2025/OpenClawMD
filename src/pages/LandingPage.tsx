@@ -291,21 +291,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="px-6 py-8">
-        <div className="max-w-6xl mx-auto">
-          <div className="bg-clay-sand/50 rounded-xl p-4 text-center">
-            <p className="text-sm text-clay-charcoal/70">
-              <span className="font-semibold">Legal Notice:</span>{' '}
-              All presets are legal-only. Higher autonomy increases responsibility.
-            </p>
-          </div>
-          
-          <div className="mt-6 text-center text-xs text-clay-charcoal/40">
-            SoulForge • Agentic Autopoesis • Stateless Client-First Generator • v1.0.0
-          </div>
-        </div>
-      </footer>
     </div>
   );
 };
