@@ -16,34 +16,43 @@ import {
 import type { GeneratedFile } from '@/lib/soulforge/types';
 
 interface SoulForgeInterviewPageProps {
-  onComplete: (files: GeneratedFile[], canon: SpiritData) => void;
+  initialSpirit?: Partial<SpiritData>;
+  onComplete: (files: GeneratedFile[], spirit: SpiritData) => void;
   onBack: () => void;
 }
 
 type InterviewStep = 'mode' | 'role' | 'tone' | 'constraints' | 'autonomy' | 'review';
 
-export function SoulForgeInterviewPage({ onComplete, onBack }: SoulForgeInterviewPageProps) {
-  const [step, setStep] = useState<InterviewStep>('mode');
-  const [canon, setCanon] = useState<Partial<SpiritData>>({});
+export function SoulForgeInterviewPage({ initialSpirit, onComplete, onBack }: SoulForgeInterviewPageProps) {
+  const [step, setStep] = useState<InterviewStep>(() => {
+    if (initialSpirit?.agentMode) return 'role';
+    return 'mode';
+  });
+  const [spirit, setSpirit] = useState<Partial<SpiritData>>(() => {
+    if (initialSpirit) {
+      return mergeWithDefaults(initialSpirit, initialSpirit.agentMode || 'sidekick');
+    }
+    return {};
+  });
   const [showRiskModal, setShowRiskModal] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const isHighRisk = 
-    canon.autonomy?.actionMode === 'autonomous_in_sandbox' ||
-    canon.surprise?.appetite === 'high';
+  const isHighRisk =
+    spirit.autonomy?.actionMode === 'autonomous_in_sandbox' ||
+    spirit.surprise?.appetite === 'high';
 
-  const updateCanon = useCallback((updates: Partial<SpiritData>) => {
-    setCanon(prev => ({ ...prev, ...updates }));
+  const updateSpirit = useCallback((updates: Partial<SpiritData>) => {
+    setSpirit(prev => ({ ...prev, ...updates }));
     setError(null);
   }, []);
 
   const handleModeSelect = (mode: SpiritData['agentMode']) => {
-    setCanon(mergeWithDefaults({ agentMode: mode }, mode));
+    setSpirit(mergeWithDefaults({ agentMode: mode }, mode));
     setStep('role');
   };
 
   const handleRoleSelect = (title: string) => {
-    updateCanon({ agentTitle: title });
+    updateSpirit({ agentTitle: title });
     setStep('tone');
   };
 
@@ -52,14 +61,14 @@ export function SoulForgeInterviewPage({ onComplete, onBack }: SoulForgeIntervie
 
   const handleNext = () => {
     if (step === 'review') {
-      const finalCanon = canon as SpiritData;
+      const finalSpirit = spirit as SpiritData;
       // Generate files
       import('@/lib/soulforge/generator').then(({ generateSoulForgeFiles }) => {
-        const output = generateSoulForgeFiles(finalCanon, {
+        const output = generateSoulForgeFiles(finalSpirit, {
           includeAdvancedPack: true,
           language: 'en',
         });
-        onComplete(output.files, finalCanon);
+        onComplete(output.files, finalSpirit);
       });
       return;
     }
@@ -95,19 +104,19 @@ export function SoulForgeInterviewPage({ onComplete, onBack }: SoulForgeIntervie
             <h3 className="text-lg font-semibold text-clay-charcoal">Choose your agent mode</h3>
             <div className="space-y-3">
               <ChoiceButton
-                selected={canon.agentMode === 'sidekick'}
+                selected={spirit.agentMode === 'sidekick'}
                 onClick={() => handleModeSelect('sidekick')}
                 label="Sidekick (Discovery)"
                 description="Helps you explore, discover patterns, and reframe problems"
               />
               <ChoiceButton
-                selected={canon.agentMode === 'chief-of-staff'}
+                selected={spirit.agentMode === 'chief-of-staff'}
                 onClick={() => handleModeSelect('chief-of-staff')}
                 label="Chief of Staff (Execution)"
                 description="Orchestrates initiatives and executes with your approval"
               />
               <ChoiceButton
-                selected={canon.agentMode === 'coach'}
+                selected={spirit.agentMode === 'coach'}
                 onClick={() => handleModeSelect('coach')}
                 label="Coach (Accountability)"
                 description="Holds you accountable and reflects your patterns"
@@ -117,7 +126,7 @@ export function SoulForgeInterviewPage({ onComplete, onBack }: SoulForgeIntervie
         );
 
       case 'role': {
-        const roles = canon.agentMode ? getRolesForMode(canon.agentMode) : [];
+        const roles = spirit.agentMode ? getRolesForMode(spirit.agentMode) : [];
         return (
           <div className="space-y-4">
             <h3 className="text-lg font-semibold text-clay-charcoal">Select a specialized role</h3>
@@ -125,7 +134,7 @@ export function SoulForgeInterviewPage({ onComplete, onBack }: SoulForgeIntervie
               {roles.map((role) => (
                 <ChoiceButton
                   key={role.title}
-                  selected={canon.agentTitle === role.title}
+                  selected={spirit.agentTitle === role.title}
                   onClick={() => handleRoleSelect(role.title)}
                   label={role.title}
                   description={`${role.subtitle} — ${role.description}`}
@@ -142,28 +151,28 @@ export function SoulForgeInterviewPage({ onComplete, onBack }: SoulForgeIntervie
             <h3 className="text-lg font-semibold text-clay-charcoal">Set communication style</h3>
             <div className="space-y-3">
               <ChoiceButton
-                selected={canon.tone?.method === 'socratic'}
-                onClick={() => updateCanon({ tone: { ...canon.tone, method: 'socratic' } as SpiritData['tone']})}
+                selected={spirit.tone?.method === 'socratic'}
+                onClick={() => updateSpirit({ tone: { ...spirit.tone, method: 'socratic' } as SpiritData['tone']})}
                 label="Socratic"
                 description="Questions to guide discovery"
               />
               <ChoiceButton
-                selected={canon.tone?.method === 'instructional'}
-                onClick={() => updateCanon({ tone: { ...canon.tone, method: 'instructional' } as SpiritData['tone']})}
+                selected={spirit.tone?.method === 'instructional'}
+                onClick={() => updateSpirit({ tone: { ...spirit.tone, method: 'instructional' } as SpiritData['tone']})}
                 label="Instructional"
                 description="Clear directions and steps"
               />
             </div>
             <div className="space-y-3 mt-4">
               <ChoiceButton
-                selected={canon.tone?.precision === 'minimalist'}
-                onClick={() => updateCanon({ tone: { ...canon.tone, precision: 'minimalist' } as SpiritData['tone']})}
+                selected={spirit.tone?.precision === 'minimalist'}
+                onClick={() => updateSpirit({ tone: { ...spirit.tone, precision: 'minimalist' } as SpiritData['tone']})}
                 label="Minimalist"
                 description="Essential information only"
               />
               <ChoiceButton
-                selected={canon.tone?.precision === 'explanatory'}
-                onClick={() => updateCanon({ tone: { ...canon.tone, precision: 'explanatory' } as SpiritData['tone']})}
+                selected={spirit.tone?.precision === 'explanatory'}
+                onClick={() => updateSpirit({ tone: { ...spirit.tone, precision: 'explanatory' } as SpiritData['tone']})}
                 label="Explanatory"
                 description="Context and reasoning provided"
               />
@@ -182,10 +191,10 @@ export function SoulForgeInterviewPage({ onComplete, onBack }: SoulForgeIntervie
               List 3 things the agent should NEVER do (one per line)
             </p>
             <textarea
-              value={canon.negativeConstraints?.join('\n') || ''}
+              value={spirit.negativeConstraints?.join('\n') || ''}
               onChange={(e) => {
                 const constraints = e.target.value.split('\n').filter(s => s.trim());
-                updateCanon({ negativeConstraints: constraints });
+                updateSpirit({ negativeConstraints: constraints });
               }}
               placeholder={`Never send emails without approval
 Never guess at data
@@ -197,7 +206,7 @@ Never make commitments on my behalf`}
               color="mint" 
               onClick={handleNext} 
               className="w-full"
-              disabled={!canon.negativeConstraints?.length}
+              disabled={!spirit.negativeConstraints?.length}
             >
               Continue
             </ClayButton>
@@ -210,20 +219,20 @@ Never make commitments on my behalf`}
             <h3 className="text-lg font-semibold text-clay-charcoal">Set autonomy level</h3>
             <div className="space-y-3">
               <ChoiceButton
-                selected={canon.autonomy?.actionMode === 'recommend_only'}
-                onClick={() => updateCanon({ autonomy: { ...canon.autonomy, actionMode: 'recommend_only' } as SpiritData['autonomy']})}
+                selected={spirit.autonomy?.actionMode === 'recommend_only'}
+                onClick={() => updateSpirit({ autonomy: { ...spirit.autonomy, actionMode: 'recommend_only' } as SpiritData['autonomy']})}
                 label="Recommend Only"
                 description="Suggests actions, waits for approval"
               />
               <ChoiceButton
-                selected={canon.autonomy?.actionMode === 'execute_with_approval'}
-                onClick={() => updateCanon({ autonomy: { ...canon.autonomy, actionMode: 'execute_with_approval' } as SpiritData['autonomy']})}
+                selected={spirit.autonomy?.actionMode === 'execute_with_approval'}
+                onClick={() => updateSpirit({ autonomy: { ...spirit.autonomy, actionMode: 'execute_with_approval' } as SpiritData['autonomy']})}
                 label="Execute with Approval"
                 description="Prepares actions, confirms before executing"
               />
               <ChoiceButton
-                selected={canon.autonomy?.actionMode === 'autonomous_in_sandbox'}
-                onClick={() => updateCanon({ autonomy: { ...canon.autonomy, actionMode: 'autonomous_in_sandbox' } as SpiritData['autonomy']})}
+                selected={spirit.autonomy?.actionMode === 'autonomous_in_sandbox'}
+                onClick={() => updateSpirit({ autonomy: { ...spirit.autonomy, actionMode: 'autonomous_in_sandbox' } as SpiritData['autonomy']})}
                 label="Autonomous in Sandbox"
                 description="Acts freely in safe boundaries"
               />
@@ -232,20 +241,20 @@ Never make commitments on my behalf`}
               <p className="text-sm font-medium text-clay-charcoal">Surprise appetite</p>
               <div className="grid grid-cols-3 gap-2">
                 <ChoiceButton
-                  selected={canon.surprise?.appetite === 'low'}
-                  onClick={() => updateCanon({ surprise: { ...canon.surprise, appetite: 'low' } as SpiritData['surprise']})}
+                  selected={spirit.surprise?.appetite === 'low'}
+                  onClick={() => updateSpirit({ surprise: { ...spirit.surprise, appetite: 'low' } as SpiritData['surprise']})}
                   label="Low"
                   description="Minimal"
                 />
                 <ChoiceButton
-                  selected={canon.surprise?.appetite === 'medium'}
-                  onClick={() => updateCanon({ surprise: { ...canon.surprise, appetite: 'medium' } as SpiritData['surprise']})}
+                  selected={spirit.surprise?.appetite === 'medium'}
+                  onClick={() => updateSpirit({ surprise: { ...spirit.surprise, appetite: 'medium' } as SpiritData['surprise']})}
                   label="Medium"
                   description="Balanced"
                 />
                 <ChoiceButton
-                  selected={canon.surprise?.appetite === 'high'}
-                  onClick={() => updateCanon({ surprise: { ...canon.surprise, appetite: 'high' } as SpiritData['surprise']})}
+                  selected={spirit.surprise?.appetite === 'high'}
+                  onClick={() => updateSpirit({ surprise: { ...spirit.surprise, appetite: 'high' } as SpiritData['surprise']})}
                   label="High"
                   description="Active"
                 />
@@ -277,23 +286,23 @@ Never make commitments on my behalf`}
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
                   <span className="text-clay-charcoal/60">Mode</span>
-                  <span className="font-medium capitalize">{canon.agentMode}</span>
+                  <span className="font-medium capitalize">{spirit.agentMode}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-clay-charcoal/60">Role</span>
-                  <span className="font-medium">{canon.agentTitle}</span>
+                  <span className="font-medium">{spirit.agentTitle}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-clay-charcoal/60">Tone</span>
-                  <span className="font-medium capitalize">{canon.tone?.method}</span>
+                  <span className="font-medium capitalize">{spirit.tone?.method}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-clay-charcoal/60">Autonomy</span>
-                  <span className="font-medium capitalize">{canon.autonomy?.actionMode?.replace(/_/g, ' ')}</span>
+                  <span className="font-medium capitalize">{spirit.autonomy?.actionMode?.replace(/_/g, ' ')}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-clay-charcoal/60">Surprise</span>
-                  <span className="font-medium capitalize">{canon.surprise?.appetite}</span>
+                  <span className="font-medium capitalize">{spirit.surprise?.appetite}</span>
                 </div>
               </div>
             </ClayCard>
@@ -329,6 +338,14 @@ Never make commitments on my behalf`}
             </p>
           </div>
         </div>
+
+        {/* Preset Seed Indicator */}
+        {initialSpirit && (
+          <div className="mb-4 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-clay-mint/30 text-xs text-clay-charcoal/70">
+            <Sparkles className="w-3 h-3" />
+            Pre-filled from preset — adjust as needed
+          </div>
+        )}
 
         {/* Progress */}
         <div className="h-2 bg-clay-sand rounded-full overflow-hidden mb-8">
@@ -372,7 +389,7 @@ Never make commitments on my behalf`}
         isOpen={showRiskModal}
         onConfirm={handleRiskConfirm}
         onCancel={() => setShowRiskModal(false)}
-        riskLevel={canon.autonomy?.actionMode === 'autonomous_in_sandbox' ? 'high' : 'medium'}
+        riskLevel={spirit.autonomy?.actionMode === 'autonomous_in_sandbox' ? 'high' : 'medium'}
       />
     </div>
   );
