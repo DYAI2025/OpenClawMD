@@ -21,7 +21,7 @@ No test runner is configured. There is one test file at `src/lib/animae-agentis/
 
 ## Deployment
 
-GitHub Actions deploys on push to `main` via FTP to Hostinger (`./dist/` -> `./public_html/`). See `.github/workflows/deploy.yml`. Build uses `base: './'` (relative paths) for Hostinger compatibility.
+GitHub Actions deploys on push to `main` via FTP to Hostinger (`./dist/` -> `./public_html/`). See `.github/workflows/deploy.yml`. Build uses `base: './'` in `vite.config.ts` (relative paths) for Hostinger compatibility — do not change to absolute paths.
 
 ## Architecture
 
@@ -31,7 +31,9 @@ GitHub Actions deploys on push to `main` via FTP to Hostinger (`./dist/` -> `./p
 
 ### Navigation
 
-No router library. App.tsx manages a history stack (`HistoryEntry[]`) with `pushView`/`goBack`/`goToHistoryIndex`. Views defined by `AppView` type. Session state persists to `localStorage` under key `animae_agentis_unified_session`.
+No router library. `App.tsx` manages a history stack (`HistoryEntry[]`) with `pushView`/`goBack`/`goToHistoryIndex`. Views defined by the `AppView` type union. Session state persists to `localStorage` under key `animae_agentis_unified_session`.
+
+Layout uses shadcn `SidebarProvider` with `AppSidebar` (sidebar navigation) + `SidebarInset` (main content). Mobile gets a hamburger trigger header. Breadcrumb (`ClayFlowBreadcrumb`) shows only for flow views: presets, interview, builder, export.
 
 ### User Flow
 
@@ -40,9 +42,17 @@ LandingPage
   |- "Start Fresh" -> Interview (empty SpiritData)
   |- "Use Preset"  -> PresetsPage -> Interview (pre-filled SpiritData)
 
-Interview (6 steps: mode -> role -> tone -> constraints -> autonomy -> review)
+Interview (6 phases via state machine):
+  handshake -> discovery -> vibecoding -> constitution -> pulse -> generation
+  State machine: src/lib/animae-agentis/interview/stateMachine.ts
+
   -> optional BuilderPage (fine-tune SpiritData fields)
-  -> ExportPage (preview + download 10 files)
+  -> AnimaeAgentisExportPage (preview + download 10 files)
+
+Content pages (accessible from sidebar):
+  AnimaeVerbaPage - "blog/articles" content
+  UsusPage - use cases / tutorials
+  HowItWorksPage - template documentation
 ```
 
 ### Presets
@@ -61,12 +71,19 @@ Defined in `src/lib/presets.ts`. Three presets (Security, Responsible, OverClaw)
 ### UI Layers
 
 - **shadcn/ui** (`src/components/ui/`) - New York style, Radix primitives, lucide icons. Add via `npx shadcn@latest add <component>`.
-- **Clay design system** (`src/components/clay/`) - Custom components (ClayButton, ClayCard, ClaySlider, ClayTabs, ClayStepper, ClayToggle, ClayErrorBanner, ClayFlowBreadcrumb). Colors in `tailwind.config.js` under `clay.*`.
+- **Clay design system** (`src/components/clay/`) - Custom components barrel-exported from `clay/index.ts`: ClayButton, ClayCard, ClaySlider, ClayTabs, ClayStepper, ClayToggle, ClayErrorBanner, ClayFlowBreadcrumb, ClayThemeToggle. Colors in `tailwind.config.js` under `clay.*`.
 - **Safety components** (`src/components/safety/`) - RiskBadge, RiskModal, OverclawBanner, ConfirmationStep, DownloadConfirmation. Risk calculation in `src/lib/safety/validation.ts`.
+
+### Theming
+
+Dark mode via `useTheme()` hook (`src/hooks/use-theme.ts`), applies `.dark` class to `<html>`. Toggle via `ClayThemeToggle`. CSS variables defined in `src/index.css`, Tailwind uses `darkMode: ["class"]`.
 
 ### Key Conventions
 
 - Path alias: `@/` maps to `./src/`
-- Tailwind v3 with CSS variables for theming (HSL-based colors)
+- Tailwind v3 with CSS variables for theming (HSL-based for shadcn, RGB-based for clay colors)
 - Clay color palette: base, peach, mint, sage, sand, coral, stone, charcoal
+- Clay-specific shadow utilities: `shadow-clay`, `shadow-clay-lifted`, `shadow-clay-inset`, `shadow-clay-focus`
+- Clay animations: `animate-float`, `animate-pulse-soft`, `animate-slide-up`, `animate-slide-in-right`, `animate-scale-in`
 - Legal pages (Impressum, Datenschutz, ToS) content in `src/lib/legalData.ts`
+- Blog/content data in `src/lib/blogData.ts`
