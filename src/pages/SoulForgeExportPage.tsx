@@ -130,8 +130,8 @@ export function SoulForgeExportPage({ spirit, onBack, onNewConfig, onFineTune }:
       'USER.md': <FileText className="w-4 h-4" />,
       'HEARTBEAT.md': <FileText className="w-4 h-4" />,
       'SHIELD.md': <Shield className="w-4 h-4" />,
-      'CANON.md': <Globe className="w-4 h-4" />,
-      'INDEX.md': <FileText className="w-4 h-4" />,
+      'SPIRIT.md': <Globe className="w-4 h-4" />,
+      'CORTEX.md': <FileText className="w-4 h-4" />,
       'MEMORY.md': <FileText className="w-4 h-4" />,
       'VERSION.md': <FileText className="w-4 h-4" />,
     };
@@ -156,7 +156,7 @@ export function SoulForgeExportPage({ spirit, onBack, onNewConfig, onFineTune }:
                   onClick={() => setViewMode(file.name, 'rendered')}
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
                     fileViewMode === 'rendered'
-                      ? 'bg-white shadow-clay text-clay-charcoal'
+                      ? 'bg-white dark:bg-white/10 shadow-clay text-clay-charcoal'
                       : 'text-clay-charcoal/50 hover:text-clay-charcoal'
                   }`}
                 >
@@ -167,7 +167,7 @@ export function SoulForgeExportPage({ spirit, onBack, onNewConfig, onFineTune }:
                   onClick={() => setViewMode(file.name, 'raw')}
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
                     fileViewMode === 'raw'
-                      ? 'bg-white shadow-clay text-clay-charcoal'
+                      ? 'bg-white dark:bg-white/10 shadow-clay text-clay-charcoal'
                       : 'text-clay-charcoal/50 hover:text-clay-charcoal'
                   }`}
                 >
@@ -202,7 +202,7 @@ export function SoulForgeExportPage({ spirit, onBack, onNewConfig, onFineTune }:
           </div>
 
           {fileViewMode === 'rendered' ? (
-            <div className="bg-white/60 rounded-xl p-6 border border-white/70 shadow-clay-inset min-h-48 max-h-[32rem] overflow-y-auto">
+            <div className="bg-white/60 dark:bg-white/[0.04] rounded-xl p-6 border border-white/70 dark:border-white/[0.06] shadow-clay-inset min-h-48 max-h-[32rem] overflow-y-auto">
               <div className="prose prose-sm prose-clay max-w-none">
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>
                   {file.content}
@@ -262,7 +262,7 @@ export function SoulForgeExportPage({ spirit, onBack, onNewConfig, onFineTune }:
 
         {/* Validation Status */}
         {!validation.valid && (
-          <div className="mb-6 bg-red-50 border border-red-200 rounded-xl p-4">
+          <div className="mb-6 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800/30 rounded-xl p-4">
             <h3 className="font-semibold text-red-800 mb-2 flex items-center gap-2">
               <AlertTriangle className="w-5 h-5" />
               Validation Issues Detected
@@ -320,7 +320,7 @@ export function SoulForgeExportPage({ spirit, onBack, onNewConfig, onFineTune }:
               </span>
               <span className={`
                 px-3 py-1 rounded-full text-xs font-medium capitalize
-                ${isHighRisk ? 'bg-red-100 text-red-700' : 'bg-clay-mint text-clay-charcoal'}
+                ${isHighRisk ? 'bg-red-100 dark:bg-red-950/30 text-red-700 dark:text-red-400' : 'bg-clay-mint text-clay-charcoal'}
               `}>
                 {spirit.autonomy?.actionMode?.replace(/_/g, ' ')}
               </span>
@@ -368,7 +368,7 @@ export function SoulForgeExportPage({ spirit, onBack, onNewConfig, onFineTune }:
                 >
                   <div className={`
                     w-10 h-10 rounded-full shadow-clay flex items-center justify-center mx-auto mb-2 transition-colors
-                    ${isDownloaded ? 'bg-white text-clay-sage' : 'bg-clay-mint text-clay-charcoal'}
+                    ${isDownloaded ? 'bg-white dark:bg-white/10 text-clay-sage' : 'bg-clay-mint text-clay-charcoal'}
                   `}>
                     {isDownloaded ? <Check className="w-5 h-5" /> : getFileIcon(file.name)}
                   </div>

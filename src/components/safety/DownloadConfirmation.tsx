@@ -26,7 +26,7 @@ export function DownloadConfirmation({
   return (
     <div className="bg-clay-sand/50 rounded-2xl p-6 border-2 border-clay-stone">
       <div className="flex items-start gap-4">
-        <div className={`p-3 rounded-full ${isHighRisk ? 'bg-red-100' : 'bg-clay-mint/50'}`}>
+        <div className={`p-3 rounded-full ${isHighRisk ? 'bg-red-100 dark:bg-red-950/30' : 'bg-clay-mint/50'}`}>
           <Shield className={`w-6 h-6 ${isHighRisk ? 'text-red-600' : 'text-clay-charcoal'}`} />
         </div>
         
@@ -41,7 +41,7 @@ export function DownloadConfirmation({
           </div>
 
           {isHighRisk && (
-            <div className="bg-red-50 border border-red-200 rounded-xl p-4 text-sm">
+            <div className="bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800/30 rounded-xl p-4 text-sm">
               <p className="font-medium text-red-800 mb-2">
                 High-Risk Configuration Notice
               </p>

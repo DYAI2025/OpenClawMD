@@ -39,7 +39,7 @@ export function BlogPage({ onBack }: BlogPageProps) {
             </span>
           </div>
 
-          <ClayCard className="p-8 md:p-12 overflow-hidden shadow-clay-lifted border-white/40">
+          <ClayCard className="p-8 md:p-12 overflow-hidden shadow-clay-lifted border-white/40 dark:border-white/[0.06]">
             <div className="prose-clay max-w-none">
               <ReactMarkdown remarkPlugins={[remarkGfm]}>
                 {selectedPost.content}
@@ -75,7 +75,7 @@ export function BlogPage({ onBack }: BlogPageProps) {
             onClick={() => setSelectedPost(post)}
             className="text-left group outline-none focus-visible:ring-2 focus-visible:ring-clay-coral rounded-3xl"
           >
-            <ClayCard className="p-8 h-full flex flex-col transition-all group-hover:shadow-clay-lifted group-hover:-translate-y-1 border-white/20">
+            <ClayCard className="p-8 h-full flex flex-col transition-all group-hover:shadow-clay-lifted group-hover:-translate-y-1 border-white/20 dark:border-white/[0.06]">
               <div className="flex items-center justify-between mb-4">
                 <span className="px-3 py-1 bg-clay-peach/20 text-clay-coral text-[10px] font-bold rounded-full uppercase tracking-wider">
                   {post.category}

@@ -70,7 +70,7 @@ export const ClaySlider: React.FC<ClaySliderProps> = ({
         
         {/* Thumb */}
         <div 
-          className="absolute top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-gradient-to-br from-clay-peach to-clay-coral shadow-clay border-2 border-white/50 pointer-events-none transition-transform duration-150"
+          className="absolute top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-gradient-to-br from-clay-peach to-clay-coral shadow-clay border-2 border-white/50 dark:border-white/10 pointer-events-none transition-transform duration-150"
           style={{ left: 'calc(var(--percentage) - 12px)' }}
         />
         

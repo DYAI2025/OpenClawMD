@@ -34,8 +34,8 @@ export const ClayCard = React.forwardRef<HTMLDivElement, ClayCardProps>(
       <div
         ref={ref}
         className={cn(
-          'bg-clay-base rounded-xl border border-white/50',
-          'bg-gradient-to-br from-white/50 via-transparent to-transparent',
+          'bg-clay-base rounded-xl border border-white/50 dark:border-white/[0.06]',
+          'bg-gradient-to-br from-white/50 dark:from-white/[0.04] via-transparent to-transparent',
           paddingClasses[padding],
           shadowClasses,
           isInteractive && 'cursor-pointer transition-all duration-250 ease-clay',

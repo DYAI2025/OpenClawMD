@@ -71,9 +71,9 @@ export const ClayButton = React.forwardRef<HTMLButtonElement, ClayButtonProps>(
       ? 'shadow-clay-inset translate-y-0.5' 
       : 'shadow-clay hover:shadow-clay-lifted hover:-translate-y-0.5 active:shadow-clay-inset active:translate-y-0.5';
     
-    const gradientClasses = 'bg-gradient-to-br from-white/40 via-transparent to-transparent';
-    
-    const borderClasses = 'border border-white/40';
+    const gradientClasses = 'bg-gradient-to-br from-white/40 dark:from-white/[0.05] via-transparent to-transparent';
+
+    const borderClasses = 'border border-white/40 dark:border-white/[0.08]';
     
     return (
       <button

@@ -1,6 +1,6 @@
 /**
- * INDEX.md Template
- * 
+ * CORTEX.md Template
+ *
  * Workspace Map (Advanced Pack)
  * - Core Config Files
  * - Directories
@@ -9,7 +9,7 @@
 
 import type { SpiritData } from '../types';
 
-export function renderIndexMd(_canon: SpiritData, language: 'en' | 'de' = 'en'): string {
+export function renderCortexMd(_canon: SpiritData, language: 'en' | 'de' = 'en'): string {
   if (language === 'de') {
     return renderGerman();
   }
@@ -17,7 +17,7 @@ export function renderIndexMd(_canon: SpiritData, language: 'en' | 'de' = 'en'):
 }
 
 function renderEnglish(): string {
-  return `# INDEX.md — Workspace Map (Advanced Pack)
+  return `# CORTEX.md — Workspace Map (Advanced Pack)
 
 ## Intent
 One source of truth for where things live and how often they change.
@@ -31,10 +31,10 @@ One source of truth for where things live and how often they change.
 | USER.md | Operating contract | When preferences change |
 | HEARTBEAT.md | Pulse & rotations | When priorities/cadence change |
 | SHIELD.md | Defensive guardrails | Rare |
-| CANON.md | Resonance anchor | Only on explicit change |
+| SPIRIT.md | Resonance anchor | Only on explicit change |
 | MEMORY.md | Stable facts & learned preferences | As needed |
 | VERSION.md | Skill/template version marker | On upgrades |
-| INDEX.md | This map | When structure changes |
+| CORTEX.md | This map | When structure changes |
 
 ## Directories (recommended)
 
@@ -81,7 +81,7 @@ workspace/
 ## File Dependencies
 
 \`\`\`
-CANON.md (anchor)
+SPIRIT.md (anchor)
     ├── SOUL.md
     ├── IDENTITY.md
     ├── USER.md
@@ -96,7 +96,7 @@ CANON.md (anchor)
 ### Immediate (rare)
 - SOUL.md: Constitutional crisis or principle conflict
 - IDENTITY.md: Role redefinition
-- CANON.md: Explicit user decision
+- SPIRIT.md: Explicit user decision
 
 ### As Needed (occasional)
 - USER.md: Preference changes
@@ -109,13 +109,13 @@ CANON.md (anchor)
 - Archives: Size/time thresholds
 
 ## Checks
-- If new file types appear repeatedly: promote into INDEX and add convention.
+- If new file types appear repeatedly: promote into CORTEX and add convention.
 - If update frequency doesn't match actual use: adjust frequency in this file.
 `;
 }
 
 function renderGerman(): string {
-  return `# INDEX.md — Workspace Map (Advanced Pack)
+  return `# CORTEX.md — Workspace Map (Advanced Pack)
 
 ## Intent (Absicht)
 Eine Quelle der Wahrheit darüber, wo Dinge leben und wie oft sie sich ändern.
@@ -129,10 +129,10 @@ Eine Quelle der Wahrheit darüber, wo Dinge leben und wie oft sie sich ändern.
 | USER.md | Arbeitsvertrag | Bei Präferenzänderungen |
 | HEARTBEAT.md | Puls & Rotationen | Bei Prioritäts-/Kadenz-Änderungen |
 | SHIELD.md | Defensive Guardrails | Selten |
-| CANON.md | Resonance Anchor | Nur bei expliziter Änderung |
+| SPIRIT.md | Resonance Anchor | Nur bei expliziter Änderung |
 | MEMORY.md | Stable Facts & gelernte Präferenzen | Nach Bedarf |
 | VERSION.md | Skill/Template-Versionsmarker | Bei Upgrades |
-| INDEX.md | Diese Map | Bei Strukturänderungen |
+| CORTEX.md | Diese Map | Bei Strukturänderungen |
 
 ## Directories (empfohlen)
 
@@ -179,7 +179,7 @@ workspace/
 ## File Dependencies (Datei-Abhängigkeiten)
 
 \`\`\`
-CANON.md (anchor)
+SPIRIT.md (anchor)
     ├── SOUL.md
     ├── IDENTITY.md
     ├── USER.md
@@ -194,7 +194,7 @@ CANON.md (anchor)
 ### Immediate (sofort - selten)
 - SOUL.md: Konstitutionelle Krise oder Prinzipienkonflikt
 - IDENTITY.md: Rollenredefinition
-- CANON.md: Explizite Nutzerentscheidung
+- SPIRIT.md: Explizite Nutzerentscheidung
 
 ### As Needed (nach Bedarf - gelegentlich)
 - USER.md: Präferenzänderungen
@@ -207,7 +207,7 @@ CANON.md (anchor)
 - Archive: Größen-/Zeit-Thresholds
 
 ## Checks (Prüfungen)
-- Falls neue Dateitypen wiederholt auftauchen: In INDEX promoten und Konvention hinzufügen.
+- Falls neue Dateitypen wiederholt auftauchen: In CORTEX promoten und Konvention hinzufügen.
 - Falls Update-Frequenz nicht zur tatsächlichen Nutzung passt: Frequenz in dieser Datei anpassen.
 `;
 }

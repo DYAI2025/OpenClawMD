@@ -14,3 +14,5 @@ export { ClayErrorBanner } from './ClayErrorBanner';
 export { ClayTabs } from './ClayTabs';
 
 export { ClayFlowBreadcrumb } from './ClayFlowBreadcrumb';
+
+export { ClayThemeToggle } from './ClayThemeToggle';

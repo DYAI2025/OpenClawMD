@@ -18,8 +18,8 @@ import {
   renderUserMd,
   renderHeartbeatMd,
   renderShieldMd,
-  renderCanonMd,
-  renderIndexMd,
+  renderSpiritMd,
+  renderCortexMd,
   renderMemoryMd,
   renderVersionMd,
 } from './templates';
@@ -37,8 +37,8 @@ export const BASE_FILES = [
 ] as const;
 
 export const ADVANCED_FILES = [
-  'CANON.md',
-  'INDEX.md',
+  'SPIRIT.md',
+  'CORTEX.md',
   'MEMORY.md',
   'VERSION.md',
 ] as const;
@@ -80,8 +80,8 @@ export function generateSoulForgeFiles(
   // Generate Advanced Pack (optional)
   if (options.includeAdvancedPack) {
     files.push(
-      { name: 'CANON.md', content: renderCanonMd(canon, language), section: 'advanced' },
-      { name: 'INDEX.md', content: renderIndexMd(canon, language), section: 'advanced' },
+      { name: 'SPIRIT.md', content: renderSpiritMd(canon, language), section: 'advanced' },
+      { name: 'CORTEX.md', content: renderCortexMd(canon, language), section: 'advanced' },
       { name: 'MEMORY.md', content: renderMemoryMd(canon, language), section: 'advanced' },
       { name: 'VERSION.md', content: renderVersionMd(canon, language), section: 'advanced' },
     );
@@ -124,8 +124,8 @@ export function generateAdvancedPack(
   language: 'en' | 'de' = 'en'
 ): GeneratedFile[] {
   return [
-    { name: 'CANON.md', content: renderCanonMd(canon, language), section: 'advanced' },
-    { name: 'INDEX.md', content: renderIndexMd(canon, language), section: 'advanced' },
+    { name: 'SPIRIT.md', content: renderSpiritMd(canon, language), section: 'advanced' },
+    { name: 'CORTEX.md', content: renderCortexMd(canon, language), section: 'advanced' },
     { name: 'MEMORY.md', content: renderMemoryMd(canon, language), section: 'advanced' },
     { name: 'VERSION.md', content: renderVersionMd(canon, language), section: 'advanced' },
   ];
@@ -145,8 +145,8 @@ export function generateSingleFile(
     'USER.md': renderUserMd,
     'HEARTBEAT.md': renderHeartbeatMd,
     'SHIELD.md': renderShieldMd,
-    'CANON.md': renderCanonMd,
-    'INDEX.md': renderIndexMd,
+    'SPIRIT.md': renderSpiritMd,
+    'CORTEX.md': renderCortexMd,
     'MEMORY.md': renderMemoryMd,
     'VERSION.md': renderVersionMd,
   };

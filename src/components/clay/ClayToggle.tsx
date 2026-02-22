@@ -48,7 +48,7 @@ export const ClayToggle: React.FC<ClayToggleProps> = ({
       >
         <span
           className={cn(
-            'absolute top-1 left-1 w-6 h-6 rounded-full bg-gradient-to-br from-white to-clay-base shadow-clay border border-white/50 transition-all duration-250 ease-clay',
+            'absolute top-1 left-1 w-6 h-6 rounded-full bg-gradient-to-br from-white to-clay-base dark:from-white/15 dark:to-clay-sand shadow-clay border border-white/50 dark:border-white/[0.06] transition-all duration-250 ease-clay',
             checked && 'translate-x-6'
           )}
         />

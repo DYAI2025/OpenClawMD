@@ -1,6 +1,7 @@
 import { ArrowLeft, Shield, Zap, Globe, ChevronRight } from 'lucide-react';
 import { ClayButton, ClayCard, ClayCardContent } from '@/components/clay';
 import { getAllPresets, getRiskProfileColor, getAutonomyLevelColor } from '@/lib/presets';
+import { useTheme } from '@/hooks/use-theme';
 
 interface PresetsPageProps {
   onSelectPreset: (presetId: string) => void;
@@ -24,6 +25,7 @@ export const PresetsPage: React.FC<PresetsPageProps> = ({
   onBack,
 }) => {
   const presets = getAllPresets();
+  const { isDark } = useTheme();
 
   return (
     <div className="min-h-screen px-6 py-8">
@@ -56,8 +58,12 @@ export const PresetsPage: React.FC<PresetsPageProps> = ({
               key={preset.id}
               padding="lg"
               style={
-                preset.id === 'responsible' ? { backgroundImage: 'linear-gradient(90deg, rgb(255, 255, 255) 0%, rgb(219, 141, 51) 100%)' } :
-                preset.id === 'overclaw' ? { backgroundImage: 'linear-gradient(90deg, rgb(255, 255, 255) 0%, rgb(100, 185, 133) 100%)' } :
+                preset.id === 'responsible' ? { backgroundImage: isDark
+                  ? 'linear-gradient(90deg, rgba(30,34,54,1) 0%, rgba(160,100,30,0.3) 100%)'
+                  : 'linear-gradient(90deg, rgb(255, 255, 255) 0%, rgb(219, 141, 51) 100%)' } :
+                preset.id === 'overclaw' ? { backgroundImage: isDark
+                  ? 'linear-gradient(90deg, rgba(30,34,54,1) 0%, rgba(60,130,80,0.3) 100%)'
+                  : 'linear-gradient(90deg, rgb(255, 255, 255) 0%, rgb(100, 185, 133) 100%)' } :
                 undefined
               }
             >

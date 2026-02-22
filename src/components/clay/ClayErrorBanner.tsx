@@ -19,7 +19,7 @@ export const ClayErrorBanner: React.FC<ClayErrorBannerProps> = ({
 }) => {
   return (
     <div className={cn(
-      'rounded-xl p-4 shadow-clay border border-white/30',
+      'rounded-xl p-4 shadow-clay border border-white/30 dark:border-white/[0.06]',
       severity === 'error' 
         ? 'bg-gradient-to-br from-clay-coral/20 to-clay-coral/10' 
         : 'bg-gradient-to-br from-clay-sand to-clay-peach/50'

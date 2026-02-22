@@ -12,7 +12,8 @@ import { CookieConsent } from './components/CookieConsent';
 import { getPresetById } from './lib/presets';
 import type { GeneratedFile, SpiritData } from './lib/soulforge/types';
 import { Toaster } from '@/components/ui/sonner';
-import { ClayFlowBreadcrumb } from '@/components/clay';
+import { ClayFlowBreadcrumb, ClayThemeToggle } from '@/components/clay';
+import { useTheme } from '@/hooks/use-theme';
 import { SoulForgeInterviewPage } from './pages/SoulForgeInterviewPage';
 
 export type AppView = 'landing' | 'presets' | 'interview' | 'builder' | 'export' | 'blog' | 'legal-impressum' | 'legal-privacy' | 'legal-tos';
@@ -37,6 +38,8 @@ function App() {
     return [{ view: 'landing' }];
   });
 
+  // Initialize theme (applies .dark class to <html>)
+  useTheme();
   const [spiritData, setSpiritData] = useState<{ files: GeneratedFile[]; spirit: SpiritData } | null>(null);
 
   // Persist history to localStorage
@@ -165,10 +168,11 @@ function App() {
       <div className="blob-bg blob-2" />
       <div className="blob-bg blob-3" />
 
-      {/* Breadcrumb – visible for all views beyond landing */}
+      {/* Breadcrumb + theme toggle – visible for all views beyond landing */}
       {history.length > 1 && (
-        <div className="relative z-20 px-6 pt-3">
+        <div className="relative z-20 px-6 pt-3 flex items-center justify-between max-w-5xl mx-auto">
           <ClayFlowBreadcrumb history={history} onNavigate={goToHistoryIndex} />
+          <ClayThemeToggle />
         </div>
       )}
 
@@ -191,10 +195,10 @@ function App() {
         position="bottom-right"
         toastOptions={{
           style: {
-            background: '#F5F0E8',
-            border: '1px solid rgba(255,255,255,0.5)',
-            boxShadow:
-              '0 2px 4px rgba(61, 58, 54, 0.04), 0 4px 8px rgba(61, 58, 54, 0.03), 0 8px 16px rgba(61, 58, 54, 0.02), 0 1px 2px rgba(61, 58, 54, 0.08)',
+            background: 'var(--clay-base)',
+            color: 'var(--clay-charcoal)',
+            border: `1px solid var(--clay-overlay-border)`,
+            boxShadow: 'var(--shadow-ambient), var(--shadow-key)',
             borderRadius: '1rem',
           },
         }}

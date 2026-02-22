@@ -254,3 +254,46 @@ button,
   color: var(--clay-peach);
 }
 
+/* Dark prose overrides */
+.dark .prose-clay h1 {
+  color: var(--clay-charcoal);
+  border-bottom-color: var(--clay-coral);
+}
+
+.dark .prose-clay h2,
+.dark .prose-clay h3 {
+  color: var(--clay-charcoal);
+}
+
+.dark .prose-clay code {
+  background-color: var(--clay-sand);
+  color: var(--clay-coral);
+}
+
+.dark .prose-clay pre {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.dark .prose-clay blockquote {
+  border-left-color: var(--clay-coral);
+  color: rgb(var(--clay-charcoal-rgb) / 0.7);
+}
+
+.dark .prose-clay th {
+  background-color: var(--clay-sand);
+}
+
+.dark .prose-clay th,
+.dark .prose-clay td {
+  border-color: var(--clay-stone);
+}
+
+.dark .prose-clay strong {
+  color: var(--clay-charcoal);
+}
+
+/* Dark selection color */
+.dark ::selection {
+  background: rgba(201, 147, 90, 0.35);
+}
+

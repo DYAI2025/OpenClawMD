@@ -55,7 +55,7 @@ export const ClayTabs: React.FC<ClayTabsProps> = ({
       </div>
       
       {/* Tab Content */}
-      <div className="bg-clay-base rounded-xl shadow-clay border border-white/50 p-6">
+      <div className="bg-clay-base rounded-xl shadow-clay border border-white/50 dark:border-white/[0.06] p-6">
         <div className="animate-scale-in">
           {activeTabData?.content}
         </div>

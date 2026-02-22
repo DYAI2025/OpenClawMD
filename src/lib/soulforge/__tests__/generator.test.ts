@@ -41,8 +41,8 @@ describe('SoulForge Generator', () => {
       expect(fileNames).toContain('USER.md');
       expect(fileNames).toContain('HEARTBEAT.md');
       expect(fileNames).toContain('SHIELD.md');
-      expect(fileNames).toContain('CANON.md');
-      expect(fileNames).toContain('INDEX.md');
+      expect(fileNames).toContain('SPIRIT.md');
+      expect(fileNames).toContain('CORTEX.md');
       expect(fileNames).toContain('MEMORY.md');
       expect(fileNames).toContain('VERSION.md');
     });
@@ -73,7 +73,7 @@ describe('SoulForge Generator', () => {
       expect(fileNames).toContain('USER.md');
       expect(fileNames).toContain('HEARTBEAT.md');
       expect(fileNames).toContain('SHIELD.md');
-      expect(fileNames).not.toContain('CANON.md');
+      expect(fileNames).not.toContain('SPIRIT.md');
     });
     
     it('should generate files with German language content', () => {
@@ -130,7 +130,7 @@ describe('SoulForge Generator', () => {
       expect(identityFile!.content).toContain('socratic');
     });
     
-    it('should include Resonance Anchor in CANON.md', () => {
+    it('should include Resonance Anchor in SPIRIT.md', () => {
       // Arrange
       const canon = mergeWithDefaults({
         agentName: 'Test Agent',
@@ -150,7 +150,7 @@ describe('SoulForge Generator', () => {
       
       // Act
       const result = generateSoulForgeFiles(canon, options);
-      const canonFile = result.files.find(f => f.name === 'CANON.md');
+      const canonFile = result.files.find(f => f.name === 'SPIRIT.md');
       
       // Assert
       expect(canonFile).toBeDefined();
@@ -242,13 +242,13 @@ describe('SoulForge Generator', () => {
       expect(version!.content).toContain('Resonance Layer');
     });
     
-    it('should generate INDEX.md with file structure', () => {
+    it('should generate CORTEX.md with file structure', () => {
       // Arrange
       const canon = mergeWithDefaults({}) as SpiritData;
       
       // Act
       const files = generateAdvancedPack(canon, 'en');
-      const index = files.find(f => f.name === 'INDEX.md');
+      const index = files.find(f => f.name === 'CORTEX.md');
       
       // Assert
       expect(index).toBeDefined();
@@ -273,7 +273,7 @@ describe('SoulForge Generator', () => {
       
       // Assert
       const identity = result.files.find(f => f.name === 'IDENTITY.md');
-      const canonFile = result.files.find(f => f.name === 'CANON.md');
+      const canonFile = result.files.find(f => f.name === 'SPIRIT.md');
       const memory = result.files.find(f => f.name === 'MEMORY.md');
       
       expect(identity!.content).toContain(agentName);

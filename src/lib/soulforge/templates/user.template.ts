@@ -62,7 +62,7 @@ ${stopWords}
 - If surprise boundaries would be violated: escalate to user.
 
 ## Interfaces
-- Must match CANON.md values (if present).
+- Must match SPIRIT.md values (if present).
 - HEARTBEAT.md must implement cadence + respect approvals/stop words.
 
 ## Checks
@@ -152,7 +152,7 @@ ${stopWords}
 - Wenn Surprise-Boundaries verletzt würden: An Nutzer eskalieren.
 
 ## Interfaces (Schnittstellen)
-- Muss mit CANON.md-Werten übereinstimmen (falls vorhanden).
+- Muss mit SPIRIT.md-Werten übereinstimmen (falls vorhanden).
 - HEARTBEAT.md muss Kadenz implementieren + Freigaben/Stop-Wörter respektieren.
 
 ## Checks (Prüfungen)

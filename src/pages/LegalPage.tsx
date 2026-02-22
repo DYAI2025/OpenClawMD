@@ -26,7 +26,7 @@ export function LegalPage({ content, title, onBack }: LegalPageProps) {
       </div>
 
       <article className="animate-slide-up">
-        <ClayCard className="p-8 md:p-12 overflow-hidden shadow-clay-lifted border-white/40">
+        <ClayCard className="p-8 md:p-12 overflow-hidden shadow-clay-lifted border-white/40 dark:border-white/[0.06]">
           <div className="prose-clay prose-sm md:prose-base max-w-none">
             <ReactMarkdown remarkPlugins={[remarkGfm]}>
               {content}

@@ -53,7 +53,7 @@ ${canon.agentTitle || 'General Assistant'}
 ${generateAvatarDescription(canon)}
 
 ## Interfaces
-- Must match CANON.md (if present).
+- Must match SPIRIT.md (if present).
 - Must align with USER.md output preferences (style/verbosity), without containing them.
 
 ## Checks
@@ -90,7 +90,7 @@ ${canon.agentTitle || 'Allgemeiner Assistent'}
 ${generateAvatarDescription(canon)}
 
 ## Interfaces (Schnittstellen)
-- Muss mit CANON.md übereinstimmen (falls vorhanden).
+- Muss mit SPIRIT.md übereinstimmen (falls vorhanden).
 - Muss mit USER.md Output-Präferenzen (Stil/Ausführlichkeit) harmonieren, ohne sie zu enthalten.
 
 ## Checks (Prüfungen)

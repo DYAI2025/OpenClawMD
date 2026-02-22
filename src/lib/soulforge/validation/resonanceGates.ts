@@ -159,23 +159,23 @@ export const RESONANCE_GATES: ResonanceGate[] = [
   {
     id: 'CANON_REFERENCES',
     check: (files, canon) => {
-      const canonFile = files.find(f => f.name === 'CANON.md');
-      if (!canonFile) return null;
-      
+      const spiritFile = files.find(f => f.name === 'SPIRIT.md');
+      if (!spiritFile) return null;
+
       const requiredRefs = [
         canon.agentName,
         canon.agentTitle,
         canon.agentMode,
       ];
-      
-      const missing = requiredRefs.filter(ref => !canonFile.content.includes(ref));
-      
+
+      const missing = requiredRefs.filter(ref => !spiritFile.content.includes(ref));
+
       if (missing.length > 0) {
         return {
           gateId: 'CANON_REFERENCES',
           severity: 'error',
-          message: `CANON.md missing required values: ${missing.join(', ')}`,
-          file: 'CANON.md',
+          message: `SPIRIT.md missing required values: ${missing.join(', ')}`,
+          file: 'SPIRIT.md',
         };
       }
       

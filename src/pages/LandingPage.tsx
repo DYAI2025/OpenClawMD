@@ -1,5 +1,5 @@
 import { Shield, Sparkles, Tag, Globe, ExternalLink } from 'lucide-react';
-import { ClayCard } from '@/components/clay';
+import { ClayCard, ClayThemeToggle } from '@/components/clay';
 
 interface LandingPageProps {
   onSelectPreset: () => void;
@@ -24,13 +24,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             <span className="text-xl font-bold text-clay-charcoal">SoulForge</span>
           </div>
 
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-4">
             <button
               onClick={onOpenBlog}
               className="text-sm font-semibold text-clay-charcoal/60 hover:text-clay-coral transition-colors hidden md:block"
             >
               Intelligence Lab
             </button>
+            <ClayThemeToggle />
           </div>
         </div>
       </header>
@@ -130,19 +131,19 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
           <div className="grid grid-cols-3 sm:grid-cols-5 gap-4">
             {[
-              { name: 'SOUL.md', desc: 'Core principles & values' },
-              { name: 'IDENTITY.md', desc: 'Role & capabilities' },
-              { name: 'USER.md', desc: 'User relationship' },
-              { name: 'HEARTBEAT.md', desc: 'Operational rhythm' },
-              { name: 'SHIELD.md', desc: 'Safety boundaries' },
-              { name: 'CANON.md', desc: 'Behavioral canon' },
-              { name: 'INDEX.md', desc: 'File manifest' },
-              { name: 'MEMORY.md', desc: 'Memory & context' },
-              { name: 'VERSION.md', desc: 'Version tracking' },
+              { name: 'SOUL.md', desc: 'Immutable rules & truth policy' },
+              { name: 'IDENTITY.md', desc: 'Name, title & tone of voice' },
+              { name: 'USER.md', desc: 'Autonomy rules & output format' },
+              { name: 'HEARTBEAT.md', desc: 'Health checks & discovery loops' },
+              { name: 'SHIELD.md', desc: 'Blocks destructive actions' },
+              { name: 'SPIRIT.md', desc: 'Single source of truth' },
+              { name: 'CORTEX.md', desc: 'File map & naming conventions' },
+              { name: 'MEMORY.md', desc: 'Stable facts & learned patterns' },
+              { name: 'VERSION.md', desc: 'Migration & compatibility' },
             ].map((file) => (
               <div
                 key={file.name}
-                className="bg-clay-base rounded-xl p-4 shadow-clay border border-white/50 text-center"
+                className="bg-clay-base rounded-xl p-4 shadow-clay border border-white/50 dark:border-white/[0.06] text-center"
               >
                 <code className="text-sm font-mono text-clay-coral font-semibold">
                   {file.name}
@@ -157,7 +158,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       </section>
 
       {/* Ecosystem Section */}
-      <section className="px-6 py-16 bg-clay-base/30 relative border-y border-white/50">
+      <section className="px-6 py-16 bg-clay-base/30 relative border-y border-white/50 dark:border-white/[0.06]">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between gap-12">
             <div className="max-w-xl">
@@ -166,8 +167,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               </h2>
               <p className="text-clay-charcoal/60 mb-8 leading-relaxed">
                 SoulForge lives at the intersection of technical performance and legal safety.
-                We are proud to build upon the <span className="text-clay-charcoal font-semibold">OpenCLAW 0.1</span> standard and collaborate with visionary projects
-                redefining what it means to give AI a body and a purpose.
+                We are proud to build upon the <span className="text-clay-charcoal font-semibold">OpenCLAW 0.1</span> standard and acknowledge visionary projects
+                that are redefining what it means to give AI a body and a purpose.
               </p>
 
               <div className="flex flex-wrap gap-4">
@@ -175,7 +176,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   href="https://openclaw.ai"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-6 py-3 rounded-2xl bg-white/60 border border-white shadow-clay hover:shadow-clay-lifted hover:-translate-y-1 transition-all flex items-center gap-2 text-sm font-bold text-clay-charcoal group"
+                  className="px-6 py-3 rounded-2xl bg-white/60 dark:bg-white/[0.06] border border-white dark:border-white/[0.08] shadow-clay hover:shadow-clay-lifted hover:-translate-y-1 transition-all flex items-center gap-2 text-sm font-bold text-clay-charcoal group"
                 >
                   <Globe className="w-4 h-4 text-clay-charcoal/40 group-hover:text-clay-coral transition-colors" />
                   OpenCLAW.ai
@@ -185,7 +186,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   href="https://clawhub.ai/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-6 py-3 rounded-2xl bg-white/60 border border-white shadow-clay hover:shadow-clay-lifted hover:-translate-y-1 transition-all flex items-center gap-2 text-sm font-bold text-clay-charcoal group"
+                  className="px-6 py-3 rounded-2xl bg-white/60 dark:bg-white/[0.06] border border-white dark:border-white/[0.08] shadow-clay hover:shadow-clay-lifted hover:-translate-y-1 transition-all flex items-center gap-2 text-sm font-bold text-clay-charcoal group"
                 >
                   <Shield className="w-4 h-4 text-clay-charcoal/40 group-hover:text-clay-mint transition-colors" />
                   ClawHub
@@ -195,7 +196,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             </div>
 
             <div className="w-full md:w-auto">
-              <ClayCard className="p-8 max-w-sm border-white shadow-clay-lifted bg-gradient-to-br from-white/60 to-transparent relative overflow-hidden group">
+              <ClayCard className="p-8 max-w-sm border-white dark:border-white/[0.06] shadow-clay-lifted bg-gradient-to-br from-white/60 dark:from-white/[0.04] to-transparent relative overflow-hidden group">
                 <div className="absolute top-0 right-0 w-24 h-24 bg-clay-coral/5 rounded-full -mr-12 -mt-12 group-hover:scale-110 transition-transform" />
                 <span className="text-[10px] font-black text-clay-coral uppercase tracking-widest mb-3 block">Scientific Spotlight</span>
                 <h3 className="text-xl font-bold text-clay-charcoal mb-3">Neoform: I gave an AI a Body</h3>
