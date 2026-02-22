@@ -84,10 +84,6 @@ export {
   generateAgentName,
   isSpiritComplete,
   mergeWithDefaults,
-  
-  // Legacy
-  type LegacyDimensions,
-  dimensionsToSpirit,
 } from './spirit';
 
 // Generator
