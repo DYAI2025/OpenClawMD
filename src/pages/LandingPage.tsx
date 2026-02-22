@@ -1,6 +1,9 @@
 import { useState } from 'react';
-import { Shield, Sparkles, Globe, ExternalLink, BookOpen } from 'lucide-react';
-import logoImg from '../../icons/logo.png';
+import { Shield, Globe, ExternalLink, BookOpen } from 'lucide-react';
+import logoImg from '../../icons/logo1.png';
+import downloadImg from '../../icons/download.png';
+import customImg from '../../icons/custom.png';
+import knowledgeImg from '../../icons/knowledge.png';
 import { ClayCard, ClayThemeToggle } from '@/components/clay';
 import { FilePreviewDialog } from '@/components/FilePreviewDialog';
 
@@ -81,7 +84,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               className="text-left group"
             >
               <div className="w-12 h-12 rounded-full shadow-clay flex items-center justify-center mb-4 group-hover:scale-110 transition-transform overflow-hidden">
-                <img src={logoImg} alt="Animae Agentis logo" className="w-full h-full object-cover" />
+                <img src={downloadImg} alt="Download Presets" className="w-full h-full object-cover" />
               </div>
               <h3 className="text-lg font-semibold text-clay-charcoal mb-2">
                 Download Presets
@@ -97,8 +100,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               onClick={onStartFresh}
               className="text-left group"
             >
-              <div className="w-12 h-12 rounded-full bg-clay-coral shadow-clay flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <Sparkles className="w-6 h-6 text-white" />
+              <div className="w-12 h-12 rounded-full bg-clay-coral shadow-clay flex items-center justify-center mb-4 group-hover:scale-110 transition-transform overflow-hidden">
+                <img src={customImg} alt="Customize Your Files" className="w-full h-full object-cover" />
               </div>
               <h3 className="text-lg font-semibold text-clay-charcoal mb-2">
                 Customize Your Files
@@ -114,8 +117,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               onClick={onHowItWorks}
               className="text-left group"
             >
-              <div className="w-12 h-12 rounded-full bg-clay-peach shadow-clay flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <BookOpen className="w-6 h-6 text-clay-charcoal" />
+              <div className="w-12 h-12 rounded-full bg-clay-peach shadow-clay flex items-center justify-center mb-4 group-hover:scale-110 transition-transform overflow-hidden">
+                <img src={knowledgeImg} alt="How It Works" className="w-full h-full object-cover" />
               </div>
               <h3 className="text-lg font-semibold text-clay-charcoal mb-2">
                 How It Works
@@ -136,7 +139,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               What You Get
             </h2>
             <p className="text-clay-charcoal/60">
-              10 configuration files that define your agent&apos;s complete behavioral framework
+              10 individual configurated markdown files that define your agent&apos;s complete behavioral framework. If you are already an expert, you can directly download the templates by simply click them. But we would recommand to customize your full set here.
             </p>
           </div>
 
@@ -168,8 +171,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 Ecosystem
               </h2>
               <p className="text-clay-charcoal/60 mb-8 leading-relaxed">
-                Animae Agentis builds upon the <span className="text-clay-charcoal font-semibold">OpenCLAW 0.1</span> standard.
-                Explore the ecosystem and related projects.
+                Animae Agentis builds upon the <span className="text-clay-charcoal font-semibold">OpenClaw</span> agent standard. Explore the ecosystem and get inspired by other projects.
               </p>
 
               <div className="flex flex-wrap gap-4">
