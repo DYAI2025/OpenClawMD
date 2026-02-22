@@ -63,6 +63,26 @@ ${canon.negativeConstraints.slice(0, 3).map(c => `- ${c}`).join('\n') || '- No c
 
 *No durable decisions recorded yet.*
 
+## Flush Protocol
+
+### Compaction Triggers
+- Daily log exceeds 20,000 tokens → distill durable facts to this file
+- Memory directory exceeds 100MB → archive oldest quarter
+- Checkpoint count exceeds 10 → prune to 5 most recent
+
+### Cache TTL
+| Memory Type | TTL | Eviction |
+|------------|-----|----------|
+| Session context | End of session | Auto-flush |
+| Task working memory | Task completion + 5 min | Auto-flush |
+| Stable facts (this file) | Indefinite | Manual review |
+| Daily logs | 90 days | Archive to quarterly ZIP |
+
+### Session-to-Daily Migration
+1. At session end: flush working memory, write any new stable facts here
+2. At session start: check yesterday's log for promotable facts
+3. Quarterly: compress daily logs older than 90 days into archive
+
 ## Learned Patterns
 
 <!-- Add recurring patterns as they are identified -->
@@ -157,6 +177,26 @@ ${canon.negativeConstraints.slice(0, 3).map(c => `- ${c}`).join('\n') || '- Kein
 <!-- Format: - [YYYY-MM-DD] Entscheidung: Begründung -->
 
 *Noch keine dauerhaften Entscheidungen aufgezeichnet.*
+
+## Flush-Protokoll
+
+### Compaction-Trigger
+- Tageslog überschreitet 20.000 Tokens → dauerhafte Fakten in diese Datei verdichten
+- Memory-Verzeichnis überschreitet 100MB → ältestes Quartal archivieren
+- Checkpoint-Anzahl überschreitet 10 → auf 5 aktuellste kürzen
+
+### Cache-TTL
+| Speicher-Typ | TTL | Eviction |
+|-------------|-----|----------|
+| Session-Kontext | Session-Ende | Auto-Flush |
+| Task-Arbeitsspeicher | Task-Abschluss + 5 Min | Auto-Flush |
+| Stabile Fakten (diese Datei) | Unbegrenzt | Manuelles Review |
+| Tageslogs | 90 Tage | Archivierung in Quartals-ZIP |
+
+### Session-zu-Daily-Migration
+1. Bei Session-Ende: Arbeitsspeicher flushen, neue stabile Fakten hier schreiben
+2. Bei Session-Start: gestrigen Log auf promotbare Fakten prüfen
+3. Quartalsweise: Tageslogs älter als 90 Tage in Archiv komprimieren
 
 ## Learned Patterns (Gelernte Muster)
 

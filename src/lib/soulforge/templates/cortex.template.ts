@@ -35,6 +35,7 @@ One source of truth for where things live and how often they change.
 | MEMORY.md | Stable facts & learned preferences | As needed |
 | VERSION.md | Skill/template version marker | On upgrades |
 | CORTEX.md | This map | When structure changes |
+| OPS.md | Operational playbook | Quarterly review |
 
 ## Directories (recommended)
 
@@ -88,6 +89,7 @@ SPIRIT.md (anchor)
     │       └── HEARTBEAT.md (implements cadence)
     │       └── SHIELD.md (implements approvals)
     ├── MEMORY.md (distilled from daily logs)
+    ├── OPS.md (operational patterns, references SHIELD + HEARTBEAT)
     └── VERSION.md
 \`\`\`
 
@@ -133,6 +135,7 @@ Eine Quelle der Wahrheit darüber, wo Dinge leben und wie oft sie sich ändern.
 | MEMORY.md | Stable Facts & gelernte Präferenzen | Nach Bedarf |
 | VERSION.md | Skill/Template-Versionsmarker | Bei Upgrades |
 | CORTEX.md | Diese Map | Bei Strukturänderungen |
+| OPS.md | Operatives Playbook | Quartalsweise Review |
 
 ## Directories (empfohlen)
 
@@ -186,6 +189,7 @@ SPIRIT.md (anchor)
     │       └── HEARTBEAT.md (implementiert Kadenz)
     │       └── SHIELD.md (implementiert Freigaben)
     ├── MEMORY.md (destilliert aus Tageslogs)
+    ├── OPS.md (operative Muster, referenziert SHIELD + HEARTBEAT)
     └── VERSION.md
 \`\`\`
 

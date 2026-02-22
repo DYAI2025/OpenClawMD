@@ -67,6 +67,26 @@ ${getDiscoveryDescription(canon.surprise.appetite || 'medium', canon.surprise.ca
 
 Rule: propose, do not execute irreversible actions without approval.
 
+## Task Reconciliation
+
+### Stale Task Detection
+- If a task has been in-progress for >2x its expected duration: flag as potentially stale
+- If a task's last update is >30 minutes old and context has shifted: verify task is still relevant
+- Stale tasks are surfaced to the user, not auto-cancelled
+
+### Cadence State Machine
+\`\`\`
+IDLE → (trigger fires) → CHECKING → (all checks pass) → IDLE
+                                   → (issue found) → ACTING → (resolved) → IDLE
+                                   → (issue found) → ACTING → (blocked) → ESCALATE → IDLE
+\`\`\`
+
+### Reconciliation Loop
+1. At each heartbeat tick: compare active tasks against current priorities
+2. If priority has shifted: flag outdated tasks for user review
+3. If task is complete but not marked: auto-close with summary
+4. If task is blocked: surface blocker and suggest next steps
+
 ## Cheap Checks First (Trigger Ladder)
 1. metadata/filters/regex (cheap)
 2. targeted fetch (medium)
@@ -131,6 +151,26 @@ Nur auf Kadenz ausführen: **${canon.surprise.cadence || 'weekly_deep'}** mit Gr
 ${getDiscoveryDescriptionGerman(canon.surprise.appetite || 'medium', canon.surprise.cadence || 'weekly_deep')}
 
 Regel: Vorschlagen, keine irreversiblen Aktionen ohne Freigabe ausführen.
+
+## Task-Reconciliation (Aufgaben-Abgleich)
+
+### Erkennung veralteter Tasks
+- Wenn ein Task >2x seiner erwarteten Dauer in Bearbeitung ist: als potenziell veraltet markieren
+- Wenn ein Task seit >30 Minuten kein Update hat und Kontext sich verschoben hat: Relevanz prüfen
+- Veraltete Tasks werden dem Nutzer angezeigt, nicht auto-abgebrochen
+
+### Kadenz-State-Machine
+\`\`\`
+IDLE → (Trigger feuert) → CHECKING → (alle Checks bestanden) → IDLE
+                                    → (Problem gefunden) → ACTING → (gelöst) → IDLE
+                                    → (Problem gefunden) → ACTING → (blockiert) → ESCALATE → IDLE
+\`\`\`
+
+### Abgleich-Schleife
+1. Bei jedem Heartbeat-Tick: aktive Tasks gegen aktuelle Prioritäten vergleichen
+2. Wenn Priorität sich verschoben hat: veraltete Tasks für Nutzer-Review markieren
+3. Wenn Task abgeschlossen aber nicht markiert: Auto-Close mit Zusammenfassung
+4. Wenn Task blockiert: Blocker anzeigen und nächste Schritte vorschlagen
 
 ## Cheap Checks First (Trigger-Leiter)
 1. Metadaten/Filter/Regex (günstig)

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What This Is
 
-OpenClawMD / SoulForge is a client-side React app for generating AI agent configuration files (Markdown). It produces 9 files (SOUL.md, IDENTITY.md, USER.md, HEARTBEAT.md, SHIELD.md, CANON.md, INDEX.md, MEMORY.md, VERSION.md) from a single data model called `SpiritData`.
+OpenClawMD / SoulForge is a client-side React app for generating AI agent configuration files (Markdown). It produces 10 files (SOUL.md, IDENTITY.md, USER.md, HEARTBEAT.md, SHIELD.md, SPIRIT.md, CORTEX.md, MEMORY.md, VERSION.md, OPS.md) from a single data model called `SpiritData`.
 
 No backend. All generation is deterministic, client-side only. Exports are downloaded as ZIP or individual Markdown files.
 
@@ -42,7 +42,7 @@ LandingPage
 
 Interview (6 steps: mode -> role -> tone -> constraints -> autonomy -> review)
   -> optional BuilderPage (fine-tune SpiritData fields)
-  -> ExportPage (preview + download 9 files)
+  -> ExportPage (preview + download 10 files)
 ```
 
 ### Presets
@@ -54,7 +54,7 @@ Defined in `src/lib/presets.ts`. Three presets (Security, Responsible, OverClaw)
 - Types: `src/lib/soulforge/types.ts`
 - Defaults & utilities: `src/lib/soulforge/spirit.ts` (mode defaults, createEmptySpirit, mergeWithDefaults, isSpiritComplete)
 - Templates: `src/lib/soulforge/templates/*.template.ts` (one per output file)
-- Generator: `src/lib/soulforge/generator.ts` (renders all 9 files from SpiritData)
+- Generator: `src/lib/soulforge/generator.ts` (renders all 10 files from SpiritData)
 - Validation: quality gates + resonance gates in `src/lib/soulforge/validation/`
 - Export: ZIP (via jszip) and JSON in `src/lib/soulforge/export/`
 

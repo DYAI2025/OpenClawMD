@@ -1,7 +1,7 @@
 /**
  * SoulForge Generator
- * 
- * Generates all 9 configuration files from Canon data.
+ *
+ * Generates all 10 configuration files from Canon data.
  * Implements the thrid_embodiment pattern: SOUL + IDENTITY + USER
  */
 
@@ -22,6 +22,7 @@ import {
   renderCortexMd,
   renderMemoryMd,
   renderVersionMd,
+  renderOpsMd,
 } from './templates';
 
 // ============================================================================
@@ -41,6 +42,7 @@ export const ADVANCED_FILES = [
   'CORTEX.md',
   'MEMORY.md',
   'VERSION.md',
+  'OPS.md',
 ] as const;
 
 export type BaseFileName = typeof BASE_FILES[number];
@@ -84,6 +86,7 @@ export function generateSoulForgeFiles(
       { name: 'CORTEX.md', content: renderCortexMd(canon, language), section: 'advanced' },
       { name: 'MEMORY.md', content: renderMemoryMd(canon, language), section: 'advanced' },
       { name: 'VERSION.md', content: renderVersionMd(canon, language), section: 'advanced' },
+      { name: 'OPS.md', content: renderOpsMd(language), section: 'advanced' },
     );
   }
 
@@ -128,6 +131,7 @@ export function generateAdvancedPack(
     { name: 'CORTEX.md', content: renderCortexMd(canon, language), section: 'advanced' },
     { name: 'MEMORY.md', content: renderMemoryMd(canon, language), section: 'advanced' },
     { name: 'VERSION.md', content: renderVersionMd(canon, language), section: 'advanced' },
+    { name: 'OPS.md', content: renderOpsMd(language), section: 'advanced' },
   ];
 }
 
@@ -149,6 +153,7 @@ export function generateSingleFile(
     'CORTEX.md': renderCortexMd,
     'MEMORY.md': renderMemoryMd,
     'VERSION.md': renderVersionMd,
+    'OPS.md': (_c, l) => renderOpsMd(l),
   };
 
   const renderer = renderers[fileName];

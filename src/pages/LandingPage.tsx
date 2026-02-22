@@ -1,17 +1,36 @@
-import { Shield, Sparkles, Tag, Globe, ExternalLink } from 'lucide-react';
+import { useState } from 'react';
+import { Shield, Sparkles, Globe, ExternalLink, BookOpen } from 'lucide-react';
 import { ClayCard, ClayThemeToggle } from '@/components/clay';
+import { FilePreviewDialog } from '@/components/FilePreviewDialog';
 
 interface LandingPageProps {
   onSelectPreset: () => void;
   onStartFresh: () => void;
   onOpenBlog: () => void;
+  onHowItWorks: () => void;
 }
+
+const FILE_TILES = [
+  { name: 'SOUL.md', desc: 'Immutable rules & truth policy' },
+  { name: 'IDENTITY.md', desc: 'Name, title & tone of voice' },
+  { name: 'USER.md', desc: 'Autonomy rules & output format' },
+  { name: 'HEARTBEAT.md', desc: 'Health checks & discovery loops' },
+  { name: 'SHIELD.md', desc: 'Blocks destructive actions' },
+  { name: 'SPIRIT.md', desc: 'Single source of truth' },
+  { name: 'CORTEX.md', desc: 'File map & naming conventions' },
+  { name: 'MEMORY.md', desc: 'Stable facts & learned patterns' },
+  { name: 'VERSION.md', desc: 'Migration & compatibility' },
+  { name: 'OPS.md', desc: 'Model routing & cost control' },
+];
 
 export const LandingPage: React.FC<LandingPageProps> = ({
   onSelectPreset,
   onStartFresh,
   onOpenBlog,
+  onHowItWorks,
 }) => {
+  const [previewFile, setPreviewFile] = useState<string | null>(null);
+
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}
@@ -24,15 +43,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             <span className="text-xl font-bold text-clay-charcoal">SoulForge</span>
           </div>
 
-          <div className="flex items-center gap-4">
-            <button
-              onClick={onOpenBlog}
-              className="text-sm font-semibold text-clay-charcoal/60 hover:text-clay-coral transition-colors hidden md:block"
-            >
-              Intelligence Lab
-            </button>
-            <ClayThemeToggle />
-          </div>
+          <ClayThemeToggle />
         </div>
       </header>
 
@@ -43,44 +54,27 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-clay-mint/50 shadow-clay mb-8">
             <Shield className="w-4 h-4 text-clay-charcoal" />
             <span className="text-sm font-medium text-clay-charcoal">
-              Legal-First Configuration
+              Open Standard &middot; No Backend &middot; No Lock-in
             </span>
           </div>
 
           {/* Title */}
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-clay-charcoal mb-6 leading-tight">
-            SoulForge
-            <span className="block lg:text-[50px] text-transparent bg-clip-text bg-gradient-to-r from-clay-coral to-clay-peach">
-              Agentic Autopoesis
+            10 Markdown files that define
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-clay-coral to-clay-peach">
+              how your AI agent behaves
             </span>
           </h1>
 
           {/* Subtitle */}
           <p className="text-xl text-clay-charcoal/70 max-w-2xl mx-auto mb-12">
-            Self-creating, self-defining. SoulForge generates the behavioral fabric of autonomous agents —
-            identity, values, boundaries and rhythm — from a single source of truth.
+            SoulForge generates a complete behavioral framework — identity, rules, memory,
+            operations — from a single configuration. Download presets instantly or customize every detail.
           </p>
 
-          {/* Entry Points */}
+          {/* Three Cards */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {/* Start Fresh Card */}
-            <ClayCard
-              isInteractive
-              onClick={onStartFresh}
-              className="text-left group"
-            >
-              <div className="w-12 h-12 rounded-full bg-clay-coral shadow-clay flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <Sparkles className="w-6 h-6 text-white" />
-              </div>
-              <h3 className="text-lg font-semibold text-clay-charcoal mb-2">
-                Start Fresh
-              </h3>
-              <p className="text-sm text-clay-charcoal/60">
-                Build your agent's identity from scratch through our guided interview.
-              </p>
-            </ClayCard>
-
-            {/* Preset Card */}
+            {/* Download Presets */}
             <ClayCard
               isInteractive
               onClick={onSelectPreset}
@@ -90,34 +84,51 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 <Shield className="w-6 h-6 text-clay-charcoal" />
               </div>
               <h3 className="text-lg font-semibold text-clay-charcoal mb-2">
-                Use a Preset
+                Download Presets
               </h3>
               <p className="text-sm text-clay-charcoal/60">
-                Start with Security, Responsible, or OverClaw and customize from there.
+                Get pre-configured file sets for common agent types. Ready to use in seconds.
               </p>
             </ClayCard>
 
-            {/* Blog Card */}
+            {/* Customize Your Files */}
             <ClayCard
               isInteractive
-              onClick={onOpenBlog}
+              onClick={onStartFresh}
+              className="text-left group"
+            >
+              <div className="w-12 h-12 rounded-full bg-clay-coral shadow-clay flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <Sparkles className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-lg font-semibold text-clay-charcoal mb-2">
+                Customize Your Files
+              </h3>
+              <p className="text-sm text-clay-charcoal/60">
+                Walk through a guided interview to tailor every field to your agent's purpose.
+              </p>
+            </ClayCard>
+
+            {/* How It Works */}
+            <ClayCard
+              isInteractive
+              onClick={onHowItWorks}
               className="text-left group"
             >
               <div className="w-12 h-12 rounded-full bg-clay-peach shadow-clay flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <Tag className="w-6 h-6 text-clay-charcoal" />
+                <BookOpen className="w-6 h-6 text-clay-charcoal" />
               </div>
               <h3 className="text-lg font-semibold text-clay-charcoal mb-2">
-                Intelligence Lab
+                How It Works
               </h3>
               <p className="text-sm text-clay-charcoal/60">
-                Read deep dives on AI agent technology and the SoulForge standard.
+                Understand the architecture: which file controls what, and why it matters.
               </p>
             </ClayCard>
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
+      {/* File Tiles Section */}
       <section className="px-6 py-16">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
@@ -125,25 +136,16 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               What You Get
             </h2>
             <p className="text-clay-charcoal/60">
-              Nine configuration files that define your agent&apos;s behavioral fabric
+              10 configuration files that define your agent&apos;s complete behavioral framework
             </p>
           </div>
 
-          <div className="grid grid-cols-3 sm:grid-cols-5 gap-4">
-            {[
-              { name: 'SOUL.md', desc: 'Immutable rules & truth policy' },
-              { name: 'IDENTITY.md', desc: 'Name, title & tone of voice' },
-              { name: 'USER.md', desc: 'Autonomy rules & output format' },
-              { name: 'HEARTBEAT.md', desc: 'Health checks & discovery loops' },
-              { name: 'SHIELD.md', desc: 'Blocks destructive actions' },
-              { name: 'SPIRIT.md', desc: 'Single source of truth' },
-              { name: 'CORTEX.md', desc: 'File map & naming conventions' },
-              { name: 'MEMORY.md', desc: 'Stable facts & learned patterns' },
-              { name: 'VERSION.md', desc: 'Migration & compatibility' },
-            ].map((file) => (
-              <div
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
+            {FILE_TILES.map((file) => (
+              <button
                 key={file.name}
-                className="bg-clay-base rounded-xl p-4 shadow-clay border border-white/50 dark:border-white/[0.06] text-center"
+                onClick={() => setPreviewFile(file.name)}
+                className="bg-clay-base rounded-xl p-4 shadow-clay border border-white/50 dark:border-white/[0.06] text-center cursor-pointer hover:shadow-clay-lifted hover:-translate-y-1 hover:scale-[1.02] transition-all"
               >
                 <code className="text-sm font-mono text-clay-coral font-semibold">
                   {file.name}
@@ -151,7 +153,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 <p className="text-xs text-clay-charcoal/60 mt-2">
                   {file.desc}
                 </p>
-              </div>
+              </button>
             ))}
           </div>
         </div>
@@ -163,12 +165,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           <div className="flex flex-col md:flex-row items-center justify-between gap-12">
             <div className="max-w-xl">
               <h2 className="text-3xl font-bold text-clay-charcoal mb-4">
-                The AI Agent <span className="text-clay-coral underline decoration-clay-coral/20">Ecosystem</span>
+                Ecosystem
               </h2>
               <p className="text-clay-charcoal/60 mb-8 leading-relaxed">
-                SoulForge lives at the intersection of technical performance and legal safety.
-                We are proud to build upon the <span className="text-clay-charcoal font-semibold">OpenCLAW 0.1</span> standard and acknowledge visionary projects
-                that are redefining what it means to give AI a body and a purpose.
+                SoulForge builds upon the <span className="text-clay-charcoal font-semibold">OpenCLAW 0.1</span> standard.
+                Explore the ecosystem and related projects.
               </p>
 
               <div className="flex flex-wrap gap-4">
@@ -192,6 +193,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   ClawHub
                   <ExternalLink className="w-3 h-3 text-clay-charcoal/20" />
                 </a>
+                <button
+                  onClick={onOpenBlog}
+                  className="px-6 py-3 rounded-2xl bg-white/60 dark:bg-white/[0.06] border border-white dark:border-white/[0.08] shadow-clay hover:shadow-clay-lifted hover:-translate-y-1 transition-all flex items-center gap-2 text-sm font-bold text-clay-charcoal group"
+                >
+                  <BookOpen className="w-4 h-4 text-clay-charcoal/40 group-hover:text-clay-peach transition-colors" />
+                  Intelligence Lab
+                </button>
               </div>
             </div>
 
@@ -217,6 +225,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         </div>
       </section>
 
+      {/* File Preview Dialog */}
+      <FilePreviewDialog
+        fileName={previewFile}
+        isOpen={previewFile !== null}
+        onClose={() => setPreviewFile(null)}
+      />
     </div>
   );
 };

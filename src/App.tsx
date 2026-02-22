@@ -6,6 +6,7 @@ import { BuilderPage } from './pages/BuilderPage';
 import { SoulForgeExportPage } from './pages/SoulForgeExportPage';
 import { BlogPage } from './pages/BlogPage';
 import { LegalPage } from './pages/LegalPage';
+import { HowItWorksPage } from './pages/HowItWorksPage';
 import { IMPRESSUM_DE, PRIVACY_POLICY_DE, TOS_DE } from './lib/legalData';
 import { GlobalFooter } from './components/GlobalFooter';
 import { CookieConsent } from './components/CookieConsent';
@@ -16,7 +17,7 @@ import { ClayFlowBreadcrumb, ClayThemeToggle } from '@/components/clay';
 import { useTheme } from '@/hooks/use-theme';
 import { SoulForgeInterviewPage } from './pages/SoulForgeInterviewPage';
 
-export type AppView = 'landing' | 'presets' | 'interview' | 'builder' | 'export' | 'blog' | 'legal-impressum' | 'legal-privacy' | 'legal-tos';
+export type AppView = 'landing' | 'presets' | 'interview' | 'builder' | 'export' | 'blog' | 'how-it-works' | 'legal-impressum' | 'legal-privacy' | 'legal-tos';
 
 export interface HistoryEntry {
   view: AppView;
@@ -97,6 +98,7 @@ function App() {
             onSelectPreset={() => navigateTo('presets')}
             onStartFresh={startFresh}
             onOpenBlog={() => pushView('blog')}
+            onHowItWorks={() => pushView('how-it-works')}
           />
         );
 
@@ -145,6 +147,15 @@ function App() {
             onFineTune={() => pushView('builder')}
           />
         ) : null;
+
+      case 'how-it-works':
+        return (
+          <HowItWorksPage
+            onBack={goBack}
+            onStartFresh={startFresh}
+            onSelectPreset={() => navigateTo('presets')}
+          />
+        );
 
       case 'blog':
         return <BlogPage onBack={goBack} />;
