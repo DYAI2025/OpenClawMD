@@ -35,7 +35,7 @@ function ChoiceButton({ selected, onClick, label, description }: {
       <div className="flex items-center gap-3">
         <div
           className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${
-            selected ? 'border-clay-charcoal bg-clay-charcoal' : 'border-clay-stone'
+            selected ? 'border-clay-charcoal bg-clay-charcoal dark:bg-white/20 dark:border-white/30' : 'border-clay-stone'
           }`}
         >
           {selected && <div className="w-2 h-2 bg-white rounded-full" />}
@@ -76,7 +76,7 @@ function TogglePair<T extends string>({
           onClick={() => onChange(optionA.value)}
           className={`flex-1 py-2.5 px-4 rounded-lg text-sm font-medium transition-all duration-200 ${
             value === optionA.value
-              ? 'bg-clay-charcoal text-white shadow-clay-inset'
+              ? 'bg-clay-charcoal dark:bg-white/15 text-white shadow-clay-inset'
               : 'bg-clay-base text-clay-charcoal shadow-clay hover:shadow-clay-lifted'
           }`}
         >
@@ -86,7 +86,7 @@ function TogglePair<T extends string>({
           onClick={() => onChange(optionB.value)}
           className={`flex-1 py-2.5 px-4 rounded-lg text-sm font-medium transition-all duration-200 ${
             value === optionB.value
-              ? 'bg-clay-charcoal text-white shadow-clay-inset'
+              ? 'bg-clay-charcoal dark:bg-white/15 text-white shadow-clay-inset'
               : 'bg-clay-base text-clay-charcoal shadow-clay hover:shadow-clay-lifted'
           }`}
         >

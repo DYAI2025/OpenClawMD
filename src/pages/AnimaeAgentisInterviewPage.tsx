@@ -447,7 +447,7 @@ function ChoiceButton({
       <div className="flex items-center gap-3">
         <div className={`
           w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0
-          ${selected ? 'border-clay-charcoal bg-clay-charcoal' : 'border-clay-stone'}
+          ${selected ? 'border-clay-charcoal bg-clay-charcoal dark:bg-white/20 dark:border-white/30' : 'border-clay-stone'}
         `}>
           {selected && <div className="w-2 h-2 bg-white rounded-full" />}
         </div>

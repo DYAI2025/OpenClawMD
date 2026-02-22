@@ -214,7 +214,7 @@ export function AnimaeAgentisExportPage({ spirit, onBack, onNewConfig, onFineTun
               </div>
             </div>
           ) : (
-            <pre className="bg-clay-charcoal/5 rounded-xl p-4 overflow-x-auto text-sm font-mono text-clay-charcoal/80 max-h-[32rem] overflow-y-auto border border-clay-stone/20">
+            <pre className="bg-clay-charcoal/5 dark:bg-white/5 rounded-xl p-4 overflow-x-auto text-sm font-mono text-clay-charcoal/80 max-h-[32rem] overflow-y-auto border border-clay-stone/20">
               {file.content}
             </pre>
           )}
