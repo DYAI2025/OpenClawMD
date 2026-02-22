@@ -2,29 +2,25 @@ import { useState, useCallback, useEffect } from 'react';
 import './App.css';
 import { LandingPage } from './pages/LandingPage';
 import { PresetsPage } from './pages/PresetsPage';
-import { InterviewPage } from './pages/InterviewPage';
 import { BuilderPage } from './pages/BuilderPage';
-import { ExportPage } from './pages/ExportPage';
 import { SoulForgeExportPage } from './pages/SoulForgeExportPage';
 import { BlogPage } from './pages/BlogPage';
 import { LegalPage } from './pages/LegalPage';
 import { IMPRESSUM_DE, PRIVACY_POLICY_DE, TOS_DE } from './lib/legalData';
 import { GlobalFooter } from './components/GlobalFooter';
 import { CookieConsent } from './components/CookieConsent';
-import type { OpenClawConfigType, PresetIdType } from './lib/openclaw/schema';
-import { createEmptyConfig } from './lib/openclaw/schema';
-import { createConfigFromPreset } from './lib/openclaw/presets';
-import { ConfigModeOverlay } from './components/ConfigModeOverlay';
+import { getPresetById } from './lib/presets';
+import type { GeneratedFile, SpiritData } from './lib/soulforge/types';
 import { Toaster } from '@/components/ui/sonner';
 import { ClayFlowBreadcrumb } from '@/components/clay';
 import { SoulForgeInterviewPage } from './pages/SoulForgeInterviewPage';
-import type { GeneratedFile, SpiritData } from './lib/soulforge/types';
 
-export type AppView = 'landing' | 'presets' | 'interview' | 'builder' | 'export' | 'blog' | 'soulforge-interview' | 'soulforge-export' | 'legal-impressum' | 'legal-privacy' | 'legal-tos';
+export type AppView = 'landing' | 'presets' | 'interview' | 'builder' | 'export' | 'blog' | 'legal-impressum' | 'legal-privacy' | 'legal-tos';
 
 export interface HistoryEntry {
   view: AppView;
-  config: OpenClawConfigType | null;
+  presetId?: string;
+  spirit?: Partial<SpiritData>;
 }
 
 function App() {
@@ -38,28 +34,21 @@ function App() {
         console.error('Failed to parse saved session', e);
       }
     }
-    return [{ view: 'landing', config: null }];
+    return [{ view: 'landing' }];
   });
 
-  const [soulForgeData, setSoulForgeData] = useState<{ files: GeneratedFile[]; canon: SpiritData } | null>(null);
+  const [spiritData, setSpiritData] = useState<{ files: GeneratedFile[]; spirit: SpiritData } | null>(null);
 
   // Persist history to localStorage
   useEffect(() => {
     localStorage.setItem('soulforge_session', JSON.stringify(history));
   }, [history]);
 
-  const [configModeOpen, setConfigModeOpen] = useState(false);
-  const [tapCount, setTapCount] = useState(0);
-  const [lastTapTime, setLastTapTime] = useState(0);
-
   const currentEntry = history[history.length - 1];
 
   // Push a new view onto the history stack
-  const pushView = useCallback((view: AppView, config?: OpenClawConfigType | null) => {
-    setHistory(prev => {
-      const prevConfig = prev[prev.length - 1].config;
-      return [...prev, { view, config: config !== undefined ? config : prevConfig }];
-    });
+  const pushView = useCallback((view: AppView, extra?: Partial<HistoryEntry>) => {
+    setHistory(prev => [...prev, { view, ...extra }]);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
@@ -77,76 +66,24 @@ function App() {
 
   // Reset to landing (used by "Create New Configuration")
   const resetToLanding = useCallback(() => {
-    setHistory([{ view: 'landing', config: null }]);
+    setHistory([{ view: 'landing' }]);
+    setSpiritData(null);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
-
-  // Hidden config mode: 7 taps within 3 seconds
-  const handleLogoTap = useCallback(() => {
-    const now = Date.now();
-    if (now - lastTapTime > 3000) {
-      setTapCount(1);
-    } else {
-      const newCount = tapCount + 1;
-      if (newCount >= 7) {
-        setConfigModeOpen(true);
-        setTapCount(0);
-      } else {
-        setTapCount(newCount);
-      }
-    }
-    setLastTapTime(now);
-  }, [tapCount, lastTapTime]);
 
   // Navigation handlers
   const navigateTo = useCallback((view: AppView) => {
     pushView(view);
   }, [pushView]);
 
-  const selectPreset = useCallback((presetId: PresetIdType) => {
-    const config = createConfigFromPreset(presetId);
-    pushView('export', config);
+  const selectPreset = useCallback((presetId: string) => {
+    const preset = getPresetById(presetId);
+    if (!preset) return;
+    pushView('interview', { presetId, spirit: preset.spirit });
   }, [pushView]);
 
-  const startInterview = useCallback(() => {
-    pushView('interview', createEmptyConfig());
-  }, [pushView]);
-
-  const startBuilder = useCallback((basePreset?: PresetIdType) => {
-    const config = basePreset ? createConfigFromPreset(basePreset) : createEmptyConfig();
-    pushView('builder', config);
-  }, [pushView]);
-
-  const finishInterview = useCallback((config: OpenClawConfigType) => {
-    pushView('export', config);
-  }, [pushView]);
-
-  const finishBuilder = useCallback((config: OpenClawConfigType) => {
-    pushView('export', config);
-  }, [pushView]);
-
-  // Import: reset history to landing → export so Back returns to Landing
-  const importConfig = useCallback((config: OpenClawConfigType) => {
-    setHistory([
-      { view: 'landing', config: null },
-      { view: 'export', config },
-    ]);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, []);
-
-  // Check for hidden forge parameter in URL
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('forge') === 'true') {
-      setTimeout(() => {
-        setSoulForgeData(null);
-        pushView('soulforge-interview');
-      }, 0);
-      
-      // Clean up URL without reload
-      const newUrl = window.location.pathname;
-      window.history.replaceState({}, '', newUrl);
-    }
+  const startFresh = useCallback(() => {
+    pushView('interview');
   }, [pushView]);
 
   const renderView = () => {
@@ -155,10 +92,7 @@ function App() {
         return (
           <LandingPage
             onSelectPreset={() => navigateTo('presets')}
-            onStartInterview={startInterview}
-            onOpenBuilder={() => startBuilder()}
-            onLogoTap={handleLogoTap}
-            onImportConfig={importConfig}
+            onStartFresh={startFresh}
             onOpenBlog={() => pushView('blog')}
           />
         );
@@ -167,90 +101,57 @@ function App() {
         return (
           <PresetsPage
             onSelectPreset={selectPreset}
-            onCustomize={startBuilder}
             onBack={goBack}
           />
         );
 
       case 'interview':
         return (
-          <InterviewPage
-            initialConfig={currentEntry.config || createEmptyConfig()}
-            onComplete={finishInterview}
-            onBack={goBack}
-          />
-        );
-
-      case 'soulforge-interview':
-        return (
           <SoulForgeInterviewPage
-            onComplete={(files, canon) => {
-              setSoulForgeData({ files, canon });
-              pushView('soulforge-export');
+            initialSpirit={currentEntry.spirit}
+            onComplete={(files, spirit) => {
+              setSpiritData({ files, spirit });
+              pushView('export');
             }}
             onBack={goBack}
           />
         );
 
-      case 'soulforge-export':
-        return soulForgeData ? (
-          <SoulForgeExportPage
-            canon={soulForgeData.canon}
+      case 'builder':
+        return spiritData ? (
+          <BuilderPage
+            initialSpirit={spiritData.spirit}
+            onComplete={(spirit: SpiritData) => {
+              // Regenerate files from updated spirit
+              import('./lib/soulforge/generator').then(({ generateSoulForgeFiles }) => {
+                const output = generateSoulForgeFiles(spirit, { includeAdvancedPack: true, language: 'en' });
+                setSpiritData({ files: output.files, spirit });
+                pushView('export');
+              });
+            }}
             onBack={goBack}
-            onNewConfig={resetToLanding}
           />
         ) : null;
 
-      case 'builder':
-        return (
-          <BuilderPage
-            initialConfig={currentEntry.config || createEmptyConfig()}
-            onComplete={finishBuilder}
-            onBack={goBack}
-          />
-        );
-
       case 'export':
-        return (
-          <ExportPage
-            config={currentEntry.config || createEmptyConfig()}
+        return spiritData ? (
+          <SoulForgeExportPage
+            spirit={spiritData.spirit}
             onBack={goBack}
             onNewConfig={resetToLanding}
+            onFineTune={() => pushView('builder')}
           />
-        );
+        ) : null;
+
       case 'blog':
-        return (
-          <BlogPage
-            onBack={goBack}
-          />
-        );
+        return <BlogPage onBack={goBack} />;
 
       case 'legal-impressum':
-        return (
-          <LegalPage
-            title="Impressum"
-            content={IMPRESSUM_DE}
-            onBack={goBack}
-          />
-        );
-
+        return <LegalPage title="Impressum" content={IMPRESSUM_DE} onBack={goBack} />;
       case 'legal-privacy':
-        return (
-          <LegalPage
-            title="Datenschutzerklärung"
-            content={PRIVACY_POLICY_DE}
-            onBack={goBack}
-          />
-        );
-
+        return <LegalPage title="Datenschutzerklärung" content={PRIVACY_POLICY_DE} onBack={goBack} />;
       case 'legal-tos':
-        return (
-          <LegalPage
-            title="Terms & Conditions"
-            content={TOS_DE}
-            onBack={goBack}
-          />
-        );
+        return <LegalPage title="Terms & Conditions" content={TOS_DE} onBack={goBack} />;
 
       default:
         return null;
@@ -276,24 +177,15 @@ function App() {
         {renderView()}
       </main>
 
-      <GlobalFooter 
+      <GlobalFooter
         onOpenLegal={(type) => {
           if (type === 'impressum') pushView('legal-impressum');
           if (type === 'privacy') pushView('legal-privacy');
           if (type === 'tos') pushView('legal-tos');
-        }} 
+        }}
       />
 
       <CookieConsent />
-
-      <ConfigModeOverlay
-        isOpen={configModeOpen}
-        onClose={() => setConfigModeOpen(false)}
-        onStartSoulForge={() => {
-          setSoulForgeData(null);
-          pushView('soulforge-interview');
-        }}
-      />
 
       <Toaster
         position="bottom-right"
