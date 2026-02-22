@@ -6,7 +6,7 @@
 
 import { describe, it, expect } from 'vitest';
 import { generateSoulForgeFiles, generateBasePack, generateAdvancedPack, BASE_FILES, ADVANCED_FILES } from '../generator';
-import { createEmptySpirit, mergeWithDefaults, SOULFORGE_VERSION } from '../spirit';
+import { mergeWithDefaults, SOULFORGE_VERSION } from '../spirit';
 import type { SpiritData } from '../types';
 
 describe('SoulForge Generator', () => {
