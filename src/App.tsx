@@ -26,7 +26,7 @@ export interface HistoryEntry {
 function App() {
   // History stack – index 0 is always the origin (landing)
   const [history, setHistory] = useState<HistoryEntry[]>(() => {
-    const saved = localStorage.getItem('soulforge_session');
+    const saved = localStorage.getItem('soulforge_unified_session');
     if (saved) {
       try {
         return JSON.parse(saved);
@@ -41,7 +41,7 @@ function App() {
 
   // Persist history to localStorage
   useEffect(() => {
-    localStorage.setItem('soulforge_session', JSON.stringify(history));
+    localStorage.setItem('soulforge_unified_session', JSON.stringify(history));
   }, [history]);
 
   const currentEntry = history[history.length - 1];
