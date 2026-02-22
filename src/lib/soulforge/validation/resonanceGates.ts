@@ -55,10 +55,11 @@ export const RESONANCE_GATES: ResonanceGate[] = [
 
       const toneIssues: string[] = [];
 
-      if (canon.tone.precision && !identity.content.includes(canon.tone.precision)) {
+      const identityLower = identity.content.toLowerCase();
+      if (canon.tone.precision && !identityLower.includes(canon.tone.precision.toLowerCase())) {
         toneIssues.push('precision');
       }
-      if (canon.tone.method && !identity.content.includes(canon.tone.method)) {
+      if (canon.tone.method && !identityLower.includes(canon.tone.method.toLowerCase())) {
         toneIssues.push('method');
       }
 
