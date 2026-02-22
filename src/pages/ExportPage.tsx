@@ -255,13 +255,16 @@ export const ExportPage: React.FC<ExportPageProps> = ({
           <div className="flex flex-col sm:flex-row sm:items-center gap-4">
             <div className="flex items-center gap-3">
               {/* Fix #6: use preset-specific icon */}
-              <div className={`
+              <div
+                className={`
                 w-12 h-12 rounded-full shadow-clay flex items-center justify-center
                 ${preset.color === 'peach' ? 'bg-clay-peach text-clay-charcoal' : ''}
                 ${preset.color === 'mint' ? 'bg-clay-mint text-clay-charcoal' : ''}
-                ${preset.color === 'coral' ? 'bg-clay-coral text-white' : ''}
+                ${preset.color === 'coral' ? 'bg-clay-coral' : ''}
                 ${preset.color === 'sage' ? 'bg-clay-sage text-clay-charcoal' : ''}
-              `}>
+              `}
+                style={preset.color === 'coral' ? { color: 'rgb(240, 10, 10)' } : undefined}
+              >
                 {PRESET_ICONS[config.presetId] ?? <Sparkles className="w-6 h-6" />}
               </div>
               <div>

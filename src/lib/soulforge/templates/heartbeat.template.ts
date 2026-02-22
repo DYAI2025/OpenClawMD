@@ -13,16 +13,16 @@
  * INVARIANT: When inactive and no pending actions: output exactly `HEARTBEAT_OK`
  */
 
-import type { CanonData } from '../types';
+import type { SpiritData } from '../types';
 
-export function renderHeartbeatMd(canon: CanonData, language: 'en' | 'de' = 'en'): string {
+export function renderHeartbeatMd(canon: SpiritData, language: 'en' | 'de' = 'en'): string {
   if (language === 'de') {
     return renderGerman(canon);
   }
   return renderEnglish(canon);
 }
 
-function renderEnglish(canon: CanonData): string {
+function renderEnglish(canon: SpiritData): string {
   const groups = canon.rotatingGroups || {
     groupA: 'High priority items',
     groupB: 'Medium priority items',
@@ -85,7 +85,7 @@ If (no triggers) AND (no actions queued) AND (no upgrade notice): output \`HEART
 `;
 }
 
-function renderGerman(canon: CanonData): string {
+function renderGerman(canon: SpiritData): string {
   const groups = canon.rotatingGroups || {
     groupA: 'Hohe Priorität',
     groupB: 'Mittlere Priorität',

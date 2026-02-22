@@ -55,7 +55,15 @@ export const PresetsPage: React.FC<PresetsPageProps> = ({
         {/* Preset Cards */}
         <div className="space-y-6">
           {presets.map((preset) => (
-            <ClayCard key={preset.id} padding="lg">
+            <ClayCard
+              key={preset.id}
+              padding="lg"
+              style={
+                preset.id === 'open' ? { backgroundImage: 'linear-gradient(90deg, rgb(255, 255, 255) 0%, rgb(219, 141, 51) 100%)' } :
+                preset.id === 'crazy' ? { backgroundImage: 'linear-gradient(90deg, rgb(255, 255, 255) 0%, rgb(100, 185, 133) 100%)' } :
+                undefined
+              }
+            >
               <ClayCardContent>
                 <div className="flex flex-col lg:flex-row lg:items-start gap-6">
                   {/* Icon & Title */}

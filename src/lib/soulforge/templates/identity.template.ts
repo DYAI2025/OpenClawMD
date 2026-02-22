@@ -10,9 +10,9 @@
  * INVARIANT: No process rules, no tool instructions, no scheduling, no format mandates
  */
 
-import type { CanonData } from '../types';
+import type { SpiritData } from '../types';
 
-export function renderIdentityMd(canon: CanonData, language: 'en' | 'de' = 'en'): string {
+export function renderIdentityMd(canon: SpiritData, language: 'en' | 'de' = 'en'): string {
   const tonePrecision = getToneLabel(canon.tone.precision || 'minimalist', 'precision', language);
   const toneMethod = getToneLabel(canon.tone.method || 'socratic', 'method', language);
   const toneDirectness = getToneLabel(canon.tone.directness || 'direct', 'directness', language);
@@ -25,7 +25,7 @@ export function renderIdentityMd(canon: CanonData, language: 'en' | 'de' = 'en')
 }
 
 function renderEnglish(
-  canon: CanonData,
+  canon: SpiritData,
   tonePrecision: string,
   toneMethod: string,
   toneDirectness: string
@@ -62,7 +62,7 @@ ${generateAvatarDescription(canon)}
 }
 
 function renderGerman(
-  canon: CanonData,
+  canon: SpiritData,
   tonePrecision: string,
   toneMethod: string,
   toneDirectness: string
@@ -137,7 +137,7 @@ function getToneLabel(
   return labels[language]?.[dimension]?.[value] || value;
 }
 
-function generateAvatarDescription(canon: CanonData): string {
+function generateAvatarDescription(canon: SpiritData): string {
   // Generate a simple avatar description based on mode and domain
   const modeImages: Record<string, string> = {
     'sidekick': 'A schematic compass over a map grid',

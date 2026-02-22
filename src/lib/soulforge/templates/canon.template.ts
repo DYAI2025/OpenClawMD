@@ -8,17 +8,17 @@
  * - Checks
  */
 
-import type { CanonData } from '../types';
-import { SOULFORGE_VERSION } from '../canon';
+import type { SpiritData } from '../types';
+import { SOULFORGE_VERSION } from '../spirit';
 
-export function renderCanonMd(canon: CanonData, language: 'en' | 'de' = 'en'): string {
+export function renderCanonMd(canon: SpiritData, language: 'en' | 'de' = 'en'): string {
   if (language === 'de') {
     return renderGerman(canon);
   }
   return renderEnglish(canon);
 }
 
-function renderEnglish(canon: CanonData): string {
+function renderEnglish(canon: SpiritData): string {
   return `# CANON.md — Resonance Anchor (Single Source of Truth)
 
 ## Intent
@@ -93,7 +93,7 @@ ${canon.stopWords.map(w => `- ${w}`).join('\n') || '- None defined'}
 `;
 }
 
-function renderGerman(canon: CanonData): string {
+function renderGerman(canon: SpiritData): string {
   const modeLabels: Record<string, string> = {
     'sidekick': 'Sidekick (Discovery)',
     'chief-of-staff': 'Chief of Staff (Execution)',

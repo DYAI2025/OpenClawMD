@@ -1,10 +1,10 @@
-import type { CanonData } from '../soulforge/types';
+import type { SpiritData } from '../soulforge/types';
 import type { RiskLevel } from '@/components/safety/RiskBadge';
 
 /**
- * Calculates the risk level based on the CanonData parameters.
+ * Calculates the risk level based on the SpiritData parameters.
  */
-export function calculateRiskLevel(canon: Partial<CanonData>): RiskLevel {
+export function calculateRiskLevel(canon: Partial<SpiritData>): RiskLevel {
   if (!canon) return 'low';
 
   const hasHighAutonomy = canon.autonomy?.actionMode === 'autonomous_in_sandbox';
@@ -24,7 +24,7 @@ export function calculateRiskLevel(canon: Partial<CanonData>): RiskLevel {
 /**
  * Validates if the configuration requires a legal disclaimer (Overclaw).
  */
-export function requiresSafetyDisclaimer(canon: Partial<CanonData>): boolean {
+export function requiresSafetyDisclaimer(canon: Partial<SpiritData>): boolean {
   const level = calculateRiskLevel(canon);
   return level === 'high' || level === 'critical';
 }

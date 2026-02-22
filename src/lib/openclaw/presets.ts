@@ -47,7 +47,7 @@ const SECURITY_PRESET: PresetDefinition = {
 // OPEN Preset - Balanced growth
 const OPEN_PRESET: PresetDefinition = {
   id: 'open',
-  name: 'OPEN',
+  name: 'Responsible',
   tagline: 'Careful growth. Iterative evolution. Shared reflection.',
   description: 'The OPEN preset strikes a balance between autonomy and oversight. The system can propose initiatives and handle moderate uncertainty, but key decisions still involve human collaboration.',
   color: 'mint',
@@ -76,7 +76,7 @@ const OPEN_PRESET: PresetDefinition = {
 // CRAZY (Overclaw) Preset - Maximum speed
 const CRAZY_PRESET: PresetDefinition = {
   id: 'crazy',
-  name: 'CRAZY',
+  name: 'OverClaw',
   tagline: 'Speed. Strategy. Emergence.',
   description: 'The CRAZY preset (also known as Overclaw) unleashes maximum autonomy. The system can act strategically, handle high uncertainty, and execute with minimal human intervention. Use with caution and clear monitoring.',
   color: 'coral',

@@ -18,7 +18,7 @@ import { ConfigModeOverlay } from './components/ConfigModeOverlay';
 import { Toaster } from '@/components/ui/sonner';
 import { ClayFlowBreadcrumb } from '@/components/clay';
 import { SoulForgeInterviewPage } from './pages/SoulForgeInterviewPage';
-import type { GeneratedFile, CanonData } from './lib/soulforge/types';
+import type { GeneratedFile, SpiritData } from './lib/soulforge/types';
 
 export type AppView = 'landing' | 'presets' | 'interview' | 'builder' | 'export' | 'blog' | 'soulforge-interview' | 'soulforge-export' | 'legal-impressum' | 'legal-privacy' | 'legal-tos';
 
@@ -41,7 +41,7 @@ function App() {
     return [{ view: 'landing', config: null }];
   });
 
-  const [soulForgeData, setSoulForgeData] = useState<{ files: GeneratedFile[]; canon: CanonData } | null>(null);
+  const [soulForgeData, setSoulForgeData] = useState<{ files: GeneratedFile[]; canon: SpiritData } | null>(null);
 
   // Persist history to localStorage
   useEffect(() => {

@@ -4,7 +4,7 @@
  * Orchestrates quality gates and resonance gates
  */
 
-import type { CanonData, GeneratedFile, ValidationReport } from '../types';
+import type { SpiritData, GeneratedFile, ValidationReport } from '../types';
 import { runQualityGates, validateFileCount } from './qualityGates';
 import { runResonanceGates } from './resonanceGates';
 
@@ -17,7 +17,7 @@ import { runResonanceGates } from './resonanceGates';
  */
 export function validateSoulForge(
   files: GeneratedFile[],
-  canon: CanonData
+  canon: SpiritData
 ): ValidationReport {
   // 1. Quality Gates (Internal file consistency)
   const qualityGateIssues = runQualityGates(files);

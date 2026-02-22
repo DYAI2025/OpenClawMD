@@ -6,8 +6,8 @@
 
 import { describe, it, expect } from 'vitest';
 import { generateSoulForgeFiles, generateBasePack, generateAdvancedPack, BASE_FILES, ADVANCED_FILES } from '../generator';
-import { createEmptyCanon, mergeWithDefaults, SOULFORGE_VERSION } from '../canon';
-import type { CanonData } from '../types';
+import { createEmptySpirit, mergeWithDefaults, SOULFORGE_VERSION } from '../canon';
+import type { SpiritData } from '../types';
 
 describe('SoulForge Generator', () => {
   
@@ -18,7 +18,7 @@ describe('SoulForge Generator', () => {
         agentName: 'Test Agent',
         agentTitle: 'Principal Test Architect',
         agentMode: 'sidekick',
-      }) as CanonData;
+      }) as SpiritData;
       
       const options = {
         includeAdvancedPack: true,
@@ -53,7 +53,7 @@ describe('SoulForge Generator', () => {
         agentName: 'Test Agent',
         agentTitle: 'Principal Test Architect',
         agentMode: 'chief-of-staff',
-      }) as CanonData;
+      }) as SpiritData;
       
       const options = {
         includeAdvancedPack: false,
@@ -82,7 +82,7 @@ describe('SoulForge Generator', () => {
         agentName: 'Test Agent',
         agentTitle: 'Principal Test Architect',
         agentMode: 'coach',
-      }) as CanonData;
+      }) as SpiritData;
       
       const options = {
         includeAdvancedPack: false,
@@ -111,7 +111,7 @@ describe('SoulForge Generator', () => {
           method: 'socratic',
           directness: 'direct',
         },
-      }) as CanonData;
+      }) as SpiritData;
       
       const options = {
         includeAdvancedPack: true,
@@ -141,7 +141,7 @@ describe('SoulForge Generator', () => {
           actionMode: 'recommend_only',
           approvalThreshold: 'Test threshold',
         },
-      }) as CanonData;
+      }) as SpiritData;
       
       const options = {
         includeAdvancedPack: true,
@@ -164,7 +164,7 @@ describe('SoulForge Generator', () => {
   describe('generateBasePack', () => {
     it('should generate exactly 5 base files', () => {
       // Arrange
-      const canon = mergeWithDefaults({}) as CanonData;
+      const canon = mergeWithDefaults({}) as SpiritData;
       
       // Act
       const files = generateBasePack(canon, 'en');
@@ -177,7 +177,7 @@ describe('SoulForge Generator', () => {
     
     it('should generate valid SOUL.md with required sections', () => {
       // Arrange
-      const canon = mergeWithDefaults({}) as CanonData;
+      const canon = mergeWithDefaults({}) as SpiritData;
       
       // Act
       const files = generateBasePack(canon, 'en');
@@ -198,7 +198,7 @@ describe('SoulForge Generator', () => {
       const canon = mergeWithDefaults({
         agentName: 'Test',
         agentTitle: 'Test Title',
-      }) as CanonData;
+      }) as SpiritData;
       
       // Act
       const files = generateBasePack(canon, 'en');
@@ -217,7 +217,7 @@ describe('SoulForge Generator', () => {
   describe('generateAdvancedPack', () => {
     it('should generate exactly 4 advanced files', () => {
       // Arrange
-      const canon = mergeWithDefaults({}) as CanonData;
+      const canon = mergeWithDefaults({}) as SpiritData;
       
       // Act
       const files = generateAdvancedPack(canon, 'en');
@@ -230,7 +230,7 @@ describe('SoulForge Generator', () => {
     
     it('should include version info in VERSION.md', () => {
       // Arrange
-      const canon = mergeWithDefaults({}) as CanonData;
+      const canon = mergeWithDefaults({}) as SpiritData;
       
       // Act
       const files = generateAdvancedPack(canon, 'en');
@@ -244,7 +244,7 @@ describe('SoulForge Generator', () => {
     
     it('should generate INDEX.md with file structure', () => {
       // Arrange
-      const canon = mergeWithDefaults({}) as CanonData;
+      const canon = mergeWithDefaults({}) as SpiritData;
       
       // Act
       const files = generateAdvancedPack(canon, 'en');
@@ -266,7 +266,7 @@ describe('SoulForge Generator', () => {
       const canon = mergeWithDefaults({
         agentName,
         agentTitle: 'Test Title',
-      }) as CanonData;
+      }) as SpiritData;
       
       // Act
       const result = generateSoulForgeFiles(canon, { includeAdvancedPack: true, language: 'en' });
@@ -288,7 +288,7 @@ describe('SoulForge Generator', () => {
           actionMode: 'execute_with_approval',
           approvalThreshold: 'Custom threshold for testing',
         },
-      }) as CanonData;
+      }) as SpiritData;
       
       // Act
       const result = generateSoulForgeFiles(canon, { includeAdvancedPack: false, language: 'en' });
@@ -307,7 +307,7 @@ describe('SoulForge Generator', () => {
       // Arrange
       const canon = mergeWithDefaults({
         negativeConstraints: [],
-      }) as CanonData;
+      }) as SpiritData;
       
       // Act
       const result = generateSoulForgeFiles(canon, { includeAdvancedPack: false, language: 'en' });
@@ -322,7 +322,7 @@ describe('SoulForge Generator', () => {
       // Arrange
       const canon = mergeWithDefaults({
         stopWords: ['HALT', 'STOP', 'ABORT', 'CUSTOM'],
-      }) as CanonData;
+      }) as SpiritData;
       
       // Act
       const result = generateSoulForgeFiles(canon, { includeAdvancedPack: false, language: 'en' });

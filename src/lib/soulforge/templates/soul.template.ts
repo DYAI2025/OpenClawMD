@@ -10,9 +10,9 @@
  * INVARIANT: No persona, no tone, no tools, no scheduling, no output formatting rules
  */
 
-import type { CanonData } from '../types';
+import type { SpiritData } from '../types';
 
-export function renderSoulMd(canon: CanonData, language: 'en' | 'de' = 'en'): string {
+export function renderSoulMd(canon: SpiritData, language: 'en' | 'de' = 'en'): string {
   const negativeConstraints = canon.negativeConstraints
     .map(c => `- ${c}`)
     .join('\n');
@@ -27,7 +27,7 @@ export function renderSoulMd(canon: CanonData, language: 'en' | 'de' = 'en'): st
 }
 
 function renderEnglish(
-  _canon: CanonData, 
+  _canon: SpiritData, 
   negativeConstraints: string, 
   truthPolicyText: string
 ): string {
@@ -63,7 +63,7 @@ ${negativeConstraints || '- No negative constraints defined yet.'}
 }
 
 function renderGerman(
-  _canon: CanonData, 
+  _canon: SpiritData, 
   negativeConstraints: string, 
   truthPolicyText: string
 ): string {

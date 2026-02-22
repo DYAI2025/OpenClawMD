@@ -2,22 +2,17 @@ export const IMPRESSUM_DE = `
 # Impressum
 
 ## Angaben gemäß § 5 TMG
-Benjamin Poersch
-[Straße und Hausnummer]
-[PLZ und Ort]
+Benjamin Poersch  
+Grazer Damm 207  
+12157 Berlin
 
 ## Kontakt
-E-Mail: [E-Mail-Adresse]
-Telefon: [Optional]
+E-Mail: info@dyai.app
 
 ## Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV
-Benjamin Poersch
-[Straße und Hausnummer]
-[PLZ und Ort]
-
----
-
-**Hinweis:** Dies ist eine Vorlage. Bitte vervollständigen Sie Ihre persönlichen Daten (Adresse, E-Mail), um rechtlich abgesichert zu sein.
+Benjamin Poersch  
+Grazer Damm 207  
+12157 Berlin
 `;
 
 export const PRIVACY_POLICY_DE = `

@@ -10,16 +10,16 @@
  * INVARIANT: Defensive only. No bypass instructions. No exploit details.
  */
 
-import type { CanonData } from '../types';
+import type { SpiritData } from '../types';
 
-export function renderShieldMd(canon: CanonData, language: 'en' | 'de' = 'en'): string {
+export function renderShieldMd(canon: SpiritData, language: 'en' | 'de' = 'en'): string {
   if (language === 'de') {
     return renderGerman(canon);
   }
   return renderEnglish(canon);
 }
 
-function renderEnglish(canon: CanonData): string {
+function renderEnglish(canon: SpiritData): string {
   return `# SHIELD.md — Defensive Guardrails (Minimal, Policy-Based)
 
 ## Intent
@@ -87,7 +87,7 @@ Current stop words: ${canon.stopWords.map(w => `"${w}"`).join(', ') || 'None def
 `;
 }
 
-function renderGerman(canon: CanonData): string {
+function renderGerman(canon: SpiritData): string {
 
   return `# SHIELD.md — Defensive Guardrails (Minimal, Policy-basiert)
 

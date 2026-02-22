@@ -9,16 +9,16 @@
  * INVARIANT: Keep small. Prefer "what remains true" over "what happened".
  */
 
-import type { CanonData } from '../types';
+import type { SpiritData } from '../types';
 
-export function renderMemoryMd(canon: CanonData, language: 'en' | 'de' = 'en'): string {
+export function renderMemoryMd(canon: SpiritData, language: 'en' | 'de' = 'en'): string {
   if (language === 'de') {
     return renderGerman(canon);
   }
   return renderEnglish(canon);
 }
 
-function renderEnglish(canon: CanonData): string {
+function renderEnglish(canon: SpiritData): string {
   return `# MEMORY.md — Stable Facts (Small, Curated)
 
 ## Intent
@@ -77,7 +77,7 @@ ${canon.negativeConstraints.slice(0, 3).map(c => `- ${c}`).join('\n') || '- No c
 `;
 }
 
-function renderGerman(canon: CanonData): string {
+function renderGerman(canon: SpiritData): string {
   const formatLabels: Record<string, string> = {
     'result_only': 'Nur Ergebnis',
     'result_plus_plan': 'Ergebnis plus Plan',

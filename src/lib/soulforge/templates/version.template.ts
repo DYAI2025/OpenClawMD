@@ -7,10 +7,10 @@
  * - Resonance Layer
  */
 
-import type { CanonData } from '../types';
-import { SOULFORGE_VERSION, TEMPLATE_PACK_VERSION, RESONANCE_LAYER } from '../canon';
+import type { SpiritData } from '../types';
+import { SOULFORGE_VERSION, TEMPLATE_PACK_VERSION, RESONANCE_LAYER } from '../spirit';
 
-export function renderVersionMd(_canon: CanonData, language: 'en' | 'de' = 'en'): string {
+export function renderVersionMd(_canon: SpiritData, language: 'en' | 'de' = 'en'): string {
   if (language === 'de') {
     return renderGerman();
   }

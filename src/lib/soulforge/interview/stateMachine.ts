@@ -5,7 +5,7 @@
  * Phases: HANDSHAKE → DISCOVERY → VIBECODING → CONSTITUTION → PULSE → GENERATION
  */
 
-import type { InterviewPhase, InterviewState, InterviewTurn, CanonData } from '../types';
+import type { InterviewPhase, InterviewState, InterviewTurn, SpiritData } from '../types';
 
 export const PHASE_ORDER: InterviewPhase[] = [
   'handshake',
@@ -58,7 +58,7 @@ export function calculateProgress(phase: InterviewPhase): number {
  */
 export function canProceedFromPhase(
   phase: InterviewPhase,
-  canon: Partial<CanonData>
+  canon: Partial<SpiritData>
 ): boolean {
   switch (phase) {
     case 'handshake':
@@ -197,7 +197,7 @@ export function goBackPhase(state: InterviewState): InterviewState {
  */
 export function updateCanon(
   state: InterviewState,
-  updates: Partial<CanonData>
+  updates: Partial<SpiritData>
 ): InterviewState {
   return {
     ...state,

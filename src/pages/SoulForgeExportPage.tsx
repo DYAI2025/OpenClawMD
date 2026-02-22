@@ -13,14 +13,14 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { ClayButton, ClayCard, ClayTabs } from '@/components/clay';
 import { DownloadConfirmation } from '@/components/safety/DownloadConfirmation';
-import type { CanonData, GeneratedFile } from '@/lib/soulforge/types';
+import type { SpiritData, GeneratedFile } from '@/lib/soulforge/types';
 import { generateSoulForgeFiles } from '@/lib/soulforge/generator';
 import { validateSoulForge } from '@/lib/soulforge/validation';
 import { exportToJson } from '@/lib/soulforge/export/json';
 import { toast } from 'sonner';
 
 interface SoulForgeExportPageProps {
-  canon: CanonData;
+  canon: SpiritData;
   onBack: () => void;
   onNewConfig: () => void;
 }

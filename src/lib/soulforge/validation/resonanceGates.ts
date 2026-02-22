@@ -5,11 +5,11 @@
  * Ensures all files speak the same language
  */
 
-import type { CanonData, GeneratedFile, GateIssue } from '../types';
+import type { SpiritData, GeneratedFile, GateIssue } from '../types';
 
 export interface ResonanceGate {
   id: string;
-  check: (files: GeneratedFile[], canon: CanonData) => GateIssue | null;
+  check: (files: GeneratedFile[], canon: SpiritData) => GateIssue | null;
 }
 
 export const RESONANCE_GATES: ResonanceGate[] = [
@@ -186,7 +186,7 @@ export const RESONANCE_GATES: ResonanceGate[] = [
 
 export function runResonanceGates(
   files: GeneratedFile[],
-  canon: CanonData
+  canon: SpiritData
 ): GateIssue[] {
   const issues: GateIssue[] = [];
   
@@ -202,7 +202,7 @@ export function runResonanceGates(
 
 export function calculateResonanceScore(
   files: GeneratedFile[],
-  canon: CanonData
+  canon: SpiritData
 ): number {
   const totalGates = RESONANCE_GATES.length;
   const issues = runResonanceGates(files, canon);

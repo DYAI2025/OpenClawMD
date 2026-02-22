@@ -82,50 +82,51 @@ export interface InterviewTurn {
 
 export interface InterviewState {
   phase: InterviewPhase;
-  canon: Partial<CanonData>;
+  canon: Partial<SpiritData>;
   history: InterviewTurn[];
   startedAt: string;
   updatedAt: string;
 }
 
 // ============================================================================
-// Canon = Single Source of Truth
+// Spirit = Single Source of Truth
 // ============================================================================
 
-export interface CanonTone {
+export interface SpiritTone {
   precision?: TonePrecision;
   method?: ToneMethod;
   directness?: ToneDirectness;
 }
 
-export interface CanonAutonomy {
+export interface SpiritAutonomy {
   actionMode?: ActionMode;
   approvalThreshold?: string;
 }
 
-export interface CanonSurprise {
+export interface SpiritSurprise {
   appetite?: SurpriseAppetite;
   cadence?: SurpriseCadence;
   boundaries?: string;
 }
 
-export interface CanonOutput {
+export interface SpiritOutput {
   format?: OutputFormat;
   explanations?: ExplanationsPolicy;
   confidenceDisplay?: ConfidenceDisplay;
 }
 
-export interface CanonAddressing {
+export interface SpiritAddressing {
   form?: AddressForm;
   language?: string;
   timezone?: string;
 }
 
 /**
- * CanonData - The Single Source of Truth
+ * SpiritData - The Single Source of Truth
  * All generated files must remain consistent with these values.
+ * (Formerly CanonData)
  */
-export interface CanonData {
+export interface SpiritData {
   // Identity
   agentName: string;
   agentTitle: string;
@@ -133,23 +134,23 @@ export interface CanonData {
   domainFocus: DomainFocus;
   
   // Tone
-  tone: CanonTone;
+  tone: SpiritTone;
   
   // Autonomy
-  autonomy: CanonAutonomy;
+  autonomy: SpiritAutonomy;
   
   // Surprise Contract
-  surprise: CanonSurprise;
+  surprise: SpiritSurprise;
   
   // Constitution
   truthPolicy: TruthPolicy;
   negativeConstraints: string[];
   
   // Output Contract
-  output: CanonOutput;
+  output: SpiritOutput;
   
   // Addressing
-  addressing: CanonAddressing;
+  addressing: SpiritAddressing;
   
   // Stop Words
   stopWords: string[];
@@ -188,7 +189,7 @@ export interface GeneratedFile {
 
 export interface SoulForgeOutput {
   files: GeneratedFile[];
-  canon: CanonData;
+  canon: SpiritData;
   options: GenerationOptions;
   generatedAt: string;
   validationReport?: ValidationReport;
@@ -231,11 +232,11 @@ export interface VibeCodingRole {
 // Preset Mapping (Legacy Compatibility)
 // ============================================================================
 
-export interface PresetCanonMapping {
+export interface PresetSpiritMapping {
   id: string;
   name: string;
   description: string;
-  canon: Partial<CanonData>;
+  canon: Partial<SpiritData>;
   color: 'peach' | 'mint' | 'coral' | 'sage';
 }
 
@@ -245,7 +246,7 @@ export interface PresetCanonMapping {
 
 export interface SoulForgeExport {
   version: string;
-  canon: CanonData;
+  canon: SpiritData;
   options: GenerationOptions;
   exportedAt: string;
   soulforgeVersion: string;

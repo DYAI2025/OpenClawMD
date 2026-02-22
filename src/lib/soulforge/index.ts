@@ -27,13 +27,13 @@ export type {
   InterviewTurn,
   InterviewState,
   
-  // Canon
-  CanonData,
-  CanonTone,
-  CanonAutonomy,
-  CanonSurprise,
-  CanonOutput,
-  CanonAddressing,
+  // Spirit
+  SpiritData,
+  SpiritTone,
+  SpiritAutonomy,
+  SpiritSurprise,
+  SpiritOutput,
+  SpiritAddressing,
   
   // Generation
   GenerationOptions,
@@ -49,7 +49,7 @@ export type {
   VibeCodingRole,
   
   // Preset
-  PresetCanonMapping,
+  PresetSpiritMapping,
   
   // Export/Import
   SoulForgeExport,
@@ -61,7 +61,7 @@ export type {
   TemplateVariables,
 } from './types';
 
-// Canon defaults and utilities
+// Spirit defaults and utilities
 export {
   SOULFORGE_VERSION,
   TEMPLATE_PACK_VERSION,
@@ -78,17 +78,17 @@ export {
   VIBECODING_ROLES,
   DOMAIN_SUFFIXES,
   
-  createEmptyCanon,
+  createEmptySpirit,
   getDefaultsForMode,
   getRolesForMode,
   generateAgentName,
-  isCanonComplete,
+  isSpiritComplete,
   mergeWithDefaults,
   
   // Legacy
   type LegacyDimensions,
-  dimensionsToCanon,
-} from './canon';
+  dimensionsToSpirit,
+} from './spirit';
 
 // Generator
 export {

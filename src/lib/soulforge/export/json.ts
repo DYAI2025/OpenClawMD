@@ -4,8 +4,8 @@
  * Handles export and import of SoulForge configurations as JSON
  */
 
-import type { CanonData, GenerationOptions, SoulForgeExport, SoulForgeOutput } from '../types';
-import { SOULFORGE_VERSION } from '../canon';
+import type { SpiritData, GenerationOptions, SoulForgeExport, SoulForgeOutput } from '../types';
+import { SOULFORGE_VERSION } from '../spirit';
 
 /**
  * Export SoulForge configuration to JSON
@@ -117,7 +117,7 @@ export function readJsonFile(file: File): Promise<SoulForgeExport | null> {
  * Create minimal export for sharing (without sensitive data)
  */
 export function createShareableExport(
-  canon: CanonData,
+  canon: SpiritData,
   options: GenerationOptions
 ): string {
   const shareable = {

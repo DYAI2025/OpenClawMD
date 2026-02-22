@@ -6,7 +6,7 @@
  */
 
 import type {
-  CanonData,
+  SpiritData,
   GenerationOptions,
   GeneratedFile,
   SoulForgeOutput,
@@ -61,7 +61,7 @@ export type FileName = BaseFileName | AdvancedFileName;
  * @returns Generated files and metadata
  */
 export function generateSoulForgeFiles(
-  canon: CanonData,
+  canon: SpiritData,
   options: GenerationOptions
 ): SoulForgeOutput {
   const files: GeneratedFile[] = [];
@@ -104,7 +104,7 @@ export const generateSoulForge = generateSoulForgeFiles;
  * Generate only the Base Pack (5 files)
  */
 export function generateBasePack(
-  canon: CanonData,
+  canon: SpiritData,
   language: 'en' | 'de' = 'en'
 ): GeneratedFile[] {
   return [
@@ -120,7 +120,7 @@ export function generateBasePack(
  * Generate only the Advanced Pack (4 files)
  */
 export function generateAdvancedPack(
-  canon: CanonData,
+  canon: SpiritData,
   language: 'en' | 'de' = 'en'
 ): GeneratedFile[] {
   return [
@@ -136,10 +136,10 @@ export function generateAdvancedPack(
  */
 export function generateSingleFile(
   fileName: FileName,
-  canon: CanonData,
+  canon: SpiritData,
   language: 'en' | 'de' = 'en'
 ): GeneratedFile {
-  const renderers: Record<FileName, (c: CanonData, l: 'en' | 'de') => string> = {
+  const renderers: Record<FileName, (c: SpiritData, l: 'en' | 'de') => string> = {
     'SOUL.md': renderSoulMd,
     'IDENTITY.md': renderIdentityMd,
     'USER.md': renderUserMd,

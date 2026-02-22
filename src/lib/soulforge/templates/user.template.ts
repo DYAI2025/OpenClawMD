@@ -11,9 +11,9 @@
  * INVARIANT: No biography, no persona-building, no ethics essay
  */
 
-import type { CanonData } from '../types';
+import type { SpiritData } from '../types';
 
-export function renderUserMd(canon: CanonData, language: 'en' | 'de' = 'en'): string {
+export function renderUserMd(canon: SpiritData, language: 'en' | 'de' = 'en'): string {
   const stopWords = canon.stopWords.map(w => `- "${w}"`).join('\n') || '- None defined';
 
   if (language === 'de') {
@@ -23,7 +23,7 @@ export function renderUserMd(canon: CanonData, language: 'en' | 'de' = 'en'): st
   return renderEnglish(canon, stopWords);
 }
 
-function renderEnglish(canon: CanonData, stopWords: string): string {
+function renderEnglish(canon: SpiritData, stopWords: string): string {
   return `# USER.md — Operating Contract
 
 ## Intent
@@ -71,7 +71,7 @@ ${stopWords}
 `;
 }
 
-function renderGerman(canon: CanonData, stopWords: string): string {
+function renderGerman(canon: SpiritData, stopWords: string): string {
   const formatLabels: Record<string, string> = {
     'result_only': 'Nur Ergebnis',
     'result_plus_plan': 'Ergebnis plus Plan',

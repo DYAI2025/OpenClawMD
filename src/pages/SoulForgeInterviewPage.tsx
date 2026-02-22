@@ -8,15 +8,15 @@ import { useState, useCallback } from 'react';
 import { ArrowLeft, Check, Sparkles, AlertTriangle } from 'lucide-react';
 import { ClayButton, ClayCard, ClayErrorBanner } from '@/components/clay';
 import { RiskModal } from '@/components/safety/RiskModal';
-import type { CanonData } from '@/lib/soulforge/types';
+import type { SpiritData } from '@/lib/soulforge/types';
 import { 
   getRolesForMode, 
   mergeWithDefaults,
-} from '@/lib/soulforge/canon';
+} from '@/lib/soulforge/spirit';
 import type { GeneratedFile } from '@/lib/soulforge/types';
 
 interface SoulForgeInterviewPageProps {
-  onComplete: (files: GeneratedFile[], canon: CanonData) => void;
+  onComplete: (files: GeneratedFile[], canon: SpiritData) => void;
   onBack: () => void;
 }
 
@@ -24,7 +24,7 @@ type InterviewStep = 'mode' | 'role' | 'tone' | 'constraints' | 'autonomy' | 're
 
 export function SoulForgeInterviewPage({ onComplete, onBack }: SoulForgeInterviewPageProps) {
   const [step, setStep] = useState<InterviewStep>('mode');
-  const [canon, setCanon] = useState<Partial<CanonData>>({});
+  const [canon, setCanon] = useState<Partial<SpiritData>>({});
   const [showRiskModal, setShowRiskModal] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -32,12 +32,12 @@ export function SoulForgeInterviewPage({ onComplete, onBack }: SoulForgeIntervie
     canon.autonomy?.actionMode === 'autonomous_in_sandbox' ||
     canon.surprise?.appetite === 'high';
 
-  const updateCanon = useCallback((updates: Partial<CanonData>) => {
+  const updateCanon = useCallback((updates: Partial<SpiritData>) => {
     setCanon(prev => ({ ...prev, ...updates }));
     setError(null);
   }, []);
 
-  const handleModeSelect = (mode: CanonData['agentMode']) => {
+  const handleModeSelect = (mode: SpiritData['agentMode']) => {
     setCanon(mergeWithDefaults({ agentMode: mode }, mode));
     setStep('role');
   };
@@ -52,7 +52,7 @@ export function SoulForgeInterviewPage({ onComplete, onBack }: SoulForgeIntervie
 
   const handleNext = () => {
     if (step === 'review') {
-      const finalCanon = canon as CanonData;
+      const finalCanon = canon as SpiritData;
       // Generate files
       import('@/lib/soulforge/generator').then(({ generateSoulForgeFiles }) => {
         const output = generateSoulForgeFiles(finalCanon, {
@@ -143,13 +143,13 @@ export function SoulForgeInterviewPage({ onComplete, onBack }: SoulForgeIntervie
             <div className="space-y-3">
               <ChoiceButton
                 selected={canon.tone?.method === 'socratic'}
-                onClick={() => updateCanon({ tone: { ...canon.tone, method: 'socratic' } as CanonData['tone']})}
+                onClick={() => updateCanon({ tone: { ...canon.tone, method: 'socratic' } as SpiritData['tone']})}
                 label="Socratic"
                 description="Questions to guide discovery"
               />
               <ChoiceButton
                 selected={canon.tone?.method === 'instructional'}
-                onClick={() => updateCanon({ tone: { ...canon.tone, method: 'instructional' } as CanonData['tone']})}
+                onClick={() => updateCanon({ tone: { ...canon.tone, method: 'instructional' } as SpiritData['tone']})}
                 label="Instructional"
                 description="Clear directions and steps"
               />
@@ -157,13 +157,13 @@ export function SoulForgeInterviewPage({ onComplete, onBack }: SoulForgeIntervie
             <div className="space-y-3 mt-4">
               <ChoiceButton
                 selected={canon.tone?.precision === 'minimalist'}
-                onClick={() => updateCanon({ tone: { ...canon.tone, precision: 'minimalist' } as CanonData['tone']})}
+                onClick={() => updateCanon({ tone: { ...canon.tone, precision: 'minimalist' } as SpiritData['tone']})}
                 label="Minimalist"
                 description="Essential information only"
               />
               <ChoiceButton
                 selected={canon.tone?.precision === 'explanatory'}
-                onClick={() => updateCanon({ tone: { ...canon.tone, precision: 'explanatory' } as CanonData['tone']})}
+                onClick={() => updateCanon({ tone: { ...canon.tone, precision: 'explanatory' } as SpiritData['tone']})}
                 label="Explanatory"
                 description="Context and reasoning provided"
               />
@@ -211,19 +211,19 @@ Never make commitments on my behalf`}
             <div className="space-y-3">
               <ChoiceButton
                 selected={canon.autonomy?.actionMode === 'recommend_only'}
-                onClick={() => updateCanon({ autonomy: { ...canon.autonomy, actionMode: 'recommend_only' } as CanonData['autonomy']})}
+                onClick={() => updateCanon({ autonomy: { ...canon.autonomy, actionMode: 'recommend_only' } as SpiritData['autonomy']})}
                 label="Recommend Only"
                 description="Suggests actions, waits for approval"
               />
               <ChoiceButton
                 selected={canon.autonomy?.actionMode === 'execute_with_approval'}
-                onClick={() => updateCanon({ autonomy: { ...canon.autonomy, actionMode: 'execute_with_approval' } as CanonData['autonomy']})}
+                onClick={() => updateCanon({ autonomy: { ...canon.autonomy, actionMode: 'execute_with_approval' } as SpiritData['autonomy']})}
                 label="Execute with Approval"
                 description="Prepares actions, confirms before executing"
               />
               <ChoiceButton
                 selected={canon.autonomy?.actionMode === 'autonomous_in_sandbox'}
-                onClick={() => updateCanon({ autonomy: { ...canon.autonomy, actionMode: 'autonomous_in_sandbox' } as CanonData['autonomy']})}
+                onClick={() => updateCanon({ autonomy: { ...canon.autonomy, actionMode: 'autonomous_in_sandbox' } as SpiritData['autonomy']})}
                 label="Autonomous in Sandbox"
                 description="Acts freely in safe boundaries"
               />
@@ -233,19 +233,19 @@ Never make commitments on my behalf`}
               <div className="grid grid-cols-3 gap-2">
                 <ChoiceButton
                   selected={canon.surprise?.appetite === 'low'}
-                  onClick={() => updateCanon({ surprise: { ...canon.surprise, appetite: 'low' } as CanonData['surprise']})}
+                  onClick={() => updateCanon({ surprise: { ...canon.surprise, appetite: 'low' } as SpiritData['surprise']})}
                   label="Low"
                   description="Minimal"
                 />
                 <ChoiceButton
                   selected={canon.surprise?.appetite === 'medium'}
-                  onClick={() => updateCanon({ surprise: { ...canon.surprise, appetite: 'medium' } as CanonData['surprise']})}
+                  onClick={() => updateCanon({ surprise: { ...canon.surprise, appetite: 'medium' } as SpiritData['surprise']})}
                   label="Medium"
                   description="Balanced"
                 />
                 <ChoiceButton
                   selected={canon.surprise?.appetite === 'high'}
-                  onClick={() => updateCanon({ surprise: { ...canon.surprise, appetite: 'high' } as CanonData['surprise']})}
+                  onClick={() => updateCanon({ surprise: { ...canon.surprise, appetite: 'high' } as SpiritData['surprise']})}
                   label="High"
                   description="Active"
                 />

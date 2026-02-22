@@ -7,9 +7,9 @@
  * - Naming conventions
  */
 
-import type { CanonData } from '../types';
+import type { SpiritData } from '../types';
 
-export function renderIndexMd(_canon: CanonData, language: 'en' | 'de' = 'en'): string {
+export function renderIndexMd(_canon: SpiritData, language: 'en' | 'de' = 'en'): string {
   if (language === 'de') {
     return renderGerman();
   }
