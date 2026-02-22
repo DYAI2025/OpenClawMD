@@ -7,7 +7,7 @@
 import { useState, useMemo, useCallback } from 'react';
 import {
   ArrowLeft, Download, FileText, Sparkles, Copy, Check,
-  Code, Eye, FileJson, Shield, Globe, Zap, Package, AlertTriangle,
+  Code, Eye, FileJson, Shield, Globe, Zap, Package, AlertTriangle, Sliders,
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -20,12 +20,13 @@ import { exportToJson } from '@/lib/soulforge/export/json';
 import { toast } from 'sonner';
 
 interface SoulForgeExportPageProps {
-  canon: SpiritData;
+  spirit: SpiritData;
   onBack: () => void;
   onNewConfig: () => void;
+  onFineTune: () => void;
 }
 
-export function SoulForgeExportPage({ canon, onBack, onNewConfig }: SoulForgeExportPageProps) {
+export function SoulForgeExportPage({ spirit, onBack, onNewConfig, onFineTune }: SoulForgeExportPageProps) {
   const [copiedFile, setCopiedFile] = useState<string | null>(null);
   const [downloadedFiles, setDownloadedFiles] = useState<Set<string>>(new Set());
   const [viewModes, setViewModes] = useState<Record<string, 'rendered' | 'raw'>>({});
@@ -33,26 +34,26 @@ export function SoulForgeExportPage({ canon, onBack, onNewConfig }: SoulForgeExp
 
   const options = useMemo(() => ({
     includeAdvancedPack: true,
-    language: (canon.addressing?.language as 'en' | 'de') || 'en',
-  }), [canon]);
+    language: (spirit.addressing?.language as 'en' | 'de') || 'en',
+  }), [spirit]);
 
-  const output = useMemo(() => 
-    generateSoulForgeFiles(canon, options),
-    [canon, options]
+  const output = useMemo(() =>
+    generateSoulForgeFiles(spirit, options),
+    [spirit, options]
   );
 
   const files = output.files;
 
   // Validation
-  const validation = useMemo(() => 
-    validateSoulForge(files, canon),
-    [files, canon]
+  const validation = useMemo(() =>
+    validateSoulForge(files, spirit),
+    [files, spirit]
   );
 
   // Risk assessment
-  const isHighRisk = 
-    canon.autonomy?.actionMode === 'autonomous_in_sandbox' ||
-    canon.surprise?.appetite === 'high';
+  const isHighRisk =
+    spirit.autonomy?.actionMode === 'autonomous_in_sandbox' ||
+    spirit.surprise?.appetite === 'high';
 
   const getViewMode = (fileName: string): 'rendered' | 'raw' =>
     viewModes[fileName] ?? 'rendered';
@@ -103,7 +104,7 @@ export function SoulForgeExportPage({ canon, onBack, onNewConfig }: SoulForgeExp
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `soulforge-config-${canon.agentMode}-${Date.now()}.json`;
+    a.download = `soulforge-config-${spirit.agentMode}-${Date.now()}.json`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -295,33 +296,33 @@ export function SoulForgeExportPage({ canon, onBack, onNewConfig }: SoulForgeExp
             <div className="flex items-center gap-3">
               <div className={`
                 w-12 h-12 rounded-full shadow-clay flex items-center justify-center
-                ${canon.agentMode === 'sidekick' ? 'bg-clay-peach' : ''}
-                ${canon.agentMode === 'chief-of-staff' ? 'bg-clay-mint' : ''}
-                ${canon.agentMode === 'coach' ? 'bg-clay-sage' : ''}
+                ${spirit.agentMode === 'sidekick' ? 'bg-clay-peach' : ''}
+                ${spirit.agentMode === 'chief-of-staff' ? 'bg-clay-mint' : ''}
+                ${spirit.agentMode === 'coach' ? 'bg-clay-sage' : ''}
               `}>
-                {canon.agentMode === 'sidekick' && <Sparkles className="w-6 h-6" />}
-                {canon.agentMode === 'chief-of-staff' && <Zap className="w-6 h-6" />}
-                {canon.agentMode === 'coach' && <Shield className="w-6 h-6" />}
+                {spirit.agentMode === 'sidekick' && <Sparkles className="w-6 h-6" />}
+                {spirit.agentMode === 'chief-of-staff' && <Zap className="w-6 h-6" />}
+                {spirit.agentMode === 'coach' && <Shield className="w-6 h-6" />}
               </div>
               <div>
                 <h2 className="font-semibold text-clay-charibold">
-                  {canon.agentName}
+                  {spirit.agentName}
                 </h2>
                 <p className="text-sm text-clay-charcoal/60">
-                  {canon.agentTitle}
+                  {spirit.agentTitle}
                 </p>
               </div>
             </div>
 
             <div className="sm:ml-auto flex flex-wrap gap-2">
               <span className="px-3 py-1 rounded-full text-xs font-medium bg-clay-sand text-clay-charcoal capitalize">
-                {canon.agentMode}
+                {spirit.agentMode}
               </span>
               <span className={`
                 px-3 py-1 rounded-full text-xs font-medium capitalize
                 ${isHighRisk ? 'bg-red-100 text-red-700' : 'bg-clay-mint text-clay-charcoal'}
               `}>
-                {canon.autonomy?.actionMode?.replace(/_/g, ' ')}
+                {spirit.autonomy?.actionMode?.replace(/_/g, ' ')}
               </span>
             </div>
           </div>
@@ -381,12 +382,12 @@ export function SoulForgeExportPage({ canon, onBack, onNewConfig }: SoulForgeExp
         </div>
 
         {/* Actions */}
-        <div className="mt-8 flex justify-center">
-          <ClayButton
-            variant="blob"
-            color="sage"
-            onClick={onNewConfig}
-          >
+        <div className="mt-8 flex justify-center gap-4">
+          <ClayButton variant="pill" color="sage" onClick={onFineTune}>
+            <Sliders className="w-5 h-5" />
+            Fine-Tune
+          </ClayButton>
+          <ClayButton variant="blob" color="sage" onClick={onNewConfig}>
             <Sparkles className="w-5 h-5" />
             Create New Configuration
           </ClayButton>

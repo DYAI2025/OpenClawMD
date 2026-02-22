@@ -1,101 +1,39 @@
-import { useRef } from 'react';
-import { Shield, MessageSquare, Sliders, Sparkles, Upload, Tag, Globe, ExternalLink } from 'lucide-react';
-import { ClayCard, ClayButton } from '@/components/clay';
-import { toast } from 'sonner';
-import { OpenClawConfig } from '@/lib/openclaw/schema';
-import type { OpenClawConfigType } from '@/lib/openclaw/schema';
+import { Shield, Sparkles, Tag, Globe, ExternalLink } from 'lucide-react';
+import { ClayCard } from '@/components/clay';
 
 interface LandingPageProps {
   onSelectPreset: () => void;
-  onStartInterview: () => void;
-  onOpenBuilder: () => void;
-  onLogoTap: () => void;
-  onImportConfig: (config: OpenClawConfigType) => void;
+  onStartFresh: () => void;
   onOpenBlog: () => void;
 }
 
 export const LandingPage: React.FC<LandingPageProps> = ({
   onSelectPreset,
-  onStartInterview,
-  onOpenBuilder,
-  onLogoTap,
-  onImportConfig,
+  onStartFresh,
   onOpenBlog,
 }) => {
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const handleImportClick = () => fileInputRef.current?.click();
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      try {
-        const raw = JSON.parse(event.target?.result as string);
-        const parsed = OpenClawConfig.safeParse(raw);
-        if (!parsed.success) {
-          toast.error('Invalid config file — schema validation failed');
-          return;
-        }
-        toast.success(`Loaded config: ${parsed.data.metadata.name}`);
-        onImportConfig(parsed.data);
-      } catch {
-        toast.error('Could not parse JSON file');
-      }
-    };
-    reader.readAsText(file);
-    // Reset so same file can be re-imported
-    e.target.value = '';
-  };
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}
       <header className="w-full px-6 py-6">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <button 
-            onClick={onLogoTap}
-            className="flex items-center gap-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-clay-coral/50 rounded-xl p-2 -ml-2"
-          >
+          <div className="flex items-center gap-3 rounded-xl p-2 -ml-2">
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-clay-coral to-clay-peach shadow-clay flex items-center justify-center">
               <Sparkles className="w-5 h-5 text-white" />
             </div>
             <span className="text-xl font-bold text-clay-charcoal">SoulForge</span>
-          </button>
-          
+          </div>
+
           <div className="flex items-center gap-6">
-            <button 
+            <button
               onClick={onOpenBlog}
               className="text-sm font-semibold text-clay-charcoal/60 hover:text-clay-coral transition-colors hidden md:block"
             >
               Intelligence Lab
             </button>
-            <div className="flex items-center gap-3">
-            <ClayButton
-              variant="pill"
-              color="stone"
-              size="sm"
-              onClick={handleImportClick}
-              title="Import a previously exported openclaw-config.json"
-            >
-              <Upload className="w-4 h-4" />
-              Import Config
-            </ClayButton>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept=".json,application/json"
-              onChange={handleFileChange}
-              className="hidden"
-              aria-label="Import OpenCLAW configuration JSON file"
-            />
-            <span className="text-sm text-clay-charcoal/60 hidden sm:block">
-              Preset System v1.0
-            </span>
           </div>
         </div>
-      </div>
-    </header>
+      </header>
 
       {/* Hero Section */}
       <section className="flex-1 flex flex-col items-center justify-center px-6 py-12">
@@ -123,63 +61,46 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           </p>
 
           {/* Entry Points */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            {/* Start Fresh Card */}
+            <ClayCard
+              isInteractive
+              onClick={onStartFresh}
+              className="text-left group"
+            >
+              <div className="w-12 h-12 rounded-full bg-clay-coral shadow-clay flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <Sparkles className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-lg font-semibold text-clay-charcoal mb-2">
+                Start Fresh
+              </h3>
+              <p className="text-sm text-clay-charcoal/60">
+                Build your agent's identity from scratch through our guided interview.
+              </p>
+            </ClayCard>
+
             {/* Preset Card */}
-            <ClayCard 
-              isInteractive 
+            <ClayCard
+              isInteractive
               onClick={onSelectPreset}
               className="text-left group"
             >
-              <div className="w-12 h-12 rounded-full bg-clay-peach shadow-clay flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <Sparkles className="w-6 h-6 text-clay-charcoal" />
-              </div>
-              <h3 className="text-lg font-semibold text-clay-charcoal mb-2">
-                Choose Preset
-              </h3>
-              <p className="text-sm text-clay-charcoal/60">
-                Select from SECURITY, OPEN, or CRAZY presets for quick configuration.
-              </p>
-            </ClayCard>
-
-            {/* Legacy Interview Card */}
-            <ClayCard 
-              isInteractive 
-              onClick={onStartInterview}
-              className="text-left group opacity-80"
-            >
               <div className="w-12 h-12 rounded-full bg-clay-mint shadow-clay flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <MessageSquare className="w-6 h-6 text-clay-charcoal" />
+                <Shield className="w-6 h-6 text-clay-charcoal" />
               </div>
               <h3 className="text-lg font-semibold text-clay-charcoal mb-2">
-                Classic Interview
+                Use a Preset
               </h3>
               <p className="text-sm text-clay-charcoal/60">
-                Guided questions for the original OpenClaw v0.1 standard (5 Files).
-              </p>
-            </ClayCard>
-
-            {/* Builder Card */}
-            <ClayCard 
-              isInteractive 
-              onClick={onOpenBuilder}
-              className="text-left group"
-            >
-              <div className="w-12 h-12 rounded-full bg-clay-sage shadow-clay flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <Sliders className="w-6 h-6 text-clay-charcoal" />
-              </div>
-              <h3 className="text-lg font-semibold text-clay-charcoal mb-2">
-                Custom Builder
-              </h3>
-              <p className="text-sm text-clay-charcoal/60">
-                Fine-tune all 8 dimensions with live preview and optional diff.
+                Start with Security, Responsible, or OverClaw and customize from there.
               </p>
             </ClayCard>
 
             {/* Blog Card */}
-            <ClayCard 
-              isInteractive 
+            <ClayCard
+              isInteractive
               onClick={onOpenBlog}
-              className="text-left group bg-clay-sand/30"
+              className="text-left group"
             >
               <div className="w-12 h-12 rounded-full bg-clay-peach shadow-clay flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                 <Tag className="w-6 h-6 text-clay-charcoal" />
@@ -203,19 +124,23 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               What You Get
             </h2>
             <p className="text-clay-charcoal/60">
-              Five markdown files that define your agent&apos;s behavior
+              Nine configuration files that define your agent&apos;s behavioral fabric
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-5 gap-4">
+          <div className="grid grid-cols-3 sm:grid-cols-5 gap-4">
             {[
-              { name: 'soul.md', desc: 'Core principles & values' },
-              { name: 'identity.md', desc: 'Role & capabilities' },
-              { name: 'shield.md', desc: 'Safety boundaries' },
-              { name: 'user.md', desc: 'User relationship' },
-              { name: 'heartbeat.md', desc: 'Operational rhythm' },
+              { name: 'SOUL.md', desc: 'Core principles & values' },
+              { name: 'IDENTITY.md', desc: 'Role & capabilities' },
+              { name: 'USER.md', desc: 'User relationship' },
+              { name: 'HEARTBEAT.md', desc: 'Operational rhythm' },
+              { name: 'SHIELD.md', desc: 'Safety boundaries' },
+              { name: 'CANON.md', desc: 'Behavioral canon' },
+              { name: 'INDEX.md', desc: 'File manifest' },
+              { name: 'MEMORY.md', desc: 'Memory & context' },
+              { name: 'VERSION.md', desc: 'Version tracking' },
             ].map((file) => (
-              <div 
+              <div
                 key={file.name}
                 className="bg-clay-base rounded-xl p-4 shadow-clay border border-white/50 text-center"
               >
@@ -240,15 +165,15 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 The AI Agent <span className="text-clay-coral underline decoration-clay-coral/20">Ecosystem</span>
               </h2>
               <p className="text-clay-charcoal/60 mb-8 leading-relaxed">
-                SoulForge lives at the intersection of technical performance and legal safety. 
-                We are proud to build upon the <span className="text-clay-charcoal font-semibold">OpenCLAW 0.1</span> standard and collaborate with visionary projects 
+                SoulForge lives at the intersection of technical performance and legal safety.
+                We are proud to build upon the <span className="text-clay-charcoal font-semibold">OpenCLAW 0.1</span> standard and collaborate with visionary projects
                 redefining what it means to give AI a body and a purpose.
               </p>
-              
+
               <div className="flex flex-wrap gap-4">
-                <a 
-                  href="https://openclaw.ai" 
-                  target="_blank" 
+                <a
+                  href="https://openclaw.ai"
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="px-6 py-3 rounded-2xl bg-white/60 border border-white shadow-clay hover:shadow-clay-lifted hover:-translate-y-1 transition-all flex items-center gap-2 text-sm font-bold text-clay-charcoal group"
                 >
@@ -256,9 +181,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   OpenCLAW.ai
                   <ExternalLink className="w-3 h-3 text-clay-charcoal/20" />
                 </a>
-                <a 
-                  href="https://clawhub.ai/" 
-                  target="_blank" 
+                <a
+                  href="https://clawhub.ai/"
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="px-6 py-3 rounded-2xl bg-white/60 border border-white shadow-clay hover:shadow-clay-lifted hover:-translate-y-1 transition-all flex items-center gap-2 text-sm font-bold text-clay-charcoal group"
                 >
@@ -277,7 +202,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 <p className="text-sm text-clay-charcoal/60 mb-6 leading-relaxed">
                   Deep research into embodied intelligence and the boundary where code meets physical reality.
                 </p>
-                <a 
+                <a
                   href="https://cyrusclarke.substack.com/p/i-gave-an-ai-a-body?r=1i4b97&utm_campaign=post&utm_medium=web&triedRedirect=true"
                   target="_blank"
                   rel="noopener noreferrer"

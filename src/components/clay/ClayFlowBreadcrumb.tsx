@@ -1,13 +1,8 @@
 import React from 'react';
 import { ChevronRight, Home } from 'lucide-react';
 
-interface HistoryEntry {
-  view: string;
-  config: unknown | null;
-}
-
 interface ClayFlowBreadcrumbProps {
-  history: HistoryEntry[];
+  history: { view: string }[];
   onNavigate: (index: number) => void;
 }
 
@@ -17,8 +12,6 @@ const VIEW_LABELS: Record<string, string> = {
   interview: 'Interview',
   builder: 'Builder',
   export: 'Export',
-  'soulforge-interview': 'SoulForge Interview',
-  'soulforge-export': 'SoulForge Export',
 };
 
 export const ClayFlowBreadcrumb: React.FC<ClayFlowBreadcrumbProps> = ({
