@@ -1,16 +1,18 @@
 import { useState } from 'react';
-import { Shield, Globe, ExternalLink, BookOpen } from 'lucide-react';
-import logoImg from '../../icons/logo1.png';
+import { Shield, ChevronRight, Clock } from 'lucide-react';
 import downloadImg from '../../icons/download.png';
 import customImg from '../../icons/custom.png';
 import knowledgeImg from '../../icons/knowledge.png';
-import { ClayCard, ClayThemeToggle } from '@/components/clay';
+import { ClayCard } from '@/components/clay';
 import { FilePreviewDialog } from '@/components/FilePreviewDialog';
+import { getLatestWeeklyPost, getEducationalPosts } from '@/lib/blogData';
 
 interface LandingPageProps {
   onSelectPreset: () => void;
   onStartFresh: () => void;
-  onOpenBlog: () => void;
+  onOpenAnimaeVerba: () => void;
+  onOpenUsus: () => void;
+  onOpenUsusArticle: (slug: string) => void;
   onHowItWorks: () => void;
 }
 
@@ -30,27 +32,17 @@ const FILE_TILES = [
 export const LandingPage: React.FC<LandingPageProps> = ({
   onSelectPreset,
   onStartFresh,
-  onOpenBlog,
+  onOpenAnimaeVerba,
+  onOpenUsus,
+  onOpenUsusArticle,
   onHowItWorks,
 }) => {
   const [previewFile, setPreviewFile] = useState<string | null>(null);
+  const latestWeekly = getLatestWeeklyPost();
+  const educationalPosts = getEducationalPosts().slice(0, 3);
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Header */}
-      <header className="w-full px-6 py-6">
-        <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3 rounded-xl p-2 -ml-2">
-            <div className="w-10 h-10 rounded-full shadow-clay flex items-center justify-center overflow-hidden">
-              <img src={logoImg} alt="Animae Agentis logo" className="w-full h-full object-cover" />
-            </div>
-            <span className="text-xl font-bold text-clay-charcoal">Animae Agentis</span>
-          </div>
-
-          <ClayThemeToggle />
-        </div>
-      </header>
-
       {/* Hero Section */}
       <section className="flex-1 flex flex-col items-center justify-center px-6 py-12">
         <div className="max-w-4xl mx-auto text-center">
@@ -162,70 +154,100 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         </div>
       </section>
 
-      {/* Ecosystem Section */}
-      <section className="px-6 py-16 bg-clay-base/30 relative border-y border-white/50 dark:border-white/[0.06]">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-12">
-            <div className="max-w-xl">
-              <h2 className="text-3xl font-bold text-clay-charcoal mb-4">
-                Ecosystem
-              </h2>
-              <p className="text-clay-charcoal/60 mb-8 leading-relaxed">
-                Animae Agentis builds upon the <span className="text-clay-charcoal font-semibold">OpenClaw</span> agent standard. Explore the ecosystem and get inspired by other projects.
-              </p>
-
-              <div className="flex flex-wrap gap-4">
-                <a
-                  href="https://openclaw.ai"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-6 py-3 rounded-2xl bg-white/60 dark:bg-white/[0.06] border border-white dark:border-white/[0.08] shadow-clay hover:shadow-clay-lifted hover:-translate-y-1 transition-all flex items-center gap-2 text-sm font-bold text-clay-charcoal group"
-                >
-                  <Globe className="w-4 h-4 text-clay-charcoal/40 group-hover:text-clay-coral transition-colors" />
-                  OpenCLAW.ai
-                  <ExternalLink className="w-3 h-3 text-clay-charcoal/20" />
-                </a>
-                <a
-                  href="https://clawhub.ai/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-6 py-3 rounded-2xl bg-white/60 dark:bg-white/[0.06] border border-white dark:border-white/[0.08] shadow-clay hover:shadow-clay-lifted hover:-translate-y-1 transition-all flex items-center gap-2 text-sm font-bold text-clay-charcoal group"
-                >
-                  <Shield className="w-4 h-4 text-clay-charcoal/40 group-hover:text-clay-mint transition-colors" />
-                  ClawHub
-                  <ExternalLink className="w-3 h-3 text-clay-charcoal/20" />
-                </a>
-                <button
-                  onClick={onOpenBlog}
-                  className="px-6 py-3 rounded-2xl bg-white/60 dark:bg-white/[0.06] border border-white dark:border-white/[0.08] shadow-clay hover:shadow-clay-lifted hover:-translate-y-1 transition-all flex items-center gap-2 text-sm font-bold text-clay-charcoal group"
-                >
-                  <BookOpen className="w-4 h-4 text-clay-charcoal/40 group-hover:text-clay-peach transition-colors" />
-                  Intelligence Lab
-                </button>
+      {/* Animae Verba Preview */}
+      {latestWeekly && (
+        <section className="px-6 py-16">
+          <div className="max-w-6xl mx-auto">
+            <div className="flex items-end justify-between mb-8">
+              <div>
+                <h2 className="text-2xl font-bold text-clay-charcoal mb-2">
+                  Animae Verba
+                </h2>
+                <p className="text-clay-charcoal/60 text-sm">
+                  Weekly reflections on autonomous agency
+                </p>
               </div>
+              <button
+                onClick={onOpenAnimaeVerba}
+                className="text-sm font-semibold text-clay-coral hover:underline flex items-center gap-1"
+              >
+                View all <ChevronRight className="w-4 h-4" />
+              </button>
             </div>
 
-            <div className="w-full md:w-auto">
-              <ClayCard className="p-8 max-w-sm border-white dark:border-white/[0.06] shadow-clay-lifted bg-gradient-to-br from-white/60 dark:from-white/[0.04] to-transparent relative overflow-hidden group">
-                <div className="absolute top-0 right-0 w-24 h-24 bg-clay-coral/5 rounded-full -mr-12 -mt-12 group-hover:scale-110 transition-transform" />
-                <span className="text-[10px] font-black text-clay-coral uppercase tracking-widest mb-3 block">Scientific Spotlight</span>
-                <h3 className="text-xl font-bold text-clay-charcoal mb-3">Neoform: I gave an AI a Body</h3>
-                <p className="text-sm text-clay-charcoal/60 mb-6 leading-relaxed">
-                  Deep research into embodied intelligence and the boundary where code meets physical reality.
-                </p>
-                <a
-                  href="https://cyrusclarke.substack.com/p/i-gave-an-ai-a-body?r=1i4b97&utm_campaign=post&utm_medium=web&triedRedirect=true"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-clay-coral font-bold text-sm hover:gap-3 transition-all"
-                >
-                  Read the Publication <ExternalLink className="w-4 h-4" />
-                </a>
+            <button
+              onClick={onOpenAnimaeVerba}
+              className="w-full text-left group outline-none focus-visible:ring-2 focus-visible:ring-clay-coral rounded-3xl"
+            >
+              <ClayCard className="p-8 transition-all group-hover:shadow-clay-lifted group-hover:-translate-y-1 border-white/20 dark:border-white/[0.06]">
+                <div className="flex items-center gap-4 mb-3">
+                  <span className="px-3 py-1 bg-clay-coral/10 text-clay-coral text-[10px] font-bold rounded-full uppercase tracking-wider">
+                    {latestWeekly.category}
+                  </span>
+                  <span className="text-clay-charcoal/30 text-xs">{latestWeekly.date}</span>
+                </div>
+                <h3 className="text-xl font-bold text-clay-charcoal mb-3 group-hover:text-clay-coral transition-colors">
+                  {latestWeekly.title}
+                </h3>
+                <p className="text-clay-charcoal/60 line-clamp-2 mb-4">{latestWeekly.excerpt}</p>
+                <div className="flex items-center justify-between">
+                  <span className="text-clay-charcoal/40 text-sm flex items-center gap-1">
+                    <Clock className="w-4 h-4" />
+                    {latestWeekly.readTime}
+                  </span>
+                  <span className="text-clay-coral font-bold flex items-center gap-1 text-sm group-hover:gap-2 transition-all">
+                    Read <ChevronRight className="w-4 h-4" />
+                  </span>
+                </div>
               </ClayCard>
+            </button>
+          </div>
+        </section>
+      )}
+
+      {/* Educational Articles Preview */}
+      {educationalPosts.length > 0 && (
+        <section className="px-6 py-16">
+          <div className="max-w-6xl mx-auto">
+            <div className="flex items-end justify-between mb-8">
+              <div>
+                <h2 className="text-2xl font-bold text-clay-charcoal mb-2">
+                  Usus
+                </h2>
+                <p className="text-clay-charcoal/60 text-sm">
+                  Educational deep-dives
+                </p>
+              </div>
+              <button
+                onClick={onOpenUsus}
+                className="text-sm font-semibold text-clay-coral hover:underline flex items-center gap-1"
+              >
+                View all <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {educationalPosts.map((post) => (
+                <button
+                  key={post.slug}
+                  onClick={() => onOpenUsusArticle(post.slug)}
+                  className="text-left group outline-none focus-visible:ring-2 focus-visible:ring-clay-coral rounded-3xl"
+                >
+                  <ClayCard className="p-6 h-full flex flex-col transition-all group-hover:shadow-clay-lifted group-hover:-translate-y-1 border-white/20 dark:border-white/[0.06]">
+                    <span className="px-3 py-1 bg-clay-peach/20 text-clay-coral text-[10px] font-bold rounded-full uppercase tracking-wider self-start mb-3">
+                      {post.category}
+                    </span>
+                    <h3 className="text-base font-bold text-clay-charcoal mb-2 group-hover:text-clay-coral transition-colors line-clamp-2">
+                      {post.title}
+                    </h3>
+                    <p className="text-clay-charcoal/60 text-sm line-clamp-2">{post.excerpt}</p>
+                  </ClayCard>
+                </button>
+              ))}
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* File Preview Dialog */}
       <FilePreviewDialog

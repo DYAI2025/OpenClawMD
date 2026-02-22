@@ -48,12 +48,10 @@ export function AnimaeAgentisInterviewPage({ initialSpirit, onComplete, onBack }
 
   const handleModeSelect = (mode: SpiritData['agentMode']) => {
     setSpirit(mergeWithDefaults({ agentMode: mode }, mode));
-    setStep('role');
   };
 
   const handleRoleSelect = (title: string) => {
     updateSpirit({ agentTitle: title });
-    setStep('tone');
   };
 
   const steps: InterviewStep[] = ['mode', 'role', 'tone', 'constraints', 'autonomy', 'review'];
@@ -123,6 +121,9 @@ export function AnimaeAgentisInterviewPage({ initialSpirit, onComplete, onBack }
                 description="Holds you accountable and reflects your patterns"
               />
             </div>
+            <ClayButton variant="pill" color="mint" onClick={handleNext} className="w-full mt-4" disabled={!spirit.agentMode}>
+              Continue
+            </ClayButton>
           </div>
         );
 
@@ -142,6 +143,9 @@ export function AnimaeAgentisInterviewPage({ initialSpirit, onComplete, onBack }
                 />
               ))}
             </div>
+            <ClayButton variant="pill" color="mint" onClick={handleNext} className="w-full mt-4" disabled={!spirit.agentTitle}>
+              Continue
+            </ClayButton>
           </div>
         );
       }
@@ -207,15 +211,20 @@ Never guess at data
 Never make commitments on my behalf`}
               className="w-full p-4 rounded-xl bg-clay-base shadow-clay-inset border-0 resize-none h-32 focus:outline-none focus:ring-2 focus:ring-clay-mint"
             />
-            <ClayButton 
-              variant="pill" 
-              color="mint" 
-              onClick={handleNext} 
+            <ClayButton
+              variant="pill"
+              color="mint"
+              onClick={handleNext}
               className="w-full"
               disabled={!spirit.negativeConstraints?.length}
             >
               Continue
             </ClayButton>
+            {!spirit.negativeConstraints?.length && (
+              <p className="text-xs text-clay-charcoal/40 text-center mt-2">
+                Add at least one constraint to continue
+              </p>
+            )}
           </div>
         );
 

@@ -82,12 +82,7 @@ export function AnimaeAgentisExportPage({ spirit, onBack, onNewConfig, onFineTun
     if (!silent) toast.success(`Downloaded ${file.name}`);
   }, []);
 
-  const downloadAll = useCallback(() => {
-    if (isHighRisk && !showConfirmation) {
-      setShowConfirmation(true);
-      return;
-    }
-
+  const executeDownloadAll = useCallback(() => {
     files.forEach((file, index) => {
       setTimeout(() => {
         downloadFile(file, true);
@@ -96,7 +91,15 @@ export function AnimaeAgentisExportPage({ spirit, onBack, onNewConfig, onFineTun
         }
       }, index * 200);
     });
-  }, [files, downloadFile, isHighRisk, showConfirmation]);
+  }, [files, downloadFile]);
+
+  const downloadAll = useCallback(() => {
+    if (isHighRisk) {
+      setShowConfirmation(true);
+      return;
+    }
+    executeDownloadAll();
+  }, [isHighRisk, executeDownloadAll]);
 
   const exportConfigJson = () => {
     const json = exportToJson(output);
@@ -134,6 +137,7 @@ export function AnimaeAgentisExportPage({ spirit, onBack, onNewConfig, onFineTun
       'CORTEX.md': <FileText className="w-4 h-4" />,
       'MEMORY.md': <FileText className="w-4 h-4" />,
       'VERSION.md': <FileText className="w-4 h-4" />,
+      'OPS.md': <Zap className="w-4 h-4" />,
     };
     return icons[fileName] || <FileText className="w-4 h-4" />;
   };
@@ -334,7 +338,7 @@ export function AnimaeAgentisExportPage({ spirit, onBack, onNewConfig, onFineTun
             <DownloadConfirmation
               onConfirm={() => {
                 setShowConfirmation(false);
-                downloadAll();
+                executeDownloadAll();
               }}
               onCancel={() => setShowConfirmation(false)}
               fileCount={files.length}
