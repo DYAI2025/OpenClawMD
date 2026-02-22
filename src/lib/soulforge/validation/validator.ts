@@ -12,8 +12,8 @@ import { runResonanceGates } from './resonanceGates';
  * Validate a set of SoulForge files against Canon data
  * 
  * @param files - The generated files
- * @param canon - The original canon data
- * @returns A validation report with issues and resonance score
+ * @param spirit - The Spirit data (single source of truth)
+ * @returns A validation report with issues
  */
 export function validateSoulForge(
   files: GeneratedFile[],

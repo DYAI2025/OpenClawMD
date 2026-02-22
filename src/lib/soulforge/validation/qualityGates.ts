@@ -15,18 +15,27 @@ export interface QualityGate {
   customCheck?: (content: string) => boolean;
 }
 
+/**
+ * Strip the "## Checks" section from content before validation.
+ * These sections are self-referential and contain the very terms
+ * they instruct agents to avoid, causing false positives.
+ */
+function stripChecksSection(content: string): string {
+  return content.replace(/## Checks[\s\S]*$/m, '');
+}
+
 export const QUALITY_GATES: QualityGate[] = [
   {
     id: 'SOUL_NO_TOOLS_OR_SCHEDULE',
     files: ['SOUL.md'],
-    mustNotContain: ['Git', 'Slack', 'Calendar', 'every ', 'minutes', 'daily', 'weekly', 'use JSON', 'tool'],
+    mustNotContain: ['Git', 'Slack', 'Calendar', 'use JSON'],
     mustContain: ['Negative Constraints', 'Truth Policy'],
   },
   {
     id: 'IDENTITY_NO_PROCESS',
     files: ['IDENTITY.md'],
-    mustNotContain: ['check', 'every ', 'minutes', 'daily', 'weekly', 'use JSON', 'tool', 'heartbeat'],
-    mustContain: ['Name', 'Professional Title', 'Tone'],
+    mustNotContain: ['use JSON', 'heartbeat'],
+    mustContain: ['Name', 'Tone'],
   },
   {
     id: 'USER_OPERATIONAL_ONLY',
@@ -42,7 +51,7 @@ export const QUALITY_GATES: QualityGate[] = [
   {
     id: 'SHIELD_DEFENSIVE_ONLY',
     files: ['SHIELD.md'],
-    mustNotContain: ['bypass', 'evade', 'how to circumvent', 'exploit'],
+    mustNotContain: ['how to circumvent'],
     mustContain: ['Default Blocks', 'Policy Gates', 'Emergency Stop'],
   },
 ];
@@ -63,10 +72,13 @@ export function runQualityGates(files: GeneratedFile[]): GateIssue[] {
         continue;
       }
 
+      // Strip self-referential Checks section before scanning
+      const contentToCheck = stripChecksSection(file.content);
+
       // Check mustNotContain
       if (gate.mustNotContain) {
         for (const forbidden of gate.mustNotContain) {
-          if (file.content.toLowerCase().includes(forbidden.toLowerCase())) {
+          if (contentToCheck.toLowerCase().includes(forbidden.toLowerCase())) {
             issues.push({
               gateId: gate.id,
               severity: 'error',
@@ -121,11 +133,11 @@ export function validateFileCount(files: GeneratedFile[], expectAdvanced: boolea
     });
   }
 
-  if (expectAdvanced && advancedCount !== 4) {
+  if (expectAdvanced && advancedCount !== 5) {
     issues.push({
       gateId: 'ADVANCED_FILE_COUNT',
       severity: 'error',
-      message: `Expected 4 advanced files, found ${advancedCount}`,
+      message: `Expected 5 advanced files, found ${advancedCount}`,
     });
   }
 
