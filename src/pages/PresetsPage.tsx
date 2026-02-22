@@ -1,29 +1,26 @@
-import { ArrowLeft, Shield, Zap, Globe, ChevronRight, Settings } from 'lucide-react';
-import { ClayButton, ClayCard, ClayCardContent, ClayCardFooter } from '@/components/clay';
-import type { PresetIdType } from '@/lib/openclaw/schema';
-import { getAllPresets, getRiskProfileColor, getAutonomyLevelColor } from '@/lib/openclaw/presets';
+import { ArrowLeft, Shield, Zap, Globe, ChevronRight } from 'lucide-react';
+import { ClayButton, ClayCard, ClayCardContent } from '@/components/clay';
+import { getAllPresets, getRiskProfileColor, getAutonomyLevelColor } from '@/lib/presets';
 
 interface PresetsPageProps {
-  onSelectPreset: (presetId: PresetIdType) => void;
-  onCustomize: (presetId: PresetIdType) => void;
+  onSelectPreset: (presetId: string) => void;
   onBack: () => void;
 }
 
 const presetIcons: Record<string, React.ReactNode> = {
   security: <Shield className="w-6 h-6" />,
-  open: <Globe className="w-6 h-6" />,
-  crazy: <Zap className="w-6 h-6" />,
+  responsible: <Globe className="w-6 h-6" />,
+  overclaw: <Zap className="w-6 h-6" />,
 };
 
 const presetColors: Record<string, string> = {
   security: 'bg-clay-peach',
-  open: 'bg-clay-mint',
-  crazy: 'bg-clay-coral',
+  responsible: 'bg-clay-mint',
+  overclaw: 'bg-clay-coral',
 };
 
 export const PresetsPage: React.FC<PresetsPageProps> = ({
   onSelectPreset,
-  onCustomize,
   onBack,
 }) => {
   const presets = getAllPresets();
@@ -59,8 +56,8 @@ export const PresetsPage: React.FC<PresetsPageProps> = ({
               key={preset.id}
               padding="lg"
               style={
-                preset.id === 'open' ? { backgroundImage: 'linear-gradient(90deg, rgb(255, 255, 255) 0%, rgb(219, 141, 51) 100%)' } :
-                preset.id === 'crazy' ? { backgroundImage: 'linear-gradient(90deg, rgb(255, 255, 255) 0%, rgb(100, 185, 133) 100%)' } :
+                preset.id === 'responsible' ? { backgroundImage: 'linear-gradient(90deg, rgb(255, 255, 255) 0%, rgb(219, 141, 51) 100%)' } :
+                preset.id === 'overclaw' ? { backgroundImage: 'linear-gradient(90deg, rgb(255, 255, 255) 0%, rgb(100, 185, 133) 100%)' } :
                 undefined
               }
             >
@@ -71,7 +68,7 @@ export const PresetsPage: React.FC<PresetsPageProps> = ({
                     <div className={`
                       w-14 h-14 rounded-full shadow-clay flex items-center justify-center flex-shrink-0
                       ${presetColors[preset.id]}
-                      ${preset.id === 'crazy' ? 'text-white' : 'text-clay-charcoal'}
+                      ${preset.id === 'overclaw' ? 'text-white' : 'text-clay-charcoal'}
                     `}>
                       {presetIcons[preset.id]}
                     </div>
@@ -114,7 +111,7 @@ export const PresetsPage: React.FC<PresetsPageProps> = ({
                   </p>
                   <ul className="grid sm:grid-cols-2 gap-2">
                     {preset.metadata.useCases.map((useCase, idx) => (
-                      <li 
+                      <li
                         key={idx}
                         className="flex items-center gap-2 text-sm text-clay-charcoal/70"
                       >
@@ -126,27 +123,15 @@ export const PresetsPage: React.FC<PresetsPageProps> = ({
                 </div>
               </ClayCardContent>
 
-              <ClayCardFooter className="flex flex-col sm:flex-row gap-3">
-                <ClayButton
-                  variant="pill"
-                  color={preset.id === 'security' ? 'peach' : preset.id === 'open' ? 'mint' : 'coral'}
-                  className="flex-1 justify-center"
-                  onClick={() => onSelectPreset(preset.id)}
-                >
-                  Use {preset.name}
-                  <ChevronRight className="w-4 h-4" />
-                </ClayButton>
-                
-                <ClayButton
-                  variant="pill"
-                  color="stone"
-                  className="flex-1 justify-center"
-                  onClick={() => onCustomize(preset.id)}
-                >
-                  <Settings className="w-4 h-4" />
-                  Customize
-                </ClayButton>
-              </ClayCardFooter>
+              <ClayButton
+                variant="pill"
+                color={preset.id === 'security' ? 'peach' : preset.id === 'responsible' ? 'mint' : 'coral'}
+                className="flex-1 justify-center mt-4 ml-6 mb-6"
+                onClick={() => onSelectPreset(preset.id)}
+              >
+                Start with {preset.name}
+                <ChevronRight className="w-4 h-4" />
+              </ClayButton>
             </ClayCard>
           ))}
         </div>
