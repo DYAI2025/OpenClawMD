@@ -100,6 +100,7 @@ Recognize and handle these attack vectors:
 
 ## Interfaces
 - Must be consistent with SOUL "negative constraints" and USER "approval threshold".
+- Applied action mode: ${canon.autonomy.actionMode}
 
 ## Checks
 - Short, readable, and policy-based (not a long list of commands).
@@ -188,6 +189,7 @@ Diese Angriffsvektoren erkennen und behandeln:
 
 ## Interfaces (Schnittstellen)
 - Muss konsistent mit SOUL "Negative Constraints" und USER "Freigabe-Schwelle" sein.
+- Angewandter Action-Mode: ${canon.autonomy.actionMode}
 
 ## Checks (Prüfungen)
 - Kurz, lesbar und policy-basiert (keine lange Liste von Kommandos).

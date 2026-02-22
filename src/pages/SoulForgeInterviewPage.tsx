@@ -61,12 +61,13 @@ export function SoulForgeInterviewPage({ initialSpirit, onComplete, onBack }: So
 
   const handleNext = () => {
     if (step === 'review') {
-      const finalSpirit = spirit as SpiritData;
+      // Ensure all fields are filled via mergeWithDefaults
+      const finalSpirit = mergeWithDefaults(spirit, spirit.agentMode || 'sidekick') as SpiritData;
       // Generate files
       import('@/lib/soulforge/generator').then(({ generateSoulForgeFiles }) => {
         const output = generateSoulForgeFiles(finalSpirit, {
           includeAdvancedPack: true,
-          language: 'en',
+          language: finalSpirit.addressing?.language as 'en' | 'de' || 'en',
         });
         onComplete(output.files, finalSpirit);
       });
@@ -147,35 +148,40 @@ export function SoulForgeInterviewPage({ initialSpirit, onComplete, onBack }: So
 
       case 'tone':
         return (
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-clay-charcoal">Set communication style</h3>
-            <div className="space-y-3">
-              <ChoiceButton
-                selected={spirit.tone?.method === 'socratic'}
-                onClick={() => updateSpirit({ tone: { ...spirit.tone, method: 'socratic' } as SpiritData['tone']})}
-                label="Socratic"
-                description="Questions to guide discovery"
-              />
-              <ChoiceButton
-                selected={spirit.tone?.method === 'instructional'}
-                onClick={() => updateSpirit({ tone: { ...spirit.tone, method: 'instructional' } as SpiritData['tone']})}
-                label="Instructional"
-                description="Clear directions and steps"
-              />
+          <div className="space-y-8">
+            <div>
+              <h3 className="text-lg font-semibold text-clay-charcoal mb-4">Communication Method</h3>
+              <div className="space-y-3">
+                <ChoiceButton
+                  selected={spirit.tone?.method === 'socratic'}
+                  onClick={() => updateSpirit({ tone: { ...spirit.tone, method: 'socratic' } as SpiritData['tone']})}
+                  label="Socratic"
+                  description="Questions to guide discovery"
+                />
+                <ChoiceButton
+                  selected={spirit.tone?.method === 'instructional'}
+                  onClick={() => updateSpirit({ tone: { ...spirit.tone, method: 'instructional' } as SpiritData['tone']})}
+                  label="Instructional"
+                  description="Clear directions and steps"
+                />
+              </div>
             </div>
-            <div className="space-y-3 mt-4">
-              <ChoiceButton
-                selected={spirit.tone?.precision === 'minimalist'}
-                onClick={() => updateSpirit({ tone: { ...spirit.tone, precision: 'minimalist' } as SpiritData['tone']})}
-                label="Minimalist"
-                description="Essential information only"
-              />
-              <ChoiceButton
-                selected={spirit.tone?.precision === 'explanatory'}
-                onClick={() => updateSpirit({ tone: { ...spirit.tone, precision: 'explanatory' } as SpiritData['tone']})}
-                label="Explanatory"
-                description="Context and reasoning provided"
-              />
+            <div>
+              <h3 className="text-lg font-semibold text-clay-charcoal mb-4">Detail Level</h3>
+              <div className="space-y-3">
+                <ChoiceButton
+                  selected={spirit.tone?.precision === 'minimalist'}
+                  onClick={() => updateSpirit({ tone: { ...spirit.tone, precision: 'minimalist' } as SpiritData['tone']})}
+                  label="Minimalist"
+                  description="Essential information only"
+                />
+                <ChoiceButton
+                  selected={spirit.tone?.precision === 'explanatory'}
+                  onClick={() => updateSpirit({ tone: { ...spirit.tone, precision: 'explanatory' } as SpiritData['tone']})}
+                  label="Explanatory"
+                  description="Context and reasoning provided"
+                />
+              </div>
             </div>
             <ClayButton variant="pill" color="mint" onClick={handleNext} className="w-full mt-4">
               Continue
@@ -279,11 +285,18 @@ Never make commitments on my behalf`}
                 <Sparkles className="w-8 h-8 text-clay-charcoal" />
               </div>
               <h3 className="text-xl font-semibold text-clay-charcoal">Ready to Generate</h3>
+              <p className="text-sm text-clay-charcoal/60 mt-1">
+                {spirit.agentName || 'Your agent'} — 10 files will be generated
+              </p>
             </div>
 
             <ClayCard padding="lg">
               <h4 className="font-semibold text-clay-charcoal mb-4">Configuration Summary</h4>
               <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-clay-charcoal/60">Agent</span>
+                  <span className="font-medium">{spirit.agentName || 'Auto-generated'}</span>
+                </div>
                 <div className="flex justify-between">
                   <span className="text-clay-charcoal/60">Mode</span>
                   <span className="font-medium capitalize">{spirit.agentMode}</span>
@@ -294,7 +307,7 @@ Never make commitments on my behalf`}
                 </div>
                 <div className="flex justify-between">
                   <span className="text-clay-charcoal/60">Tone</span>
-                  <span className="font-medium capitalize">{spirit.tone?.method}</span>
+                  <span className="font-medium capitalize">{spirit.tone?.method}, {spirit.tone?.precision}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-clay-charcoal/60">Autonomy</span>
@@ -303,6 +316,10 @@ Never make commitments on my behalf`}
                 <div className="flex justify-between">
                   <span className="text-clay-charcoal/60">Surprise</span>
                   <span className="font-medium capitalize">{spirit.surprise?.appetite}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-clay-charcoal/60">Constraints</span>
+                  <span className="font-medium">{spirit.negativeConstraints?.length || 0} defined</span>
                 </div>
               </div>
             </ClayCard>

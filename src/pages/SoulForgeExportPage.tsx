@@ -305,7 +305,7 @@ export function SoulForgeExportPage({ spirit, onBack, onNewConfig, onFineTune }:
                 {spirit.agentMode === 'coach' && <Shield className="w-6 h-6" />}
               </div>
               <div>
-                <h2 className="font-semibold text-clay-charibold">
+                <h2 className="font-semibold text-clay-charcoal">
                   {spirit.agentName}
                 </h2>
                 <p className="text-sm text-clay-charcoal/60">

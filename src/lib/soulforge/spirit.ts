@@ -329,27 +329,33 @@ export function isSpiritComplete(canon: Partial<SpiritData>): boolean {
 }
 
 export function mergeWithDefaults(
-  partial: Partial<SpiritData>, 
+  partial: Partial<SpiritData>,
   mode: AgentMode = 'sidekick'
 ): Partial<SpiritData> {
   const defaults = getDefaultsForMode(mode);
-  
+
+  // Auto-generate agentName from mode + domain if not provided
+  const agentName = partial.agentName || defaults.agentName
+    || generateAgentName(mode, partial.domainFocus || defaults.domainFocus || 'mixed');
+
   return {
     ...defaults,
     ...partial,
+    agentName,
+    domainFocus: partial.domainFocus || defaults.domainFocus || 'mixed',
     // Deep merge for nested objects
     tone: { ...defaults.tone, ...partial.tone } as SpiritData['tone'],
     autonomy: { ...defaults.autonomy, ...partial.autonomy } as SpiritData['autonomy'],
     surprise: { ...defaults.surprise, ...partial.surprise } as SpiritData['surprise'],
     output: { ...defaults.output, ...partial.output } as SpiritData['output'],
-    addressing: { ...defaults.addressing, ...partial.addressing } as SpiritData['addressing'],
+    addressing: { ...DEFAULT_ADDRESSING, ...defaults.addressing, ...partial.addressing } as SpiritData['addressing'],
     // Arrays should be replaced, not merged
-    negativeConstraints: partial.negativeConstraints?.length 
-      ? partial.negativeConstraints 
+    negativeConstraints: partial.negativeConstraints?.length
+      ? partial.negativeConstraints
       : defaults.negativeConstraints || [],
-    stopWords: partial.stopWords?.length 
-      ? partial.stopWords 
-      : defaults.stopWords || [],
+    stopWords: partial.stopWords?.length
+      ? partial.stopWords
+      : defaults.stopWords || ['STOP', 'HALT'],
   };
 }
 
