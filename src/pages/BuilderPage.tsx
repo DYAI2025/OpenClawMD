@@ -11,7 +11,7 @@ import type {
   ToneMethod,
   ToneDirectness,
   TruthPolicy,
-} from '@/lib/soulforge/types';
+} from '@/lib/animae-agentis/types';
 
 // ============================================================================
 // Shared ChoiceButton component

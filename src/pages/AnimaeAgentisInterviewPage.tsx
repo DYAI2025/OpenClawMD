@@ -1,21 +1,21 @@
 /**
- * SoulForge Interview Page
- * 
- * Socratic interview flow for SoulForge 1.2
+ * Animae Agentis Interview Page
+ *
+ * Socratic interview flow for Animae Agentis 1.2
  */
 
 import { useState, useCallback } from 'react';
 import { ArrowLeft, Check, Sparkles, AlertTriangle } from 'lucide-react';
 import { ClayButton, ClayCard, ClayErrorBanner } from '@/components/clay';
 import { RiskModal } from '@/components/safety/RiskModal';
-import type { SpiritData } from '@/lib/soulforge/types';
-import { 
-  getRolesForMode, 
+import type { SpiritData } from '@/lib/animae-agentis/types';
+import {
+  getRolesForMode,
   mergeWithDefaults,
-} from '@/lib/soulforge/spirit';
-import type { GeneratedFile } from '@/lib/soulforge/types';
+} from '@/lib/animae-agentis/spirit';
+import type { GeneratedFile } from '@/lib/animae-agentis/types';
 
-interface SoulForgeInterviewPageProps {
+interface AnimaeAgentisInterviewPageProps {
   initialSpirit?: Partial<SpiritData>;
   onComplete: (files: GeneratedFile[], spirit: SpiritData) => void;
   onBack: () => void;
@@ -23,7 +23,7 @@ interface SoulForgeInterviewPageProps {
 
 type InterviewStep = 'mode' | 'role' | 'tone' | 'constraints' | 'autonomy' | 'review';
 
-export function SoulForgeInterviewPage({ initialSpirit, onComplete, onBack }: SoulForgeInterviewPageProps) {
+export function AnimaeAgentisInterviewPage({ initialSpirit, onComplete, onBack }: AnimaeAgentisInterviewPageProps) {
   const [step, setStep] = useState<InterviewStep>(() => {
     if (initialSpirit?.agentMode) return 'role';
     return 'mode';
@@ -64,8 +64,8 @@ export function SoulForgeInterviewPage({ initialSpirit, onComplete, onBack }: So
       // Ensure all fields are filled via mergeWithDefaults
       const finalSpirit = mergeWithDefaults(spirit, spirit.agentMode || 'sidekick') as SpiritData;
       // Generate files
-      import('@/lib/soulforge/generator').then(({ generateSoulForgeFiles }) => {
-        const output = generateSoulForgeFiles(finalSpirit, {
+      import('@/lib/animae-agentis/generator').then(({ generateAnimaeAgentisFiles }) => {
+        const output = generateAnimaeAgentisFiles(finalSpirit, {
           includeAdvancedPack: true,
           language: finalSpirit.addressing?.language as 'en' | 'de' || 'en',
         });
@@ -349,7 +349,7 @@ Never make commitments on my behalf`}
             <ArrowLeft className="w-5 h-5" />
           </ClayButton>
           <div className="flex-1">
-            <h1 className="text-2xl font-bold text-clay-charcoal">SoulForge Interview</h1>
+            <h1 className="text-2xl font-bold text-clay-charcoal">Animae Agentis Interview</h1>
             <p className="text-sm text-clay-charcoal/60">
               Step {currentIndex + 1} of {steps.length}
             </p>

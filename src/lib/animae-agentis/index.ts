@@ -1,7 +1,7 @@
 /**
- * SoulForge 1.2 Public API
- * 
- * Main entry point for the SoulForge system.
+ * Animae Agentis 1.2 Public API
+ *
+ * Main entry point for the Animae Agentis system.
  * Export all types, defaults, and utilities.
  */
 
@@ -38,7 +38,7 @@ export type {
   // Generation
   GenerationOptions,
   GeneratedFile,
-  SoulForgeOutput,
+  AnimaeAgentisOutput,
   
   // Validation
   GateSeverity,
@@ -52,7 +52,7 @@ export type {
   PresetSpiritMapping,
   
   // Export/Import
-  SoulForgeExport,
+  AnimaeAgentisExport,
   
   // Utilities
   FileName,
@@ -63,7 +63,7 @@ export type {
 
 // Spirit defaults and utilities
 export {
-  SOULFORGE_VERSION,
+  ANIMAE_AGENTIS_VERSION,
   TEMPLATE_PACK_VERSION,
   RESONANCE_LAYER,
   
@@ -88,7 +88,7 @@ export {
 
 // Generator
 export {
-  generateSoulForgeFiles,
+  generateAnimaeAgentisFiles,
   generateBasePack,
   generateAdvancedPack,
   generateSingleFile,

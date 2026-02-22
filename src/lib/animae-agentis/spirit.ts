@@ -1,5 +1,5 @@
 /**
- * SoulForge Spirit Defaults & Utilities
+ * Animae Agentis Spirit Defaults & Utilities
  *
  * Default Spirit configurations for each AgentMode
  * and utility functions for Spirit manipulation.
@@ -16,7 +16,7 @@ import type {
 // Version Info
 // ============================================================================
 
-export const SOULFORGE_VERSION = '2.0.0';
+export const ANIMAE_AGENTIS_VERSION = '2.0.0';
 export const TEMPLATE_PACK_VERSION = '2.0.0';
 export const RESONANCE_LAYER = 'R1';
 
@@ -295,7 +295,7 @@ export function getRolesForMode(mode: AgentMode): VibeCodingRole[] {
 
 export function generateAgentName(_mode: AgentMode, domain: string = 'mixed'): string {
   const domainSuffix = DOMAIN_SUFFIXES[domain] || '';
-  const baseName = 'OpenClaw Soulforge';
+  const baseName = 'OpenClaw Animae Agentis';
   
   if (domainSuffix) {
     return `${baseName} — ${domainSuffix}`;

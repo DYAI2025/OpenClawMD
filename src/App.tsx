@@ -3,7 +3,7 @@ import './App.css';
 import { LandingPage } from './pages/LandingPage';
 import { PresetsPage } from './pages/PresetsPage';
 import { BuilderPage } from './pages/BuilderPage';
-import { SoulForgeExportPage } from './pages/SoulForgeExportPage';
+import { AnimaeAgentisExportPage } from './pages/AnimaeAgentisExportPage';
 import { BlogPage } from './pages/BlogPage';
 import { LegalPage } from './pages/LegalPage';
 import { HowItWorksPage } from './pages/HowItWorksPage';
@@ -11,11 +11,11 @@ import { IMPRESSUM_DE, PRIVACY_POLICY_DE, TOS_DE } from './lib/legalData';
 import { GlobalFooter } from './components/GlobalFooter';
 import { CookieConsent } from './components/CookieConsent';
 import { getPresetById } from './lib/presets';
-import type { GeneratedFile, SpiritData } from './lib/soulforge/types';
+import type { GeneratedFile, SpiritData } from './lib/animae-agentis/types';
 import { Toaster } from '@/components/ui/sonner';
 import { ClayFlowBreadcrumb, ClayThemeToggle } from '@/components/clay';
 import { useTheme } from '@/hooks/use-theme';
-import { SoulForgeInterviewPage } from './pages/SoulForgeInterviewPage';
+import { AnimaeAgentisInterviewPage } from './pages/AnimaeAgentisInterviewPage';
 
 export type AppView = 'landing' | 'presets' | 'interview' | 'builder' | 'export' | 'blog' | 'how-it-works' | 'legal-impressum' | 'legal-privacy' | 'legal-tos';
 
@@ -28,7 +28,7 @@ export interface HistoryEntry {
 function App() {
   // History stack – index 0 is always the origin (landing)
   const [history, setHistory] = useState<HistoryEntry[]>(() => {
-    const saved = localStorage.getItem('soulforge_unified_session');
+    const saved = localStorage.getItem('animae_agentis_unified_session');
     if (saved) {
       try {
         return JSON.parse(saved);
@@ -45,7 +45,7 @@ function App() {
 
   // Persist history to localStorage
   useEffect(() => {
-    localStorage.setItem('soulforge_unified_session', JSON.stringify(history));
+    localStorage.setItem('animae_agentis_unified_session', JSON.stringify(history));
   }, [history]);
 
   const currentEntry = history[history.length - 1];
@@ -112,7 +112,7 @@ function App() {
 
       case 'interview':
         return (
-          <SoulForgeInterviewPage
+          <AnimaeAgentisInterviewPage
             initialSpirit={currentEntry.spirit}
             onComplete={(files, spirit) => {
               setSpiritData({ files, spirit });
@@ -128,8 +128,8 @@ function App() {
             initialSpirit={spiritData.spirit}
             onComplete={(spirit: SpiritData) => {
               // Regenerate files from updated spirit
-              import('./lib/soulforge/generator').then(({ generateSoulForgeFiles }) => {
-                const output = generateSoulForgeFiles(spirit, { includeAdvancedPack: true, language: 'en' });
+              import('./lib/animae-agentis/generator').then(({ generateAnimaeAgentisFiles }) => {
+                const output = generateAnimaeAgentisFiles(spirit, { includeAdvancedPack: true, language: 'en' });
                 setSpiritData({ files: output.files, spirit });
                 pushView('export');
               });
@@ -140,7 +140,7 @@ function App() {
 
       case 'export':
         return spiritData ? (
-          <SoulForgeExportPage
+          <AnimaeAgentisExportPage
             spirit={spiritData.spirit}
             onBack={goBack}
             onNewConfig={resetToLanding}

@@ -1,5 +1,5 @@
 /**
- * SoulForge Templates
+ * Animae Agentis Templates
  *
  * All 10 file templates for Base Pack + Advanced Pack
  */

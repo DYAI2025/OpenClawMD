@@ -1,17 +1,17 @@
 /**
- * SoulForge Generator Tests
- * 
- * Positive tests for the SoulForge file generation system
+ * Animae Agentis Generator Tests
+ *
+ * Positive tests for the Animae Agentis file generation system
  */
 
 import { describe, it, expect } from 'vitest';
-import { generateSoulForgeFiles, generateBasePack, generateAdvancedPack, BASE_FILES, ADVANCED_FILES } from '../generator';
-import { mergeWithDefaults, SOULFORGE_VERSION } from '../spirit';
+import { generateAnimaeAgentisFiles, generateBasePack, generateAdvancedPack, BASE_FILES, ADVANCED_FILES } from '../generator';
+import { mergeWithDefaults, ANIMAE_AGENTIS_VERSION } from '../spirit';
 import type { SpiritData } from '../types';
 
-describe('SoulForge Generator', () => {
+describe('Animae Agentis Generator', () => {
   
-  describe('generateSoulForgeFiles', () => {
+  describe('generateAnimaeAgentisFiles', () => {
     it('should generate all 9 files with Advanced Pack enabled', () => {
       // Arrange
       const canon = mergeWithDefaults({
@@ -26,7 +26,7 @@ describe('SoulForge Generator', () => {
       };
       
       // Act
-      const result = generateSoulForgeFiles(canon, options);
+      const result = generateAnimaeAgentisFiles(canon, options);
       
       // Assert
       expect(result.files).toHaveLength(9);
@@ -61,7 +61,7 @@ describe('SoulForge Generator', () => {
       };
       
       // Act
-      const result = generateSoulForgeFiles(canon, options);
+      const result = generateAnimaeAgentisFiles(canon, options);
       
       // Assert
       expect(result.files).toHaveLength(5);
@@ -90,7 +90,7 @@ describe('SoulForge Generator', () => {
       };
       
       // Act
-      const result = generateSoulForgeFiles(canon, options);
+      const result = generateAnimaeAgentisFiles(canon, options);
       const soulFile = result.files.find(f => f.name === 'SOUL.md');
       
       // Assert
@@ -103,7 +103,7 @@ describe('SoulForge Generator', () => {
     it('should include Canon data in generated files', () => {
       // Arrange
       const canon = mergeWithDefaults({
-        agentName: 'OpenClaw Soulforge — Engineering',
+        agentName: 'OpenClaw Animae Agentis — Engineering',
         agentTitle: 'Principal Discovery Architect',
         agentMode: 'sidekick',
         tone: {
@@ -119,12 +119,12 @@ describe('SoulForge Generator', () => {
       };
       
       // Act
-      const result = generateSoulForgeFiles(canon, options);
+      const result = generateAnimaeAgentisFiles(canon, options);
       const identityFile = result.files.find(f => f.name === 'IDENTITY.md');
       
       // Assert
       expect(identityFile).toBeDefined();
-      expect(identityFile!.content).toContain('OpenClaw Soulforge — Engineering');
+      expect(identityFile!.content).toContain('OpenClaw Animae Agentis — Engineering');
       expect(identityFile!.content).toContain('Principal Discovery Architect');
       expect(identityFile!.content).toContain('minimalist');
       expect(identityFile!.content).toContain('socratic');
@@ -149,7 +149,7 @@ describe('SoulForge Generator', () => {
       };
       
       // Act
-      const result = generateSoulForgeFiles(canon, options);
+      const result = generateAnimaeAgentisFiles(canon, options);
       const canonFile = result.files.find(f => f.name === 'SPIRIT.md');
       
       // Assert
@@ -238,7 +238,7 @@ describe('SoulForge Generator', () => {
       
       // Assert
       expect(version).toBeDefined();
-      expect(version!.content).toContain(SOULFORGE_VERSION);
+      expect(version!.content).toContain(ANIMAE_AGENTIS_VERSION);
       expect(version!.content).toContain('Resonance Layer');
     });
     
@@ -269,7 +269,7 @@ describe('SoulForge Generator', () => {
       }) as SpiritData;
       
       // Act
-      const result = generateSoulForgeFiles(canon, { includeAdvancedPack: true, language: 'en' });
+      const result = generateAnimaeAgentisFiles(canon, { includeAdvancedPack: true, language: 'en' });
       
       // Assert
       const identity = result.files.find(f => f.name === 'IDENTITY.md');
@@ -291,7 +291,7 @@ describe('SoulForge Generator', () => {
       }) as SpiritData;
       
       // Act
-      const result = generateSoulForgeFiles(canon, { includeAdvancedPack: false, language: 'en' });
+      const result = generateAnimaeAgentisFiles(canon, { includeAdvancedPack: false, language: 'en' });
       
       // Assert
       const user = result.files.find(f => f.name === 'USER.md');
@@ -310,7 +310,7 @@ describe('SoulForge Generator', () => {
       }) as SpiritData;
       
       // Act
-      const result = generateSoulForgeFiles(canon, { includeAdvancedPack: false, language: 'en' });
+      const result = generateAnimaeAgentisFiles(canon, { includeAdvancedPack: false, language: 'en' });
       const soul = result.files.find(f => f.name === 'SOUL.md');
       
       // Assert
@@ -325,7 +325,7 @@ describe('SoulForge Generator', () => {
       }) as SpiritData;
       
       // Act
-      const result = generateSoulForgeFiles(canon, { includeAdvancedPack: false, language: 'en' });
+      const result = generateAnimaeAgentisFiles(canon, { includeAdvancedPack: false, language: 'en' });
       const user = result.files.find(f => f.name === 'USER.md');
       const shield = result.files.find(f => f.name === 'SHIELD.md');
       

@@ -13,7 +13,7 @@ export function GlobalFooter({ onOpenLegal }: GlobalFooterProps) {
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-2 justify-center md:justify-start">
               <div className="w-6 h-6 rounded-full bg-clay-coral shadow-clay" />
-              <span className="text-lg font-bold text-clay-charcoal">SoulForge</span>
+              <span className="text-lg font-bold text-clay-charcoal">Animae Agentis</span>
             </div>
             <p className="text-sm text-clay-charcoal/50 leading-relaxed">
               Agentic Autopoesis. <br />
@@ -52,7 +52,7 @@ export function GlobalFooter({ onOpenLegal }: GlobalFooterProps) {
         </div>
 
         <div className="mt-12 pt-8 border-t border-clay-peach/10 flex flex-col md:flex-row items-center justify-between gap-6 opacity-30 italic text-[10px] text-clay-charcoal">
-          <div>© 2026 SoulForge • Stateless Client-First Generator</div>
+          <div>© 2026 Animae Agentis • Stateless Client-First Generator</div>
           <div>v1.0.0 • Verified for Google AdSense Compliance</div>
         </div>
       </div>

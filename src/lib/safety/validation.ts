@@ -1,4 +1,4 @@
-import type { SpiritData } from '../soulforge/types';
+import type { SpiritData } from '../animae-agentis/types';
 import type { RiskLevel } from '@/components/safety/RiskBadge';
 
 /**
@@ -32,7 +32,7 @@ export function requiresSafetyDisclaimer(canon: Partial<SpiritData>): boolean {
 /**
  * Log an export event (Placeholder for future telemetry/compliance).
  */
-export function logSecurityEvent(event: string, metadata: any) {
+export function logSecurityEvent(event: string, metadata: Record<string, unknown>) {
   console.log(`[SECURITY_LOG] ${new Date().toISOString()}: ${event}`, metadata);
   // In a production environment, this would send to a secure logging endpoint
 }

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 type Theme = 'light' | 'dark';
 
-const STORAGE_KEY = 'soulforge_theme';
+const STORAGE_KEY = 'animae_agentis_theme';
 
 function getSystemTheme(): Theme {
   if (typeof window === 'undefined') return 'light';

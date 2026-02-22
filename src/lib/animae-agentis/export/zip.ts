@@ -1,7 +1,7 @@
 /**
  * ZIP Export
  * 
- * Creates ZIP archives of generated SoulForge files
+ * Creates ZIP archives of generated Animae Agentis files
  */
 
 import type { GeneratedFile } from '../types';
@@ -44,7 +44,7 @@ export async function createZipBlob(files: GeneratedFile[]): Promise<Blob> {
  */
 export function createSimpleArchive(files: GeneratedFile[]): string {
   // Simple concatenation format for fallback
-  let archive = '# SoulForge Archive\n\n';
+  let archive = '# Animae Agentis Archive\n\n';
   
   for (const file of files) {
     archive += `## FILE: ${file.name}\n`;
@@ -86,7 +86,7 @@ function generateReadme(files: GeneratedFile[]): string {
   const baseFiles = files.filter(f => f.section === 'base');
   const advancedFiles = files.filter(f => f.section === 'advanced');
   
-  return `# OpenClaw SoulForge Configuration
+  return `# OpenClaw Animae Agentis Configuration
 
 Generated: ${new Date().toLocaleString()}
 
@@ -127,7 +127,7 @@ export function downloadZip(blob: Blob, fileName?: string): void {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = fileName || `openclaw-soulforge-${Date.now()}.zip`;
+  a.download = fileName || `openclaw-animae-agentis-${Date.now()}.zip`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);

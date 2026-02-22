@@ -49,13 +49,13 @@ export const TOS_DE = `
 # Allgemeine Geschäftsbedingungen (AGB)
 
 ## 1. Geltungsbereich
-Diese AGB gelten für die Nutzung der Web-Anwendung **„SoulForge“**.
+Diese AGB gelten für die Nutzung der Web-Anwendung **„Animae Agentis“**.
 
 ## 2. Leistungsbeschreibung
-SoulForge ist ein Konfigurations- und Dokumentengenerator. Der Dienst ermöglicht es, aus Nutzerangaben Konfigurationsdateien (Markdown) zu erzeugen. SoulForge betreibt keine autonomen KI-Agenten selbst.
+Animae Agentis ist ein Konfigurations- und Dokumentengenerator. Der Dienst ermöglicht es, aus Nutzerangaben Konfigurationsdateien (Markdown) zu erzeugen. Animae Agentis betreibt keine autonomen KI-Agenten selbst.
 
 ## 3. Unentgeltliche Nutzung und Werbung
-Die Nutzung von SoulForge ist kostenlos. SoulForge finanziert sich durch Werbung, insbesondere durch Google AdSense.
+Die Nutzung von Animae Agentis ist kostenlos. Animae Agentis finanziert sich durch Werbung, insbesondere durch Google AdSense.
 
 ## 4. Haftungsausschluss
 Der Anbieter übernimmt keine Haftung für Schäden, die aus der Nutzung der generierten Konfigurationsdateien in Drittsystemen entstehen. Der Nutzer ist allein für die Überwachung und Absicherung seines Agentensystems verantwortlich.

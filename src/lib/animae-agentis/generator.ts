@@ -1,5 +1,5 @@
 /**
- * SoulForge Generator
+ * Animae Agentis Generator
  *
  * Generates all 10 configuration files from Canon data.
  * Implements the thrid_embodiment pattern: SOUL + IDENTITY + USER
@@ -9,7 +9,7 @@ import type {
   SpiritData,
   GenerationOptions,
   GeneratedFile,
-  SoulForgeOutput,
+  AnimaeAgentisOutput,
 } from './types';
 
 import {
@@ -56,16 +56,16 @@ export type FileName = BaseFileName | AdvancedFileName;
 
 
 /**
- * Generate all SoulForge configuration files
+ * Generate all Animae Agentis configuration files
  * 
  * @param canon - The canonical parameter set
  * @param options - Generation options
  * @returns Generated files and metadata
  */
-export function generateSoulForgeFiles(
+export function generateAnimaeAgentisFiles(
   canon: SpiritData,
   options: GenerationOptions
-): SoulForgeOutput {
+): AnimaeAgentisOutput {
   const files: GeneratedFile[] = [];
   const language = options.language;
 
@@ -99,9 +99,9 @@ export function generateSoulForgeFiles(
 }
 
 /**
- * Alias for generateSoulForgeFiles (for API consistency)
+ * Alias for generateAnimaeAgentisFiles (for API consistency)
  */
-export const generateSoulForge = generateSoulForgeFiles;
+export const generateAnimaeAgentis = generateAnimaeAgentisFiles;
 
 /**
  * Generate only the Base Pack (5 files)

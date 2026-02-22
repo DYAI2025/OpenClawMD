@@ -4,11 +4,11 @@ import { ShieldCheck } from 'lucide-react';
 
 export function CookieConsent() {
   const [isVisible, setIsVisible] = useState(() => {
-    return !localStorage.getItem('soulforge_cookie_consent');
+    return !localStorage.getItem('animae_agentis_cookie_consent');
   });
 
   const handleAccept = () => {
-    localStorage.setItem('soulforge_cookie_consent', 'accepted');
+    localStorage.setItem('animae_agentis_cookie_consent', 'accepted');
     setIsVisible(false);
   };
 
@@ -25,7 +25,7 @@ export function CookieConsent() {
             <h3 className="text-lg font-bold text-clay-charcoal mb-2">Cookie Privacy</h3>
             <p className="text-sm text-clay-charcoal/60 leading-relaxed">
               We use cookies to improve your experience and show personalized ads via Google AdSense. 
-              By continuing to use SoulForge, you agree to our use of cookies and our privacy policy.
+              By continuing to use Animae Agentis, you agree to our use of cookies and our privacy policy.
             </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-3 shrink-0">

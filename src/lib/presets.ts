@@ -1,4 +1,4 @@
-import type { SpiritData } from './soulforge/types';
+import type { SpiritData } from './animae-agentis/types';
 
 export interface PresetDefinition {
   id: string;

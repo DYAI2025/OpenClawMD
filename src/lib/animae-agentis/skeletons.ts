@@ -255,7 +255,7 @@ Track template pack version for migration and compatibility.
 ## Sections
 
 ### Template Pack Version
-> Current version of the SoulForge template pack.
+> Current version of the Animae Agentis template pack.
 
 ### Generated At
 > Timestamp of when this configuration was generated.

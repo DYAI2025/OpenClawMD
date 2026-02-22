@@ -8,7 +8,7 @@ import {
   DialogDescription,
   DialogFooter,
 } from '@/components/ui/dialog';
-import { FILE_SKELETONS } from '@/lib/soulforge/skeletons';
+import { FILE_SKELETONS } from '@/lib/animae-agentis/skeletons';
 
 interface FilePreviewDialogProps {
   fileName: string | null;

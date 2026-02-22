@@ -115,7 +115,7 @@ export const HowItWorksPage: React.FC<HowItWorksPageProps> = ({
         {/* Hero */}
         <div className="text-center mb-16">
           <h1 className="text-3xl sm:text-4xl font-bold text-clay-charcoal mb-4">
-            How SoulForge Works
+            How Animae Agentis Works
           </h1>
           <p className="text-lg text-clay-charcoal/60 max-w-2xl mx-auto">
             10 Markdown files, each with a specific job. Together they define

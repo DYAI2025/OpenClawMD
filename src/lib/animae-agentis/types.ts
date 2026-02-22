@@ -1,7 +1,7 @@
 /**
- * SoulForge 1.2 Types
+ * Animae Agentis 1.2 Types
  * 
- * Core type definitions for the OpenClaw SoulForge system.
+ * Core type definitions for the OpenClaw Animae Agentis system.
  * Implements the thrid_embodiment pattern: SOUL + IDENTITY + USER
  */
 
@@ -187,7 +187,7 @@ export interface GeneratedFile {
   section: 'base' | 'advanced';
 }
 
-export interface SoulForgeOutput {
+export interface AnimaeAgentisOutput {
   files: GeneratedFile[];
   canon: SpiritData;
   options: GenerationOptions;
@@ -244,12 +244,12 @@ export interface PresetSpiritMapping {
 // Export/Import
 // ============================================================================
 
-export interface SoulForgeExport {
+export interface AnimaeAgentisExport {
   version: string;
   canon: SpiritData;
   options: GenerationOptions;
   exportedAt: string;
-  soulforgeVersion: string;
+  animaeAgentisVersion: string;
 }
 
 // ============================================================================

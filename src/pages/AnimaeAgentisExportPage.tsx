@@ -1,7 +1,7 @@
 /**
- * SoulForge Export Page
- * 
- * Preview and download generated SoulForge configuration files
+ * Animae Agentis Export Page
+ *
+ * Preview and download generated Animae Agentis configuration files
  */
 
 import { useState, useMemo, useCallback } from 'react';
@@ -13,20 +13,20 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { ClayButton, ClayCard, ClayTabs } from '@/components/clay';
 import { DownloadConfirmation } from '@/components/safety/DownloadConfirmation';
-import type { SpiritData, GeneratedFile } from '@/lib/soulforge/types';
-import { generateSoulForgeFiles } from '@/lib/soulforge/generator';
-import { validateSoulForge } from '@/lib/soulforge/validation';
-import { exportToJson } from '@/lib/soulforge/export/json';
+import type { SpiritData, GeneratedFile } from '@/lib/animae-agentis/types';
+import { generateAnimaeAgentisFiles } from '@/lib/animae-agentis/generator';
+import { validateAnimaeAgentis } from '@/lib/animae-agentis/validation';
+import { exportToJson } from '@/lib/animae-agentis/export/json';
 import { toast } from 'sonner';
 
-interface SoulForgeExportPageProps {
+interface AnimaeAgentisExportPageProps {
   spirit: SpiritData;
   onBack: () => void;
   onNewConfig: () => void;
   onFineTune: () => void;
 }
 
-export function SoulForgeExportPage({ spirit, onBack, onNewConfig, onFineTune }: SoulForgeExportPageProps) {
+export function AnimaeAgentisExportPage({ spirit, onBack, onNewConfig, onFineTune }: AnimaeAgentisExportPageProps) {
   const [copiedFile, setCopiedFile] = useState<string | null>(null);
   const [downloadedFiles, setDownloadedFiles] = useState<Set<string>>(new Set());
   const [viewModes, setViewModes] = useState<Record<string, 'rendered' | 'raw'>>({});
@@ -38,7 +38,7 @@ export function SoulForgeExportPage({ spirit, onBack, onNewConfig, onFineTune }:
   }), [spirit]);
 
   const output = useMemo(() =>
-    generateSoulForgeFiles(spirit, options),
+    generateAnimaeAgentisFiles(spirit, options),
     [spirit, options]
   );
 
@@ -46,7 +46,7 @@ export function SoulForgeExportPage({ spirit, onBack, onNewConfig, onFineTune }:
 
   // Validation
   const validation = useMemo(() =>
-    validateSoulForge(files, spirit),
+    validateAnimaeAgentis(files, spirit),
     [files, spirit]
   );
 
@@ -104,7 +104,7 @@ export function SoulForgeExportPage({ spirit, onBack, onNewConfig, onFineTune }:
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `soulforge-config-${spirit.agentMode}-${Date.now()}.json`;
+    a.download = `animae-agentis-config-${spirit.agentMode}-${Date.now()}.json`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -234,7 +234,7 @@ export function SoulForgeExportPage({ spirit, onBack, onNewConfig, onFineTune }:
           </ClayButton>
           <div className="flex-1">
             <h1 className="text-2xl font-bold text-clay-charcoal">
-              SoulForge Export
+              Animae Agentis Export
             </h1>
             <p className="text-sm text-clay-charcoal/60">
               Preview and download your configuration files
@@ -396,7 +396,7 @@ export function SoulForgeExportPage({ spirit, onBack, onNewConfig, onFineTune }:
         {/* Footer */}
         <div className="mt-12 text-center">
           <p className="text-sm text-clay-charcoal/50">
-            Generated with OpenClaw SoulForge {output.options.includeAdvancedPack ? '(Advanced Pack)' : '(Base Pack)'}
+            Generated with OpenClaw Animae Agentis {output.options.includeAdvancedPack ? '(Advanced Pack)' : '(Base Pack)'}
           </p>
           <p className="text-xs text-clay-charcoal/40 mt-2">
             {new Date(output.generatedAt).toLocaleDateString()} • {files.length} files • Resonance Layer R1

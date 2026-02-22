@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Shield, Sparkles, Globe, ExternalLink, BookOpen } from 'lucide-react';
+import logoImg from '../../icons/logo.png';
 import { ClayCard, ClayThemeToggle } from '@/components/clay';
 import { FilePreviewDialog } from '@/components/FilePreviewDialog';
 
@@ -37,10 +38,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       <header className="w-full px-6 py-6">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3 rounded-xl p-2 -ml-2">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-clay-coral to-clay-peach shadow-clay flex items-center justify-center">
-              <Sparkles className="w-5 h-5 text-white" />
+            <div className="w-10 h-10 rounded-full shadow-clay flex items-center justify-center overflow-hidden">
+              <img src={logoImg} alt="Animae Agentis logo" className="w-full h-full object-cover" />
             </div>
-            <span className="text-xl font-bold text-clay-charcoal">SoulForge</span>
+            <span className="text-xl font-bold text-clay-charcoal">Animae Agentis</span>
           </div>
 
           <ClayThemeToggle />
@@ -54,7 +55,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-clay-mint/50 shadow-clay mb-8">
             <Shield className="w-4 h-4 text-clay-charcoal" />
             <span className="text-sm font-medium text-clay-charcoal">
-              Open Standard &middot; No Backend &middot; No Lock-in
+              Open Standard - No Backend - just Markdown
             </span>
           </div>
 
@@ -68,8 +69,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
           {/* Subtitle */}
           <p className="text-xl text-clay-charcoal/70 max-w-2xl mx-auto mb-12">
-            SoulForge generates a complete behavioral framework — identity, rules, memory,
-            operations — from a single configuration. Download presets instantly or customize every detail.
+            Animae Agentis generates a complete framework based on 10 markdown files that shapes the behavior of your OpenClaw fundamentally. You can select a purpose driven preset, customize them with our guidance in detail from scratch or just downloading each template and fill it on your own. Get in control of your OpenClaw agent.
           </p>
 
           {/* Three Cards */}
@@ -80,8 +80,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               onClick={onSelectPreset}
               className="text-left group"
             >
-              <div className="w-12 h-12 rounded-full bg-clay-mint shadow-clay flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <Shield className="w-6 h-6 text-clay-charcoal" />
+              <div className="w-12 h-12 rounded-full shadow-clay flex items-center justify-center mb-4 group-hover:scale-110 transition-transform overflow-hidden">
+                <img src={logoImg} alt="Animae Agentis logo" className="w-full h-full object-cover" />
               </div>
               <h3 className="text-lg font-semibold text-clay-charcoal mb-2">
                 Download Presets
@@ -168,7 +168,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 Ecosystem
               </h2>
               <p className="text-clay-charcoal/60 mb-8 leading-relaxed">
-                SoulForge builds upon the <span className="text-clay-charcoal font-semibold">OpenCLAW 0.1</span> standard.
+                Animae Agentis builds upon the <span className="text-clay-charcoal font-semibold">OpenCLAW 0.1</span> standard.
                 Explore the ecosystem and related projects.
               </p>
 

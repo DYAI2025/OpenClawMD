@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What This Is
 
-OpenClawMD / SoulForge is a client-side React app for generating AI agent configuration files (Markdown). It produces 10 files (SOUL.md, IDENTITY.md, USER.md, HEARTBEAT.md, SHIELD.md, SPIRIT.md, CORTEX.md, MEMORY.md, VERSION.md, OPS.md) from a single data model called `SpiritData`.
+OpenClawMD / Animae Agentis is a client-side React app for generating AI agent configuration files (Markdown). It produces 10 files (SOUL.md, IDENTITY.md, USER.md, HEARTBEAT.md, SHIELD.md, SPIRIT.md, CORTEX.md, MEMORY.md, VERSION.md, OPS.md) from a single data model called `SpiritData`.
 
 No backend. All generation is deterministic, client-side only. Exports are downloaded as ZIP or individual Markdown files.
 
@@ -17,7 +17,7 @@ npm run lint      # ESLint
 npm run preview   # Preview production build locally
 ```
 
-No test runner is configured. There is one test file at `src/lib/soulforge/__tests__/generator.test.ts` but no test script in package.json.
+No test runner is configured. There is one test file at `src/lib/animae-agentis/__tests__/generator.test.ts` but no test script in package.json.
 
 ## Deployment
 
@@ -27,11 +27,11 @@ GitHub Actions deploys on push to `main` via FTP to Hostinger (`./dist/` -> `./p
 
 ### Data Model
 
-`SpiritData` (`src/lib/soulforge/types.ts`) is the single source of truth. Key fields: agentMode, agentName, agentTitle, tone, autonomy, surprise, truthPolicy, negativeConstraints, output, addressing, stopWords.
+`SpiritData` (`src/lib/animae-agentis/types.ts`) is the single source of truth. Key fields: agentMode, agentName, agentTitle, tone, autonomy, surprise, truthPolicy, negativeConstraints, output, addressing, stopWords.
 
 ### Navigation
 
-No router library. App.tsx manages a history stack (`HistoryEntry[]`) with `pushView`/`goBack`/`goToHistoryIndex`. Views defined by `AppView` type. Session state persists to `localStorage` under key `soulforge_unified_session`.
+No router library. App.tsx manages a history stack (`HistoryEntry[]`) with `pushView`/`goBack`/`goToHistoryIndex`. Views defined by `AppView` type. Session state persists to `localStorage` under key `animae_agentis_unified_session`.
 
 ### User Flow
 
@@ -51,12 +51,12 @@ Defined in `src/lib/presets.ts`. Three presets (Security, Responsible, OverClaw)
 
 ### Generation Pipeline
 
-- Types: `src/lib/soulforge/types.ts`
-- Defaults & utilities: `src/lib/soulforge/spirit.ts` (mode defaults, createEmptySpirit, mergeWithDefaults, isSpiritComplete)
-- Templates: `src/lib/soulforge/templates/*.template.ts` (one per output file)
-- Generator: `src/lib/soulforge/generator.ts` (renders all 10 files from SpiritData)
-- Validation: quality gates + resonance gates in `src/lib/soulforge/validation/`
-- Export: ZIP (via jszip) and JSON in `src/lib/soulforge/export/`
+- Types: `src/lib/animae-agentis/types.ts`
+- Defaults & utilities: `src/lib/animae-agentis/spirit.ts` (mode defaults, createEmptySpirit, mergeWithDefaults, isSpiritComplete)
+- Templates: `src/lib/animae-agentis/templates/*.template.ts` (one per output file)
+- Generator: `src/lib/animae-agentis/generator.ts` (renders all 10 files from SpiritData)
+- Validation: quality gates + resonance gates in `src/lib/animae-agentis/validation/`
+- Export: ZIP (via jszip) and JSON in `src/lib/animae-agentis/export/`
 
 ### UI Layers
 

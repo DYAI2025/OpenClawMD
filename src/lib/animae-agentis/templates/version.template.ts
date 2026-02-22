@@ -8,7 +8,7 @@
  */
 
 import type { SpiritData } from '../types';
-import { SOULFORGE_VERSION, TEMPLATE_PACK_VERSION, RESONANCE_LAYER } from '../spirit';
+import { ANIMAE_AGENTIS_VERSION, TEMPLATE_PACK_VERSION, RESONANCE_LAYER } from '../spirit';
 
 export function renderVersionMd(_canon: SpiritData, language: 'en' | 'de' = 'en'): string {
   if (language === 'de') {
@@ -20,7 +20,7 @@ export function renderVersionMd(_canon: SpiritData, language: 'en' | 'de' = 'en'
 function renderEnglish(): string {
   return `# VERSION.md
 
-OpenClaw Soulforge Skill Version: ${SOULFORGE_VERSION}
+OpenClaw Animae Agentis Skill Version: ${ANIMAE_AGENTIS_VERSION}
 Template Pack Version: ${TEMPLATE_PACK_VERSION}
 Resonance Layer: ${RESONANCE_LAYER}
 
@@ -29,7 +29,7 @@ Resonance Layer: ${RESONANCE_LAYER}
 <!-- Update this section when upgrading -->
 
 ### Current
-- Skill: ${SOULFORGE_VERSION}
+- Skill: ${ANIMAE_AGENTIS_VERSION}
 - Templates: ${TEMPLATE_PACK_VERSION}
 - Resonance: ${RESONANCE_LAYER}
 
@@ -55,7 +55,7 @@ Generated: ${new Date().toISOString()}
 function renderGerman(): string {
   return `# VERSION.md
 
-OpenClaw Soulforge Skill Version: ${SOULFORGE_VERSION}
+OpenClaw Animae Agentis Skill Version: ${ANIMAE_AGENTIS_VERSION}
 Template Pack Version: ${TEMPLATE_PACK_VERSION}
 Resonance Layer: ${RESONANCE_LAYER}
 
@@ -64,7 +64,7 @@ Resonance Layer: ${RESONANCE_LAYER}
 <!-- Diesen Abschnitt bei Updaten aktualisieren -->
 
 ### Aktuell
-- Skill: ${SOULFORGE_VERSION}
+- Skill: ${ANIMAE_AGENTIS_VERSION}
 - Templates: ${TEMPLATE_PACK_VERSION}
 - Resonance: ${RESONANCE_LAYER}
 

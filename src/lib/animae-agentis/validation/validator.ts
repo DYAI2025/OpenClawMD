@@ -1,5 +1,5 @@
 /**
- * SoulForge Validator
+ * Animae Agentis Validator
  * 
  * Orchestrates quality gates and resonance gates
  */
@@ -9,13 +9,13 @@ import { runQualityGates, validateFileCount } from './qualityGates';
 import { runResonanceGates } from './resonanceGates';
 
 /**
- * Validate a set of SoulForge files against Canon data
+ * Validate a set of Animae Agentis files against Canon data
  * 
  * @param files - The generated files
  * @param spirit - The Spirit data (single source of truth)
  * @returns A validation report with issues
  */
-export function validateSoulForge(
+export function validateAnimaeAgentis(
   files: GeneratedFile[],
   canon: SpiritData
 ): ValidationReport {

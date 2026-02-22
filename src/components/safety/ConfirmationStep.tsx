@@ -39,7 +39,7 @@ export const ConfirmationStep: React.FC<ConfirmationStepProps> = ({ onConfirm, f
             {agreed && <CheckCircle className="w-4 h-4 text-white" />}
           </div>
           <div className="text-sm text-clay-charcoal leading-snug">
-            I confirm that I have reviewed the generated SoulForge config and will audit its execution within a sandboxed environment first.
+            I confirm that I have reviewed the generated Animae Agentis config and will audit its execution within a sandboxed environment first.
           </div>
         </label>
       </div>

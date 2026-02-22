@@ -1,24 +1,24 @@
 /**
  * JSON Export/Import
  * 
- * Handles export and import of SoulForge configurations as JSON
+ * Handles export and import of Animae Agentis configurations as JSON
  */
 
-import type { SpiritData, GenerationOptions, SoulForgeExport, SoulForgeOutput } from '../types';
-import { SOULFORGE_VERSION } from '../spirit';
+import type { SpiritData, GenerationOptions, AnimaeAgentisExport, AnimaeAgentisOutput } from '../types';
+import { ANIMAE_AGENTIS_VERSION } from '../spirit';
 
 /**
- * Export SoulForge configuration to JSON
+ * Export Animae Agentis configuration to JSON
  */
 export function exportToJson(
-  output: SoulForgeOutput
+  output: AnimaeAgentisOutput
 ): string {
-  const exportData: SoulForgeExport = {
+  const exportData: AnimaeAgentisExport = {
     version: '1.0.0',
     canon: output.canon,
     options: output.options,
     exportedAt: new Date().toISOString(),
-    soulforgeVersion: SOULFORGE_VERSION,
+    animaeAgentisVersion: ANIMAE_AGENTIS_VERSION,
   };
   
   return JSON.stringify(exportData, null, 2);
@@ -27,9 +27,9 @@ export function exportToJson(
 /**
  * Parse JSON export
  */
-export function parseJsonExport(json: string): SoulForgeExport | null {
+export function parseJsonExport(json: string): AnimaeAgentisExport | null {
   try {
-    const parsed = JSON.parse(json) as SoulForgeExport;
+    const parsed = JSON.parse(json) as AnimaeAgentisExport;
     
     // Basic validation
     if (!parsed.canon || !parsed.options) {
@@ -47,7 +47,7 @@ export function parseJsonExport(json: string): SoulForgeExport | null {
 /**
  * Validate export structure
  */
-export function validateExport(exportData: SoulForgeExport): { valid: boolean; errors: string[] } {
+export function validateExport(exportData: AnimaeAgentisExport): { valid: boolean; errors: string[] } {
   const errors: string[] = [];
   
   // Check required fields
@@ -77,7 +77,7 @@ export function validateExport(exportData: SoulForgeExport): { valid: boolean; e
  * Download JSON export
  */
 export function downloadJsonExport(
-  output: SoulForgeOutput,
+  output: AnimaeAgentisOutput,
   fileName?: string
 ): void {
   const json = exportToJson(output);
@@ -95,7 +95,7 @@ export function downloadJsonExport(
 /**
  * Read JSON file from input
  */
-export function readJsonFile(file: File): Promise<SoulForgeExport | null> {
+export function readJsonFile(file: File): Promise<AnimaeAgentisExport | null> {
   return new Promise((resolve) => {
     const reader = new FileReader();
     
