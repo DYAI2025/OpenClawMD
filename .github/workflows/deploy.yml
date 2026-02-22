@@ -32,15 +32,12 @@ jobs:
       - name: Build project
         run: npm run build
 
-      - name: 📂 Sync files
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        env:
-          FTP_SERVER: ${{ secrets.FTP_SERVER }}
-          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
-          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+      - name: 📂 Deploy via rsync over SSH
+        uses: burnett01/rsync-deployments@7.0.1
         with:
-          server: ${{ env.FTP_SERVER }}
-          username: ${{ env.FTP_USERNAME }}
-          password: ${{ env.FTP_PASSWORD }}
-          local-dir: ./dist/
-          server-dir: ./public_html/
+          switches: -avz --delete
+          path: ./dist/
+          remote_path: /var/www/openclawmd/public_html/
+          remote_host: ${{ secrets.FTP_SERVER }}
+          remote_user: root
+          remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
