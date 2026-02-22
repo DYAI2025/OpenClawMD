@@ -1,5 +1,5 @@
 import { ArrowRight, FileText, Shield, Brain, Settings, Heart, Eye, Database, Tag, Cpu, ChevronRight } from 'lucide-react';
-import { ClayCard, ClayButton, ClayThemeToggle } from '@/components/clay';
+import { ClayCard, ClayButton } from '@/components/clay';
 
 interface HowItWorksPageProps {
   onBack: () => void;
@@ -99,7 +99,7 @@ export const HowItWorksPage: React.FC<HowItWorksPageProps> = ({
     <div className="min-h-screen">
       {/* Header */}
       <header className="w-full px-6 py-6">
-        <div className="max-w-5xl mx-auto flex items-center justify-between">
+        <div className="max-w-5xl mx-auto">
           <button
             onClick={onBack}
             className="text-sm font-semibold text-clay-charcoal/60 hover:text-clay-coral transition-colors flex items-center gap-1"
@@ -107,7 +107,6 @@ export const HowItWorksPage: React.FC<HowItWorksPageProps> = ({
             <ChevronRight className="w-4 h-4 rotate-180" />
             Back
           </button>
-          <ClayThemeToggle />
         </div>
       </header>
 

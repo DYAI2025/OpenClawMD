@@ -48,6 +48,16 @@ module.exports = {
           stone: 'rgb(var(--clay-stone-rgb) / <alpha-value>)',
           charcoal: 'rgb(var(--clay-charcoal-rgb) / <alpha-value>)',
         },
+        sidebar: {
+          DEFAULT: "hsl(var(--sidebar-background))",
+          foreground: "hsl(var(--sidebar-foreground))",
+          primary: "hsl(var(--sidebar-primary))",
+          "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
+          accent: "hsl(var(--sidebar-accent))",
+          "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
+          border: "hsl(var(--sidebar-border))",
+          ring: "hsl(var(--sidebar-ring))",
+        },
       },
       borderRadius: {
         '2xl': "calc(var(--radius) + 0.75rem)",
@@ -98,7 +108,7 @@ module.exports = {
           "50%": { opacity: "0.7" },
         },
         "slide-up": {
-          from: { transform: "translateY(20px)", opacity: "0" },
+          from: { transform: "translateY(8px)", opacity: "0" },
           to: { transform: "translateY(0)", opacity: "1" },
         },
         "slide-in-right": {
@@ -116,7 +126,7 @@ module.exports = {
         "caret-blink": "caret-blink 1.25s ease-out infinite",
         "float": "float 4s ease-in-out infinite",
         "pulse-soft": "pulse-soft 2s ease-in-out infinite",
-        "slide-up": "slide-up 0.4s ease-out",
+        "slide-up": "slide-up 0.2s ease-out",
         "slide-in-right": "slide-in-right 0.4s ease-out",
         "scale-in": "scale-in 0.3s ease-out",
       },

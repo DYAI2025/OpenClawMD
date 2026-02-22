@@ -58,12 +58,15 @@ export const PresetsPage: React.FC<PresetsPageProps> = ({
               key={preset.id}
               padding="lg"
               style={
+                preset.id === 'security' ? { backgroundImage: isDark
+                  ? 'linear-gradient(90deg, rgba(30,34,54,1) 0%, rgba(52,223,166,0.3) 100%)'
+                  : 'linear-gradient(90deg, rgb(255, 255, 255) 0%, rgb(52, 223, 166) 100%)' } :
                 preset.id === 'responsible' ? { backgroundImage: isDark
                   ? 'linear-gradient(90deg, rgba(30,34,54,1) 0%, rgba(160,100,30,0.3) 100%)'
                   : 'linear-gradient(90deg, rgb(255, 255, 255) 0%, rgb(219, 141, 51) 100%)' } :
                 preset.id === 'overclaw' ? { backgroundImage: isDark
                   ? 'linear-gradient(90deg, rgba(30,34,54,1) 0%, rgba(60,130,80,0.3) 100%)'
-                  : 'linear-gradient(90deg, rgb(255, 255, 255) 0%, rgb(100, 185, 133) 100%)' } :
+                  : 'linear-gradient(90deg, rgb(255, 255, 255) 0%, rgb(200, 106, 115) 100%)' } :
                 undefined
               }
             >

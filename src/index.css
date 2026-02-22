@@ -98,6 +98,16 @@
     --radius-2xl: 2rem;
     --radius-round: 9999px;
 
+    /* Sidebar */
+    --sidebar-background: 35 25% 96%;
+    --sidebar-foreground: 30 10% 15%;
+    --sidebar-primary: 25 70% 55%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 35 25% 91%;
+    --sidebar-accent-foreground: 30 10% 15%;
+    --sidebar-border: 35 20% 88%;
+    --sidebar-ring: 25 70% 55%;
+
     /* Animation */
     --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
     --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -105,28 +115,40 @@
   }
 
   /* ===== Dark Mode ===== */
+  /* NOTE: Foreground colors intentionally stay dark because clay banners/cards
+     do NOT darken in dark mode — light text on light backgrounds is unreadable. */
   .dark {
     --background: 220 35% 12%;
-    --foreground: 35 20% 90%;
+    --foreground: 30 10% 15%;
     --card: 220 30% 14%;
-    --card-foreground: 35 20% 90%;
+    --card-foreground: 30 10% 15%;
     --popover: 220 30% 14%;
-    --popover-foreground: 35 20% 90%;
+    --popover-foreground: 30 10% 15%;
     --primary: 35 50% 57%;
     --primary-foreground: 220 35% 12%;
     --secondary: 180 20% 18%;
-    --secondary-foreground: 35 20% 90%;
+    --secondary-foreground: 30 10% 15%;
     --muted: 220 25% 18%;
-    --muted-foreground: 35 15% 60%;
+    --muted-foreground: 30 8% 45%;
     --accent: 180 20% 18%;
-    --accent-foreground: 35 20% 90%;
+    --accent-foreground: 30 10% 15%;
     --destructive: 0 55% 50%;
     --destructive-foreground: 0 0% 100%;
     --border: 220 20% 22%;
     --input: 220 25% 18%;
     --ring: 35 50% 57%;
 
-    /* Dark clay RGB channels */
+    /* Sidebar (dark) */
+    --sidebar-background: 220 30% 14%;
+    --sidebar-foreground: 35 20% 90%;
+    --sidebar-primary: 35 50% 57%;
+    --sidebar-primary-foreground: 220 35% 12%;
+    --sidebar-accent: 220 25% 20%;
+    --sidebar-accent-foreground: 35 20% 90%;
+    --sidebar-border: 220 20% 22%;
+    --sidebar-ring: 35 50% 57%;
+
+    /* Dark clay RGB channels — charcoal stays dark for readable text on light banners */
     --clay-base-rgb: 19 26 43;
     --clay-peach-rgb: 42 32 48;
     --clay-mint-rgb: 26 46 48;
@@ -134,7 +156,7 @@
     --clay-sand-rgb: 30 34 54;
     --clay-coral-rgb: 201 147 90;
     --clay-stone-rgb: 46 52 72;
-    --clay-charcoal-rgb: 232 226 218;
+    --clay-charcoal-rgb: 61 58 54;
 
     /* Dark shadows — stronger + colored for depth on dark surfaces */
     --shadow-ambient: 0 2px 4px rgba(0, 0, 0, 0.15),
@@ -485,6 +507,31 @@
 
   .dark ::-webkit-scrollbar-thumb:hover {
     opacity: 0.5;
+  }
+}
+
+@layer components {
+  /* Sidebar clay styling */
+  [data-sidebar="sidebar"] {
+    background: var(--clay-base);
+    border-color: var(--clay-overlay-border-light);
+  }
+
+  [data-sidebar="menu-button"]:hover {
+    background: rgba(var(--clay-sand-rgb), 0.4);
+  }
+
+  [data-sidebar="menu-button"][data-active="true"] {
+    background: rgba(var(--clay-peach-rgb), 0.3);
+    color: var(--clay-charcoal);
+  }
+
+  [data-sidebar="group-label"] {
+    color: rgba(var(--clay-charcoal-rgb), 0.35);
+  }
+
+  [data-sidebar="separator"] {
+    background: var(--clay-overlay-border-light);
   }
 }
 
