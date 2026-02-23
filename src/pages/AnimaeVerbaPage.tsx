@@ -77,7 +77,7 @@ export function AnimaeVerbaPage({ onBack }: AnimaeVerbaPageProps) {
             Back
           </button>
         )}
-        <h1 className="text-4xl md:text-5xl font-black text-clay-charcoal tracking-tight mb-4">
+        <h1 className="text-4xl md:text-5xl font-black text-clay-charcoal tracking-tight mb-4 text-balance">
           Animae <span className="text-clay-coral">Verba</span>
         </h1>
         <p className="text-lg text-clay-charcoal/60 max-w-2xl">
@@ -113,7 +113,7 @@ export function AnimaeVerbaPage({ onBack }: AnimaeVerbaPageProps) {
                   <Clock className="w-4 h-4" />
                   {latestPost.readTime}
                 </span>
-                <span className="text-clay-coral font-bold flex items-center gap-1 text-sm group-hover:gap-2 transition-all">
+                <span className="text-clay-coral font-bold flex items-center gap-1 text-sm group-hover:gap-2 transition-[gap]">
                   Read Article <ChevronRight className="w-4 h-4" />
                 </span>
               </div>
@@ -151,7 +151,7 @@ export function AnimaeVerbaPage({ onBack }: AnimaeVerbaPageProps) {
                       <Clock className="w-4 h-4" />
                       {post.readTime}
                     </span>
-                    <span className="text-clay-coral font-bold flex items-center gap-1 text-sm group-hover:gap-2 transition-all">
+                    <span className="text-clay-coral font-bold flex items-center gap-1 text-sm group-hover:gap-2 transition-[gap]">
                       Read <ChevronRight className="w-4 h-4" />
                     </span>
                   </div>

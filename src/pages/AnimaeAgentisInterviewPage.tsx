@@ -354,7 +354,7 @@ Never make commitments on my behalf`}
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="flex items-center gap-4 mb-8">
-          <ClayButton variant="round" color="stone" size="sm" onClick={handleBack}>
+          <ClayButton variant="round" color="stone" size="sm" onClick={handleBack} aria-label="Go back">
             <ArrowLeft className="w-5 h-5" />
           </ClayButton>
           <div className="flex-1">
@@ -374,9 +374,9 @@ Never make commitments on my behalf`}
         )}
 
         {/* Progress */}
-        <div className="h-2 bg-clay-sand rounded-full overflow-hidden mb-8">
-          <div 
-            className={`h-full bg-clay-mint transition-all duration-500 ${
+        <div className="h-2 bg-clay-sand rounded-full overflow-hidden mb-8" role="progressbar" aria-valuenow={currentIndex + 1} aria-valuemin={1} aria-valuemax={steps.length} aria-label="Interview progress">
+          <div
+            className={`h-full bg-clay-mint transition-[width] duration-500 ${
               currentIndex === 0 ? 'w-1/6' :
               currentIndex === 1 ? 'w-2/6' :
               currentIndex === 2 ? 'w-3/6' :
@@ -437,7 +437,7 @@ function ChoiceButton({
     <button
       onClick={onClick}
       className={`
-        w-full text-left p-4 rounded-xl transition-all duration-200
+        w-full text-left p-4 rounded-xl transition-[box-shadow,transform] duration-200 focus-visible:ring-2 focus-visible:ring-clay-coral/50 focus:outline-none
         ${selected 
           ? 'bg-clay-mint shadow-clay-inset ring-2 ring-clay-mint' 
           : 'bg-clay-base shadow-clay hover:shadow-clay-lifted'

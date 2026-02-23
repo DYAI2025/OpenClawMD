@@ -26,7 +26,7 @@ function ChoiceButton({ selected, onClick, label, description }: {
   return (
     <button
       onClick={onClick}
-      className={`w-full text-left p-4 rounded-xl transition-all duration-200 ${
+      className={`w-full text-left p-4 rounded-xl transition-[box-shadow,transform] duration-200 focus-visible:ring-2 focus-visible:ring-clay-coral/50 focus:outline-none ${
         selected
           ? 'bg-clay-mint shadow-clay-inset ring-2 ring-clay-mint'
           : 'bg-clay-base shadow-clay hover:shadow-clay-lifted'
@@ -74,7 +74,7 @@ function TogglePair<T extends string>({
       <div className="flex gap-2">
         <button
           onClick={() => onChange(optionA.value)}
-          className={`flex-1 py-2.5 px-4 rounded-lg text-sm font-medium transition-all duration-200 ${
+          className={`flex-1 py-2.5 px-4 rounded-lg text-sm font-medium transition-[box-shadow,transform] duration-200 focus-visible:ring-2 focus-visible:ring-clay-coral/50 focus:outline-none ${
             value === optionA.value
               ? 'bg-clay-charcoal dark:bg-white/15 text-white shadow-clay-inset'
               : 'bg-clay-base text-clay-charcoal shadow-clay hover:shadow-clay-lifted'
@@ -84,7 +84,7 @@ function TogglePair<T extends string>({
         </button>
         <button
           onClick={() => onChange(optionB.value)}
-          className={`flex-1 py-2.5 px-4 rounded-lg text-sm font-medium transition-all duration-200 ${
+          className={`flex-1 py-2.5 px-4 rounded-lg text-sm font-medium transition-[box-shadow,transform] duration-200 focus-visible:ring-2 focus-visible:ring-clay-coral/50 focus:outline-none ${
             value === optionB.value
               ? 'bg-clay-charcoal dark:bg-white/15 text-white shadow-clay-inset'
               : 'bg-clay-base text-clay-charcoal shadow-clay hover:shadow-clay-lifted'

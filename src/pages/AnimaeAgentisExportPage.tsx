@@ -158,7 +158,7 @@ export function AnimaeAgentisExportPage({ spirit, onBack, onNewConfig, onFineTun
               <div className="flex items-center bg-clay-sand rounded-full p-1 shadow-clay-inset">
                 <button
                   onClick={() => setViewMode(file.name, 'rendered')}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-[box-shadow,transform,color,background-color] ${
                     fileViewMode === 'rendered'
                       ? 'bg-white dark:bg-white/10 shadow-clay text-clay-charcoal'
                       : 'text-clay-charcoal/50 hover:text-clay-charcoal'
@@ -169,7 +169,7 @@ export function AnimaeAgentisExportPage({ spirit, onBack, onNewConfig, onFineTun
                 </button>
                 <button
                   onClick={() => setViewMode(file.name, 'raw')}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-[box-shadow,transform,color,background-color] ${
                     fileViewMode === 'raw'
                       ? 'bg-white dark:bg-white/10 shadow-clay text-clay-charcoal'
                       : 'text-clay-charcoal/50 hover:text-clay-charcoal'
@@ -233,6 +233,7 @@ export function AnimaeAgentisExportPage({ spirit, onBack, onNewConfig, onFineTun
             color="stone"
             size="sm"
             onClick={onBack}
+            aria-label="Go back"
           >
             <ArrowLeft className="w-5 h-5" />
           </ClayButton>

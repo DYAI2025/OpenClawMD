@@ -28,7 +28,7 @@ function CookieToggle({ label, description, checked, disabled, onChange }: {
         disabled={disabled}
         onClick={() => onChange?.(!checked)}
         className={`
-          relative w-10 h-6 rounded-full transition-colors shrink-0
+          relative w-10 h-6 rounded-full transition-colors shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-clay-coral/50
           ${checked ? 'bg-clay-mint' : 'bg-clay-stone/40'}
           ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'}
         `}

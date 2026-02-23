@@ -41,7 +41,7 @@ export const ClayButton = React.forwardRef<HTMLButtonElement, ClayButtonProps>(
     disabled,
     ...props 
   }, ref) => {
-    const baseClasses = 'inline-flex items-center justify-center gap-2 font-medium transition-all duration-250 ease-clay focus:outline-none focus-visible:ring-2 focus-visible:ring-clay-coral/50 disabled:opacity-50 disabled:cursor-not-allowed';
+    const baseClasses = 'inline-flex items-center justify-center gap-2 font-medium transition-[box-shadow,transform,opacity] duration-250 ease-clay focus:outline-none focus-visible:ring-2 focus-visible:ring-clay-coral/50 disabled:opacity-50 disabled:cursor-not-allowed';
     
     const variantClasses = {
       round: 'rounded-full aspect-square',

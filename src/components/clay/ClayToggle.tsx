@@ -9,6 +9,8 @@ interface ClayToggleProps {
   disabled?: boolean;
 }
 
+let toggleIdCounter = 0;
+
 export const ClayToggle: React.FC<ClayToggleProps> = ({
   checked,
   onChange,
@@ -16,12 +18,14 @@ export const ClayToggle: React.FC<ClayToggleProps> = ({
   description,
   disabled = false,
 }) => {
+  const [toggleId] = React.useState(() => `clay-toggle-${++toggleIdCounter}`);
+
   return (
     <div className={cn('flex items-center justify-between', disabled && 'opacity-50')}>
       {(label || description) && (
         <div className="flex-1 mr-4">
           {label && (
-            <label className="text-sm font-medium text-clay-charcoal">
+            <label htmlFor={toggleId} className="text-sm font-medium text-clay-charcoal cursor-pointer">
               {label}
             </label>
           )}
@@ -32,11 +36,13 @@ export const ClayToggle: React.FC<ClayToggleProps> = ({
           )}
         </div>
       )}
-      
+
       <button
+        id={toggleId}
         type="button"
         role="switch"
         aria-checked={checked}
+        aria-label={label || undefined}
         onClick={() => !disabled && onChange(!checked)}
         disabled={disabled}
         className={cn(

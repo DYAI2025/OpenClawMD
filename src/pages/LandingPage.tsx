@@ -55,7 +55,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           </div>
 
           {/* Title */}
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-clay-charcoal mb-6 leading-tight">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-clay-charcoal mb-6 leading-tight text-balance">
             10 Markdown files that define
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-clay-coral to-clay-peach">
               how your AI agent behaves
@@ -76,7 +76,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               className="text-left group"
             >
               <div className="w-12 h-12 rounded-full shadow-clay flex items-center justify-center mb-4 group-hover:scale-110 transition-transform overflow-hidden">
-                <img src={downloadImg} alt="Download Presets" className="w-full h-full object-cover" />
+                <img src={downloadImg} alt="Download Presets" width={48} height={48} className="w-full h-full object-cover" />
               </div>
               <h3 className="text-lg font-semibold text-clay-charcoal mb-2">
                 Download Presets
@@ -93,7 +93,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               className="text-left group"
             >
               <div className="w-12 h-12 rounded-full bg-clay-coral shadow-clay flex items-center justify-center mb-4 group-hover:scale-110 transition-transform overflow-hidden">
-                <img src={customImg} alt="Customize Your Files" className="w-full h-full object-cover" />
+                <img src={customImg} alt="Customize Your Files" width={48} height={48} className="w-full h-full object-cover" />
               </div>
               <h3 className="text-lg font-semibold text-clay-charcoal mb-2">
                 Customize Your Files
@@ -110,7 +110,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               className="text-left group"
             >
               <div className="w-12 h-12 rounded-full bg-clay-peach shadow-clay flex items-center justify-center mb-4 group-hover:scale-110 transition-transform overflow-hidden">
-                <img src={knowledgeImg} alt="How It Works" className="w-full h-full object-cover" />
+                <img src={knowledgeImg} alt="How It Works" width={48} height={48} className="w-full h-full object-cover" />
               </div>
               <h3 className="text-lg font-semibold text-clay-charcoal mb-2">
                 How It Works
@@ -140,7 +140,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               <button
                 key={file.name}
                 onClick={() => setPreviewFile(file.name)}
-                className="bg-clay-base rounded-xl p-4 shadow-clay border border-white/50 dark:border-white/[0.06] text-center cursor-pointer hover:shadow-clay-lifted hover:-translate-y-1 hover:scale-[1.02] transition-all"
+                className="bg-clay-base rounded-xl p-4 shadow-clay border border-white/50 dark:border-white/[0.06] text-center cursor-pointer hover:shadow-clay-lifted hover:-translate-y-1 hover:scale-[1.02] transition-[box-shadow,transform] duration-250 focus-visible:ring-2 focus-visible:ring-clay-coral/50 focus:outline-none"
               >
                 <code className="text-sm font-mono text-clay-coral font-semibold">
                   {file.name}
@@ -195,7 +195,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                     <Clock className="w-4 h-4" />
                     {latestWeekly.readTime}
                   </span>
-                  <span className="text-clay-coral font-bold flex items-center gap-1 text-sm group-hover:gap-2 transition-all">
+                  <span className="text-clay-coral font-bold flex items-center gap-1 text-sm group-hover:gap-2 transition-[gap]">
                     Read <ChevronRight className="w-4 h-4" />
                   </span>
                 </div>

@@ -216,7 +216,7 @@ function App() {
           {/* Mobile header with hamburger */}
           {isMobile && (
             <div className="sticky top-0 z-30 flex items-center gap-3 px-4 py-3 bg-clay-base/80 backdrop-blur-sm border-b border-clay-stone/20">
-              <SidebarTrigger className="text-clay-charcoal" />
+              <SidebarTrigger className="text-clay-charcoal" aria-label="Toggle sidebar" />
               <span className="text-sm font-semibold text-clay-charcoal">Animae Agentis</span>
             </div>
           )}
@@ -229,9 +229,9 @@ function App() {
           )}
 
           {/* Main content */}
-          <div key={currentEntry.view} className="relative z-10 animate-slide-up will-change-transform flex-1 min-h-screen pt-2 md:pt-4">
+          <main id="main-content" key={currentEntry.view} className="relative z-10 animate-slide-up will-change-transform flex-1 min-h-screen pt-2 md:pt-4">
             {renderView()}
-          </div>
+          </main>
 
           <GlobalFooter onNavigate={navigateTo} />
 

@@ -10,6 +10,8 @@ interface ClaySliderProps {
   labels?: [string, string];
   showValue?: boolean;
   disabled?: boolean;
+  'aria-label'?: string;
+  name?: string;
 }
 
 export const ClaySlider: React.FC<ClaySliderProps> = ({
@@ -21,6 +23,8 @@ export const ClaySlider: React.FC<ClaySliderProps> = ({
   labels,
   showValue = true,
   disabled = false,
+  'aria-label': ariaLabel,
+  name,
 }) => {
   const percentage = ((value - min) / (max - min)) * 100;
   
@@ -64,7 +68,8 @@ export const ClaySlider: React.FC<ClaySliderProps> = ({
           value={value}
           onChange={(e) => onChange(Number(e.target.value))}
           disabled={disabled}
-          title="Adjust dimension value"
+          aria-label={ariaLabel || 'Adjust value'}
+          name={name}
           className="absolute inset-0 w-full h-full opacity-0 cursor-pointer appearance-none bg-transparent m-0 p-0 z-10"
         />
         

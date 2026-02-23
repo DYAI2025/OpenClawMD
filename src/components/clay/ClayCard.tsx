@@ -6,6 +6,7 @@ interface ClayCardProps extends React.HTMLAttributes<HTMLDivElement> {
   isInteractive?: boolean;
   isPressed?: boolean;
   padding?: 'none' | 'sm' | 'md' | 'lg';
+  'aria-label'?: string;
 }
 
 export const ClayCard = React.forwardRef<HTMLDivElement, ClayCardProps>(
@@ -38,9 +39,10 @@ export const ClayCard = React.forwardRef<HTMLDivElement, ClayCardProps>(
           'bg-gradient-to-br from-white/50 dark:from-white/[0.04] via-transparent to-transparent',
           paddingClasses[padding],
           shadowClasses,
-          isInteractive && 'cursor-pointer transition-all duration-250 ease-clay',
+          isInteractive && 'cursor-pointer transition-[box-shadow,transform] duration-250 ease-clay',
           className
         )}
+        {...(isInteractive ? { role: 'button', tabIndex: 0, onKeyDown: (e: React.KeyboardEvent) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); props.onClick?.(e as unknown as React.MouseEvent<HTMLDivElement>); } } } : {})}
         {...props}
       >
         {children}
