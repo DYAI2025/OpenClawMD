@@ -55,6 +55,17 @@ export function CookieConsent() {
 
   const savePreferences = (prefs: CookiePreferences) => {
     localStorage.setItem('animae_agentis_cookie_consent', JSON.stringify(prefs));
+
+    // Update Google consent mode
+    if (typeof window.gtag === 'function') {
+      window.gtag('consent', 'update', {
+        analytics_storage: prefs.analytics ? 'granted' : 'denied',
+        ad_storage: prefs.advertising ? 'granted' : 'denied',
+        ad_user_data: prefs.advertising ? 'granted' : 'denied',
+        ad_personalization: prefs.advertising ? 'granted' : 'denied',
+      });
+    }
+
     setIsVisible(false);
   };
 
