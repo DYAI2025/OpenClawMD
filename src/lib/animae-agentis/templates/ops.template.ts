@@ -65,14 +65,29 @@ function getToolFailureHandlingEN(presetId: PresetId): string {
 }
 
 function getCredentialSemanticsEN(presetId: PresetId): string {
-  if (presetId === 'responsible') {
-    return `
+  switch (presetId) {
+    case 'security':
+      return `
+### Credential Semantics (SECURITY)
+- Blocked: reading/exposing secrets, credential files, tokens, private keys.
+- Blocked: using integrations that may expose secrets without explicit user approval.
+- Allowed: pre-authenticated runtime integrations only when explicitly approved by the user.
+`;
+    case 'responsible':
+      return `
 ### Credential Semantics (clarified)
 - Blocked: reading/exposing secrets, credential files, tokens, private keys.
 - Allowed: using pre-authenticated runtime integrations (calendar/inbox) without attempting to read secrets, when the action is approved/in-scope.
 `;
+    case 'overclaw':
+      return `
+### Credential Semantics (OVERCLAW)
+- Blocked: reading/exposing secrets, credential files, tokens, private keys.
+- Allowed: using pre-authenticated runtime integrations without attempting to read secrets, when the action is within allowlist and autonomy budget.
+`;
+    default:
+      return '';
   }
-  return '';
 }
 
 function getAutonomyBudgetsEN(presetId: PresetId): string {
@@ -134,14 +149,29 @@ function getToolFailureHandlingDE(presetId: PresetId): string {
 }
 
 function getCredentialSemanticsDE(presetId: PresetId): string {
-  if (presetId === 'responsible') {
-    return `
+  switch (presetId) {
+    case 'security':
+      return `
+### Credential-Semantik (SECURITY)
+- Blockiert: Lesen/Exponieren von Secrets, Credential-Dateien, Tokens, Private Keys.
+- Blockiert: Nutzung von Integrationen, die Secrets ohne explizite Nutzer-Freigabe exponieren könnten.
+- Erlaubt: Vorab authentifizierte Runtime-Integrationen nur bei expliziter Nutzer-Freigabe.
+`;
+    case 'responsible':
+      return `
 ### Credential-Semantik (klargestellt)
 - Blockiert: Lesen/Exponieren von Secrets, Credential-Dateien, Tokens, Private Keys.
 - Erlaubt: Nutzung vorab authentifizierter Runtime-Integrationen (Kalender/Posteingang) ohne Versuch Secrets zu lesen, wenn die Aktion genehmigt/im Scope ist.
 `;
+    case 'overclaw':
+      return `
+### Credential-Semantik (OVERCLAW)
+- Blockiert: Lesen/Exponieren von Secrets, Credential-Dateien, Tokens, Private Keys.
+- Erlaubt: Nutzung vorab authentifizierter Runtime-Integrationen ohne Versuch Secrets zu lesen, wenn die Aktion innerhalb der Allowlist und des Autonomie-Budgets liegt.
+`;
+    default:
+      return '';
   }
-  return '';
 }
 
 function getAutonomyBudgetsDE(presetId: PresetId): string {

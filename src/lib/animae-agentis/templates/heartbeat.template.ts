@@ -288,20 +288,24 @@ function getPresetGateSection(presetId: PresetId, language: Language): string {
     switch (presetId) {
       case 'security':
         return `
-## Delta-Only Reporting (SECURITY-Preset)
-Wenn keine Änderungen seit dem letzten Tick (keine neuen Events/Nachrichten/Blocker) und kein Upgrade-Hinweis: Output exakt \`HEARTBEAT_OK\`.
+## Anti-Routine Gate (SECURITY-Preset)
+- Nur Deltas berichten: neue/geänderte Events, neue/geänderte Inbox-Prioritäten, neue/geänderte Blocker.
+- Identische Alerts nicht innerhalb von 4 Ticks wiederholen, es sei denn Schweregrad hat sich erhöht.
+- \`last_alert_hash\` + \`last_alert_tick\` im Sitzungsspeicher halten (nicht ohne Freigabe in Checkpoint schreiben).
+- Wenn keine Änderungen seit dem letzten Tick und kein Upgrade-Hinweis: Output exakt \`HEARTBEAT_OK\`.
 `;
       case 'responsible':
         return `
 ## Anti-Routine Gate (RESPONSIBLE-Preset)
 - Nur Deltas berichten: neue/geänderte Events, neue/geänderte Inbox-Prioritäten, neue/geänderte Blocker.
 - Identische Alerts nicht innerhalb von 4 Ticks wiederholen, es sei denn Schweregrad hat sich erhöht.
-- Letzten alert_hash in den Checkpoint-Metadaten des neuesten Checkpoints persistieren.
+- \`last_alert_hash\` + \`last_alert_tick\` in den Checkpoint-Metadaten des neuesten Checkpoints persistieren.
 `;
       case 'overclaw':
         return `
 ## Anti-Routine Gate (OVERCLAW_AUTONOMY-Preset)
 - Nur Deltas berichten und Cooldown erzwingen (kein identischer Alert innerhalb von 4 Ticks, es sei denn Schweregrad hat sich erhöht).
+- \`last_alert_hash\` + \`last_alert_tick\` in den Checkpoint-Metadaten des neuesten Checkpoints persistieren.
 - Einmal pro Woche: 1 Hypothese + 1 kleinen In-Sandbox-Experimentvorschlag erstellen; nur ausführen wenn erlaubt.
 `;
       default:
@@ -312,20 +316,24 @@ Wenn keine Änderungen seit dem letzten Tick (keine neuen Events/Nachrichten/Blo
   switch (presetId) {
     case 'security':
       return `
-## Delta-Only Reporting (SECURITY preset)
-If no changes since last tick (no new events/messages/blockers) and no upgrade notice: output exactly \`HEARTBEAT_OK\`.
+## Anti-Routine Gate (SECURITY preset)
+- Report deltas only: new/changed events, new/changed inbox priorities, new/changed blockers.
+- Do not repeat identical alerts within 4 ticks unless severity increased.
+- Persist \`last_alert_hash\` + \`last_alert_tick\` in-memory for the current session (do not write to checkpoint without approval).
+- If no changes since last tick and no upgrade notice: output exactly \`HEARTBEAT_OK\`.
 `;
     case 'responsible':
       return `
 ## Anti-Routine Gate (RESPONSIBLE preset)
 - Report deltas only: new/changed events, new/changed inbox priorities, new/changed blockers.
 - Do not repeat identical alerts within 4 ticks unless severity increased.
-- Persist last_alert_hash in the latest checkpoint metadata.
+- Persist \`last_alert_hash\` + \`last_alert_tick\` in the latest checkpoint metadata.
 `;
     case 'overclaw':
       return `
 ## Anti-Routine Gate (OVERCLAW_AUTONOMY preset)
 - Report deltas only and enforce cooldown (no identical alert within 4 ticks unless severity increased).
+- Persist \`last_alert_hash\` + \`last_alert_tick\` in the latest checkpoint metadata.
 - Once per week: produce 1 hypothesis + 1 small in-sandbox experiment proposal; execute only if allowlisted.
 `;
     default:

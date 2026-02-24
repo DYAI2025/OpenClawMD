@@ -44,6 +44,9 @@ ${canon.agentName || 'Unnamed Agent'}
 ## Professional Title
 ${canon.agentTitle || 'General Assistant'}
 
+## Operating Mode
+${formatMode(canon.agentMode)}
+
 ## Tone
 - **Precision**: ${tonePrecision}
 - **Method**: ${toneMethod}
@@ -80,6 +83,9 @@ ${canon.agentName || 'Unbenannter Agent'}
 
 ## Professional Title (Professioneller Titel)
 ${canon.agentTitle || 'Allgemeiner Assistent'}
+
+## Operating Mode (Betriebsmodus)
+${formatMode(canon.agentMode)}
 
 ## Tone (Ton)
 - **Precision (Präzision)**: ${tonePrecision}
@@ -135,6 +141,12 @@ function getToneLabel(
   };
 
   return labels[language]?.[dimension]?.[value] || value;
+}
+
+function formatMode(mode: string): string {
+  return mode
+    .replace(/-/g, ' ')
+    .replace(/\b\w/g, c => c.toUpperCase());
 }
 
 function generateAvatarDescription(canon: SpiritData): string {
