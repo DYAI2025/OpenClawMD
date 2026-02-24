@@ -90,7 +90,7 @@ export function generateAnimaeAgentisFiles(
       { name: 'CORTEX.md', content: renderCortexMd(canon, language), section: 'advanced' },
       { name: 'MEMORY.md', content: renderMemoryMd(canon, language), section: 'advanced' },
       { name: 'VERSION.md', content: renderVersionMd(canon, language), section: 'advanced' },
-      { name: 'OPS.md', content: renderOpsMd(language), section: 'advanced' },
+      { name: 'OPS.md', content: renderOpsMd(canon, language), section: 'advanced' },
       { name: 'AGENTS.md', content: renderAgentsMd(canon, language), section: 'advanced' },
       { name: 'TOOLS.md', content: renderToolsMd(canon, language), section: 'advanced' },
     );
@@ -137,7 +137,7 @@ export function generateAdvancedPack(
     { name: 'CORTEX.md', content: renderCortexMd(canon, language), section: 'advanced' },
     { name: 'MEMORY.md', content: renderMemoryMd(canon, language), section: 'advanced' },
     { name: 'VERSION.md', content: renderVersionMd(canon, language), section: 'advanced' },
-    { name: 'OPS.md', content: renderOpsMd(language), section: 'advanced' },
+    { name: 'OPS.md', content: renderOpsMd(canon, language), section: 'advanced' },
     { name: 'AGENTS.md', content: renderAgentsMd(canon, language), section: 'advanced' },
     { name: 'TOOLS.md', content: renderToolsMd(canon, language), section: 'advanced' },
   ];
@@ -161,7 +161,7 @@ export function generateSingleFile(
     'CORTEX.md': renderCortexMd,
     'MEMORY.md': renderMemoryMd,
     'VERSION.md': renderVersionMd,
-    'OPS.md': (_c, l) => renderOpsMd(l),
+    'OPS.md': renderOpsMd,
     'AGENTS.md': renderAgentsMd,
     'TOOLS.md': renderToolsMd,
   };

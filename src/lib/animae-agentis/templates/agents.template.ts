@@ -68,10 +68,10 @@ The following rules are active at all times, regardless of task or context:
 3. **SHIELD before action.** Before any tool call, file write, or external communication: check SHIELD constraints.
 4. **Approval before irreversible.** Any action that cannot be undone requires explicit user approval.
 5. **Truth policy active.** Apply \`${canon.truthPolicy || 'calibrated_confidence'}\` at all times — never fabricate.
-
+${getPresetSection(canon.presetId, 'en')}
 ## Agent Mode: ${canon.agentMode || 'sidekick'}
 
-${getModeBehavior(canon.agentMode || 'sidekick')}
+${getModeBehavior(canon.agentMode || 'sidekick', canon.presetId)}
 
 ## Session End Protocol
 
@@ -146,10 +146,10 @@ Die folgenden Regeln sind jederzeit aktiv, unabhängig von Task oder Kontext:
 3. **SHIELD vor Aktion.** Vor jedem Tool-Aufruf, Datei-Schreiben oder externer Kommunikation: SHIELD-Constraints prüfen.
 4. **Freigabe vor Irreversiblem.** Jede Aktion, die nicht rückgängig gemacht werden kann, erfordert explizite Nutzerfreigabe.
 5. **Wahrheitspolitik aktiv.** \`${canon.truthPolicy || 'calibrated_confidence'}\` jederzeit anwenden — niemals fabrizieren.
-
+${getPresetSection(canon.presetId, 'de')}
 ## Agent-Modus: ${canon.agentMode || 'sidekick'}
 
-${getModeBehaviorGerman(canon.agentMode || 'sidekick')}
+${getModeBehaviorGerman(canon.agentMode || 'sidekick', canon.presetId)}
 
 ## Session-End-Protokoll
 
@@ -175,18 +175,90 @@ ${getModeBehaviorGerman(canon.agentMode || 'sidekick')}
 `;
 }
 
-function getModeBehavior(mode: string): string {
+function getModeBehavior(mode: string, presetId?: string): string {
   const behaviors: Record<string, string> = {
-    'sidekick': `**Sidekick (Discovery)**: Propose only — never execute without explicit approval. Focus on finding patterns, surfacing insights, and asking clarifying questions. Default to \`recommend_only\`.`,
+    'sidekick': presetId === 'security'
+      ? `**Sidekick (Discovery)**: Propose only — never execute without explicit approval. Default to \`recommend_only\`.`
+      : `**Sidekick (Discovery)**: Propose only — never execute without explicit approval. Focus on finding patterns, surfacing insights, and asking clarifying questions. Default to \`recommend_only\`.`,
     'chief-of-staff': `**Chief of Staff (Execution)**: Execute within sandbox boundaries. Escalate anything irreversible or external. Proactively manage tasks, flag blockers, and drive toward completion. Default to \`execute_with_approval\`.`,
     'coach': `**Coach (Accountability)**: Reflect, don't direct. Ask questions that surface assumptions. Track commitments without judgment. Never push actions — only explore. Default to \`recommend_only\`.`,
   };
   return behaviors[mode] || behaviors['sidekick'];
 }
 
-function getModeBehaviorGerman(mode: string): string {
+function getPresetSection(presetId: string | undefined, language: 'en' | 'de'): string {
+  if (!presetId) return '';
+
+  if (language === 'de') {
+    switch (presetId) {
+      case 'security':
+        return `
+## Preset
+**PRESET = SECURITY**
+- Keine Ausführung standardmäßig. Nur Vorschläge.
+- Keine Tool-Aufrufe ohne explizite Freigabe (einschließlich schreibgeschützter).
+- Keine Datei-Schreibvorgänge/Erstellungen/Löschungen ohne explizite Freigabe.
+`;
+      case 'responsible':
+        return `
+## Preset
+**PRESET = RESPONSIBLE**
+Definitionen:
+- **Execute** = jede ausgehende Kommunikation, jede Löschung, jedes Schreiben außerhalb von memory/*, jedes externe API-Schreiben (POST/PUT/DELETE), jede Privilegienänderung, jeder irreversible Export.
+- **Interne Wartungsschreibvorgänge** (vorab genehmigt): memory/checkpoints/*, MEMORY.md (nur anhängen), memory/YYYY-MM-DD.md Tageslogs (nur anhängen), VERSION.md Regeneration (nur Template).
+`;
+      case 'overclaw':
+        return `
+## Preset
+**PRESET = OVERCLAW_AUTONOMY**
+SPIRIT-Snapshot (dauerhaft in minimalen Kontexten):
+- action_mode: autonomous_in_sandbox
+- approvals: Löschungen/Privilegien/Eskalation/Ausgehende/Nicht-Allowlist/Externe Schreibvorgänge erfordern Freigabe
+- niemals Geheimnisse, niemals destruktiv, niemals fabrizieren
+- allowlisted writes: memory/ + memory/checkpoints/ + MEMORY.md (nur anhängen)
+`;
+      default:
+        return '';
+    }
+  }
+
+  switch (presetId) {
+    case 'security':
+      return `
+## Preset
+**PRESET = SECURITY**
+- No execution by default. Propose only.
+- No tool calls without explicit approval (including read-only).
+- No file writes/creates/deletes without explicit approval.
+`;
+    case 'responsible':
+      return `
+## Preset
+**PRESET = RESPONSIBLE**
+Definitions:
+- **Execute** = any outbound communication, any delete, any write outside memory/*, any external API write (POST/PUT/DELETE), any privilege change, any irreversible export.
+- **Internal maintenance writes** (pre-approved): memory/checkpoints/*, MEMORY.md (append-only), memory/YYYY-MM-DD.md daily logs (append-only), VERSION.md regeneration (template-only).
+`;
+    case 'overclaw':
+      return `
+## Preset
+**PRESET = OVERCLAW_AUTONOMY**
+SPIRIT snapshot (durable in minimal contexts):
+- action_mode: autonomous_in_sandbox
+- approvals: deletes/privilege/escalation/outbound/non-allowlist/external writes require approval
+- never secrets, never destructive, never fabricate
+- allowlisted writes: memory/ + memory/checkpoints/ + MEMORY.md (append-only)
+`;
+    default:
+      return '';
+  }
+}
+
+function getModeBehaviorGerman(mode: string, presetId?: string): string {
   const behaviors: Record<string, string> = {
-    'sidekick': `**Sidekick (Discovery)**: Nur vorschlagen — niemals ohne explizite Freigabe ausführen. Fokus auf Mustererkennung, Erkenntnisse aufdecken und klärende Fragen stellen. Standard: \`recommend_only\`.`,
+    'sidekick': presetId === 'security'
+      ? `**Sidekick (Discovery)**: Nur vorschlagen — niemals ohne explizite Freigabe ausführen. Standard: \`recommend_only\`.`
+      : `**Sidekick (Discovery)**: Nur vorschlagen — niemals ohne explizite Freigabe ausführen. Fokus auf Mustererkennung, Erkenntnisse aufdecken und klärende Fragen stellen. Standard: \`recommend_only\`.`,
     'chief-of-staff': `**Chief of Staff (Execution)**: Innerhalb Sandbox-Grenzen ausführen. Alles Irreversible oder Externe eskalieren. Proaktiv Tasks managen, Blocker markieren und auf Abschluss hinarbeiten. Standard: \`execute_with_approval\`.`,
     'coach': `**Coach (Accountability)**: Reflektieren, nicht dirigieren. Fragen stellen, die Annahmen aufdecken. Commitments ohne Urteil tracken. Niemals Aktionen pushen — nur erkunden. Standard: \`recommend_only\`.`,
   };

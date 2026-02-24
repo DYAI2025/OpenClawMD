@@ -12,6 +12,22 @@
 
 import type { SpiritData } from '../types';
 
+function getAllowlistGateSection(presetId: string | undefined, language: 'en' | 'de'): string {
+  if (presetId !== 'overclaw') return '';
+  if (language === 'de') {
+    return `
+## Allowlist-Gate (OVERCLAW_AUTONOMY Preset)
+- Outbound ist nur zu allowlisted Domains/Kanälen/Empfängern erlaubt.
+- Alles, was nicht auf der Allowlist steht, wird als nicht genehmigte Outbound-Exfiltration behandelt und ist blockiert oder erfordert explizite Freigabe.
+`;
+  }
+  return `
+## Allowlist Gate (OVERCLAW_AUTONOMY preset)
+- Outbound is permitted only to allowlisted domains/channels/recipients.
+- Anything not on the allowlist is treated as unapproved outbound exfiltration and is blocked or requires explicit approval.
+`;
+}
+
 export function renderShieldMd(canon: SpiritData, language: 'en' | 'de' = 'en'): string {
   if (language === 'de') {
     return renderGerman(canon);
@@ -66,7 +82,7 @@ ${getIrreversiblePolicy(canon.autonomy.actionMode || 'recommend_only')}
 
 ### External Communication
 ${getCommunicationPolicy(canon.autonomy.actionMode || 'recommend_only')}
-
+${getAllowlistGateSection(canon.presetId, 'en')}
 ## Minimal Audit
 Log for each blocked attempt:
 - Category of blocked action
@@ -155,7 +171,7 @@ ${getIrreversiblePolicyGerman(canon.autonomy.actionMode || 'recommend_only')}
 
 ### External Communication (Externe Kommunikation)
 ${getCommunicationPolicyGerman(canon.autonomy.actionMode || 'recommend_only')}
-
+${getAllowlistGateSection(canon.presetId, 'de')}
 ## Minimal Audit (Minimales Audit)
 Log für jeden blockierten Versuch:
 - Kategorie der blockierten Aktion

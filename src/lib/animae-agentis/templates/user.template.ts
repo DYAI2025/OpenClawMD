@@ -46,7 +46,7 @@ Define how the agent should work with the user: preferences, approvals, outputs,
 - **Default action mode**: ${canon.autonomy.actionMode}
 - **Approval threshold**: ${canon.autonomy.approvalThreshold}
 - **Irreversible actions**: always require explicit approval.
-
+${getSignificantActionsSection(canon.presetId, 'en')}
 ## Defined Scope
 Scope = the intersection of **domain_focus** (from SPIRIT.md: \`${canon.domainFocus}\`) and the current task context.
 
@@ -76,6 +76,76 @@ ${stopWords}
 - Contains at least 3 "If X then Y" operational rules.
 - Does not contain identity/persona prose.
 `;
+}
+
+function getSignificantActionsSection(presetId: string | undefined, language: 'en' | 'de'): string {
+  if (!presetId) return '';
+
+  if (language === 'de') {
+    switch (presetId) {
+      case 'security':
+        return `
+### Signifikante Aktionen (explizit, SECURITY Preset)
+Signifikant = jeder Tool-Aufruf, jedes Datei-Schreiben/Erstellen, jede ausgehende Kommunikation, jede externe Web-/API-Aktion, jede Löschung, jeder Export.
+
+### Sicherheitsstandard
+Im Zweifelsfall: nicht handeln. Vor dem Fortfahren fragen.
+`;
+      case 'responsible':
+        return `
+### Signifikante Aktionen (explizit, RESPONSIBLE Preset)
+Signifikant = ausgehende Kommunikation, Schreibvorgänge außerhalb von memory/, Löschungen, externe API POST/PUT/DELETE, Privilegienänderungen, irreversible Exporte.
+Interne Wartungsschreibvorgänge in memory/ (nur anhängen) sind nicht signifikant.
+`;
+      case 'overclaw':
+        return `
+### Allowlisted Autonomie (OVERCLAW_AUTONOMY Preset)
+Vorab genehmigte autonome Aktionen (sicherer Sandbox):
+- Checkpoints nach \`memory/checkpoints/*\` schreiben (nur anhängen)
+- \`MEMORY.md\` aktualisieren (nur anhängen, nur dauerhafte Fakten)
+- Entwürfe erstellen (niemals senden)
+- Schreibgeschützte Recherche (Web Fetch/Suche)
+Allowlisted Schreibbereiche: \`memory/\`, \`memory/checkpoints/\`, \`exports/\` (Exporte erfordern Freigabe).
+
+### Signifikante Aktionen (explizit)
+Signifikant = jedes Senden, jede Löschung, jedes Schreiben außerhalb allowlisted Bereiche, jedes externe API POST/PUT/DELETE, jeder neue Empfänger/Domain, jeder irreversible Export.
+`;
+      default:
+        return '';
+    }
+  }
+
+  switch (presetId) {
+    case 'security':
+      return `
+### Significant Actions (explicit, SECURITY preset)
+Significant = any tool invocation, any file write/create, any outbound communication, any external web/API action, any delete, any export.
+
+### Safety Default
+If uncertain: do not act. Ask before proceeding.
+`;
+    case 'responsible':
+      return `
+### Significant Actions (explicit, RESPONSIBLE preset)
+Significant = outbound communication, writes outside memory/, deletes, external API POST/PUT/DELETE, privilege changes, irreversible exports.
+Internal maintenance writes in memory/ (append-only) are not significant.
+`;
+    case 'overclaw':
+      return `
+### Allowlisted Autonomy (OVERCLAW_AUTONOMY preset)
+Pre-approved autonomous actions (safe sandbox):
+- Write checkpoints to \`memory/checkpoints/*\` (append-only)
+- Update \`MEMORY.md\` (append-only, durable facts only)
+- Create drafts (never send)
+- Read-only research (web fetch/search)
+Allowlisted write areas: \`memory/\`, \`memory/checkpoints/\`, \`exports/\` (exports require approval).
+
+### Significant Actions (explicit)
+Significant = any send, any delete, any write outside allowlisted areas, any external API POST/PUT/DELETE, any new recipient/domain, any irreversible export.
+`;
+    default:
+      return '';
+  }
 }
 
 function renderGerman(canon: SpiritData, stopWords: string): string {
@@ -143,7 +213,7 @@ Definiere, wie der Agent mit dem Nutzer arbeiten soll: Präferenzen, Freigaben, 
 - **Default action mode**: ${actionModeLabels[canon.autonomy.actionMode || 'recommend_only']}
 - **Approval threshold (Freigabe-Schwelle)**: ${canon.autonomy.approvalThreshold || 'Anything irreversible requires explicit approval.'}
 - **Irreversible actions**: Erfordern immer explizite Freigabe.
-
+${getSignificantActionsSection(canon.presetId, 'de')}
 ## Defined Scope (Definierter Wirkungsbereich)
 Scope = Schnittmenge von **domain_focus** (aus SPIRIT.md: \`${canon.domainFocus}\`) und aktuellem Task-Kontext.
 

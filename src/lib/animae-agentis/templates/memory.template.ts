@@ -11,6 +11,24 @@
 
 import type { SpiritData } from '../types';
 
+function getPresetAutonomyNote(presetId: string | undefined, language: 'en' | 'de'): string {
+  if (presetId !== 'overclaw') return '';
+  if (language === 'de') {
+    return `
+**Preset-Hinweis**: Diese Datei muss dem aktiven Preset entsprechen.
+Falls PRESET = OVERCLAW_AUTONOMY:
+- Allowlisted Schreibvorgänge: memory/ + memory/checkpoints/ + MEMORY.md (append-only).
+- Freigabe erforderlich für: Löschungen, Privilegien-Änderungen, Schreibvorgänge außerhalb allowlisted Bereiche, externe API-Writes, Outbound-Kommunikation an nicht-allowlisted Empfänger, irreversible Exports.
+`;
+  }
+  return `
+**Preset note**: This file must match the active preset.
+If PRESET = OVERCLAW_AUTONOMY:
+- Allowlisted writes: memory/ + memory/checkpoints/ + MEMORY.md (append-only).
+- Approval required for: deletes, privilege changes, writes outside allowlisted areas, external API writes, outbound comm to non-allowlisted recipients, irreversible exports.
+`;
+}
+
 export function renderMemoryMd(canon: SpiritData, language: 'en' | 'de' = 'en'): string {
   if (language === 'de') {
     return renderGerman(canon);
@@ -48,7 +66,7 @@ ${canon.stopWords.map(w => `- "${w}"`).join('\n') || '- None defined'}
 ### Autonomy
 - **Action mode**: ${canon.autonomy.actionMode || 'recommend_only'}
 - **Approval threshold**: ${canon.autonomy.approvalThreshold || 'Anything irreversible requires explicit approval.'}
-
+${getPresetAutonomyNote(canon.presetId, 'en')}
 ### Surprise
 - **Appetite**: ${canon.surprise.appetite}
 - **Cadence**: ${canon.surprise.cadence}
@@ -164,7 +182,7 @@ ${canon.stopWords.map(w => `- "${w}"`).join('\n') || '- Keine definiert'}
 ### Autonomy (Autonomie)
 - **Action mode**: ${canon.autonomy.actionMode}
 - **Approval threshold**: ${canon.autonomy.approvalThreshold}
-
+${getPresetAutonomyNote(canon.presetId, 'de')}
 ### Surprise (Überraschung)
 - **Appetite**: ${appetiteLabels[canon.surprise.appetite || 'medium']}
 - **Cadence**: ${cadenceLabels[canon.surprise.cadence || 'weekly_deep']}

@@ -21,6 +21,7 @@ const SECURITY_PRESET: PresetDefinition = {
   description: 'The SECURITY preset prioritizes safety above all else. Every action requires explicit approval, and the system operates with minimal autonomy. Ideal for sensitive environments where human oversight is paramount.',
   color: 'peach',
   spirit: {
+    presetId: 'security',
     agentName: 'Guardian',
     agentMode: 'sidekick',
     domainFocus: 'ops',
@@ -61,6 +62,7 @@ const RESPONSIBLE_PRESET: PresetDefinition = {
   description: 'The Responsible preset strikes a balance between autonomy and oversight. The system can propose initiatives and handle moderate uncertainty, but key decisions still involve human collaboration.',
   color: 'mint',
   spirit: {
+    presetId: 'responsible',
     agentName: 'Compass',
     agentMode: 'sidekick',
     domainFocus: 'mixed',
@@ -101,6 +103,7 @@ const OVERCLAW_PRESET: PresetDefinition = {
   description: 'The OverClaw preset unleashes maximum autonomy. The system can act strategically, handle high uncertainty, and execute with minimal human intervention. Use with caution and clear monitoring.',
   color: 'coral',
   spirit: {
+    presetId: 'overclaw',
     agentName: 'Apex',
     agentMode: 'chief-of-staff',
     domainFocus: 'engineering',

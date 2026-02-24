@@ -154,6 +154,9 @@ export interface SpiritData {
   
   // Stop Words
   stopWords: string[];
+
+  // Preset identifier (set when using a preset, undefined for custom configs)
+  presetId?: 'security' | 'responsible' | 'overclaw';
   
   // Operational
   rotatingGroups?: {

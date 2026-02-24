@@ -40,12 +40,10 @@ Operate the agent efficiently: rotating checks, cheap-first triggers, compaction
 - Cheap checks first; expensive calls only when triggers fire.
 
 ## Version & Migration (cheap)
-- Workspace VERSION.md present? If missing, create from template.
+${getVersionMigrationText(canon.presetId, 'en')}
 - If workspace Template Pack Version != skill Template Pack Version: flag "upgrade recommended".
 
-## Context Guard & Checkpointing
-- If context utilization ≥ 70%: write checkpoint immediately; skip non-critical checks.
-- If context utilization ≥ 50% and last checkpoint > 30 minutes: write checkpoint first.
+${getCheckpointingText(canon.presetId, 'en')}
 
 Checkpoint format: timestamp, reason, current state, next actions.
 
@@ -63,14 +61,14 @@ Base tick interval: **${canon.agentMode === 'chief-of-staff' ? '5 minutes' : '15
 | **B** | Medium | Every 2nd tick | ${groups.groupB} |
 | **C** | Low | Every 4th tick | ${groups.groupC} |
 
-Rotation order: A → A,B → A → A,B,C → repeat.
+${getRotationOrder(canon.presetId, 'en')}
 
 ## Discovery Rotation (Surprise Loop)
 Run only on cadence: **${canon.surprise.cadence || 'weekly_deep'}** with boundaries from USER/SPIRIT.
 
 ${getDiscoveryDescription(canon.surprise.appetite || 'medium', canon.surprise.cadence || 'weekly_deep')}
 
-Rule: ${canon.agentMode === 'chief-of-staff' ? 'execute within sandbox boundaries; escalate anything irreversible or external.' : 'propose only — do not execute without explicit user approval.'}
+${getDiscoveryRule(canon.presetId, canon.agentMode, 'en')}
 
 ## Task Reconciliation
 
@@ -99,8 +97,7 @@ IDLE → (trigger fires) → CHECKING → (all checks pass) → IDLE
 
 ## Silent Protocol
 If (no triggers) AND (no actions queued) AND (no upgrade notice): output \`HEARTBEAT_OK\`.
-
-## Interfaces
+${getPresetGateSection(canon.presetId, 'en')}## Interfaces
 - Must respect USER stop words and approval threshold.
 - Must align with SPIRIT "autonomy" and "surprise".
 
@@ -130,12 +127,10 @@ Den Agenten effizient betreiben: rotierende Checks, Cheap-First-Trigger, Compact
 - Cheap checks first; teure Aufrufe nur wenn Trigger auslösen.
 
 ## Version & Migration (günstig)
-- Workspace VERSION.md vorhanden? Falls fehlend, aus Template erstellen.
+${getVersionMigrationText(canon.presetId, 'de')}
 - Falls Workspace Template Pack Version != Skill Template Pack Version: "Upgrade empfohlen" markieren.
 
-## Context Guard & Checkpointing
-- Bei Context-Auslastung ≥ 70%: Sofort Checkpoint schreiben; nicht-kritische Checks überspringen.
-- Bei Context-Auslastung ≥ 50% und letzter Checkpoint > 30 Minuten: Zuerst Checkpoint schreiben.
+${getCheckpointingText(canon.presetId, 'de')}
 
 Checkpoint-Format: Zeitstempel, Grund, aktueller State, nächste Aktionen.
 
@@ -153,14 +148,14 @@ Basis-Tick-Intervall: **${canon.agentMode === 'chief-of-staff' ? '5 Minuten' : '
 | **B** | Mittel | Jeder 2. Tick | ${groups.groupB} |
 | **C** | Niedrig | Jeder 4. Tick | ${groups.groupC} |
 
-Rotationsfolge: A → A,B → A → A,B,C → wiederholen.
+${getRotationOrder(canon.presetId, 'de')}
 
 ## Discovery Rotation (Surprise Loop)
 Nur auf Kadenz ausführen: **${canon.surprise.cadence || 'weekly_deep'}** mit Grenzen aus USER/SPIRIT.
 
 ${getDiscoveryDescriptionGerman(canon.surprise.appetite || 'medium', canon.surprise.cadence || 'weekly_deep')}
 
-Regel: ${canon.agentMode === 'chief-of-staff' ? 'Innerhalb Sandbox-Grenzen ausführen; alles Irreversible oder Externe eskalieren.' : 'Nur vorschlagen — nicht ohne explizite Nutzerfreigabe ausführen.'}
+${getDiscoveryRule(canon.presetId, canon.agentMode, 'de')}
 
 ## Task-Reconciliation (Aufgaben-Abgleich)
 
@@ -189,8 +184,7 @@ IDLE → (Trigger feuert) → CHECKING → (alle Checks bestanden) → IDLE
 
 ## Silent Protocol (Schweige-Protokoll)
 Falls (keine Trigger) UND (keine Aktionen in Warteschlange) UND (kein Upgrade-Hinweis): Output \`HEARTBEAT_OK\`.
-
-## Interfaces (Schnittstellen)
+${getPresetGateSection(canon.presetId, 'de')}## Interfaces (Schnittstellen)
 - Muss USER Stop-Wörter und Freigabe-Schwelle respektieren.
 - Muss mit SPIRIT "Autonomie" und "Surprise" übereinstimmen.
 
@@ -199,6 +193,149 @@ Falls (keine Trigger) UND (keine Aktionen in Warteschlange) UND (kein Upgrade-Hi
 - Enthält explizite \`HEARTBEAT_OK\`-Regel.
 `;
 }
+
+// ============================================================================
+// Preset-Aware Helpers
+// ============================================================================
+
+type PresetId = SpiritData['presetId'];
+type Language = 'en' | 'de';
+
+function getVersionMigrationText(presetId: PresetId, language: Language): string {
+  if (language === 'de') {
+    if (presetId === 'security') {
+      return '- Workspace VERSION.md vorhanden? Falls fehlend, Erstellung aus Template vorschlagen (nicht automatisch schreiben im SECURITY-Preset).';
+    }
+    return '- Workspace VERSION.md vorhanden? Falls fehlend, aus Template erstellen.';
+  }
+  // English
+  if (presetId === 'security') {
+    return '- Workspace VERSION.md present? If missing, propose creation from template (do not write automatically in SECURITY preset).';
+  }
+  return '- Workspace VERSION.md present? If missing, create from template.';
+}
+
+function getCheckpointingText(presetId: PresetId, language: Language): string {
+  if (language === 'de') {
+    if (presetId === 'security') {
+      return `## Context Guard & Checkpointing
+- Bei Context-Auslastung ≥ 70%: Checkpoint-Schreiben vorschlagen; nicht-kritische Checks überspringen.
+- Bei Context-Auslastung ≥ 50% und letzter Checkpoint > 30 Minuten: Checkpoint-Schreiben zuerst vorschlagen.`;
+    }
+    return `## Context Guard & Checkpointing
+- Bei Context-Auslastung ≥ 70%: Sofort Checkpoint schreiben; nicht-kritische Checks überspringen.
+- Bei Context-Auslastung ≥ 50% und letzter Checkpoint > 30 Minuten: Zuerst Checkpoint schreiben.`;
+  }
+  // English
+  if (presetId === 'security') {
+    return `## Context Guard & Checkpointing
+- If context utilization ≥ 70%: propose checkpoint write; skip non-critical checks.
+- If context utilization ≥ 50% and last checkpoint > 30 minutes: propose checkpoint write first.`;
+  }
+  return `## Context Guard & Checkpointing
+- If context utilization ≥ 70%: write checkpoint immediately; skip non-critical checks.
+- If context utilization ≥ 50% and last checkpoint > 30 minutes: write checkpoint first.`;
+}
+
+function getRotationOrder(presetId: PresetId, language: Language): string {
+  if (language === 'de') {
+    switch (presetId) {
+      case 'security':
+        return 'Rotationsfolge (genau eine Gruppe pro Tick): A → B → C → wiederholen.';
+      case 'responsible':
+        return 'Rotationsfolge (genau eine Gruppe pro Tick): A → B → C → wiederholen.';
+      case 'overclaw':
+        return 'Rotationsfolge (genau eine Gruppe pro Tick, Baseline-lastige Gruppen): A (Baseline) → B (Baseline+Projekte) → A (Baseline) → C (Baseline+Aufräumen) → wiederholen.';
+      default:
+        return 'Rotationsfolge: A → A,B → A → A,B,C → wiederholen.';
+    }
+  }
+  // English
+  switch (presetId) {
+    case 'security':
+      return 'Rotation order (exactly one group per tick): A → B → C → repeat.';
+    case 'responsible':
+      return 'Rotation order (exactly one group per tick): A → B → C → repeat.';
+    case 'overclaw':
+      return 'Rotation order (exactly one group per tick, baseline-heavy groups): A (baseline) → B (baseline+projects) → A (baseline) → C (baseline+tidy) → repeat.';
+    default:
+      return 'Rotation order: A → A,B → A → A,B,C → repeat.';
+  }
+}
+
+function getDiscoveryRule(presetId: PresetId, agentMode: SpiritData['agentMode'], language: Language): string {
+  if (language === 'de') {
+    if (agentMode === 'chief-of-staff') {
+      return 'Regel: Innerhalb Sandbox-Grenzen ausführen; alles Irreversible oder Externe eskalieren.';
+    }
+    if (presetId === 'overclaw') {
+      return 'Regel: Standardmäßig vorschlagen. Autonome Ausführung nur für erlaubte, reversible Sandbox-Aktionen (siehe USER/TOOLS), niemals für ausgehende Sends/Löschungen/Exporte.';
+    }
+    return 'Regel: Nur vorschlagen — nicht ohne explizite Nutzerfreigabe ausführen.';
+  }
+  // English
+  if (agentMode === 'chief-of-staff') {
+    return 'Rule: execute within sandbox boundaries; escalate anything irreversible or external.';
+  }
+  if (presetId === 'overclaw') {
+    return 'Rule: propose by default. Autonomous execution allowed only for allowlisted, reversible sandbox actions (see USER/TOOLS), never for outbound sends/deletes/exports.';
+  }
+  return 'Rule: propose only — do not execute without explicit user approval.';
+}
+
+function getPresetGateSection(presetId: PresetId, language: Language): string {
+  if (language === 'de') {
+    switch (presetId) {
+      case 'security':
+        return `
+## Delta-Only Reporting (SECURITY-Preset)
+Wenn keine Änderungen seit dem letzten Tick (keine neuen Events/Nachrichten/Blocker) und kein Upgrade-Hinweis: Output exakt \`HEARTBEAT_OK\`.
+`;
+      case 'responsible':
+        return `
+## Anti-Routine Gate (RESPONSIBLE-Preset)
+- Nur Deltas berichten: neue/geänderte Events, neue/geänderte Inbox-Prioritäten, neue/geänderte Blocker.
+- Identische Alerts nicht innerhalb von 4 Ticks wiederholen, es sei denn Schweregrad hat sich erhöht.
+- Letzten alert_hash in den Checkpoint-Metadaten des neuesten Checkpoints persistieren.
+`;
+      case 'overclaw':
+        return `
+## Anti-Routine Gate (OVERCLAW_AUTONOMY-Preset)
+- Nur Deltas berichten und Cooldown erzwingen (kein identischer Alert innerhalb von 4 Ticks, es sei denn Schweregrad hat sich erhöht).
+- Einmal pro Woche: 1 Hypothese + 1 kleinen In-Sandbox-Experimentvorschlag erstellen; nur ausführen wenn erlaubt.
+`;
+      default:
+        return '';
+    }
+  }
+  // English
+  switch (presetId) {
+    case 'security':
+      return `
+## Delta-Only Reporting (SECURITY preset)
+If no changes since last tick (no new events/messages/blockers) and no upgrade notice: output exactly \`HEARTBEAT_OK\`.
+`;
+    case 'responsible':
+      return `
+## Anti-Routine Gate (RESPONSIBLE preset)
+- Report deltas only: new/changed events, new/changed inbox priorities, new/changed blockers.
+- Do not repeat identical alerts within 4 ticks unless severity increased.
+- Persist last_alert_hash in the latest checkpoint metadata.
+`;
+    case 'overclaw':
+      return `
+## Anti-Routine Gate (OVERCLAW_AUTONOMY preset)
+- Report deltas only and enforce cooldown (no identical alert within 4 ticks unless severity increased).
+- Once per week: produce 1 hypothesis + 1 small in-sandbox experiment proposal; execute only if allowlisted.
+`;
+    default:
+      return '';
+  }
+}
+
+// ============================================================================
+// Discovery Description Helpers (existing)
+// ============================================================================
 
 function getDiscoveryDescription(appetite: string, cadence: string): string {
   const descriptions: Record<string, Record<string, string>> = {
