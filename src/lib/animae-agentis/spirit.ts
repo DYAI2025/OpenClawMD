@@ -33,6 +33,7 @@ export const DEFAULT_TONE: SpiritTone = {
 export const DEFAULT_ADDRESSING = {
   form: 'first_name' as const,
   language: 'en',
+  /** Agent default timezone. User can override via interview. All internal scheduling uses this. */
   timezone: 'UTC',
 };
 

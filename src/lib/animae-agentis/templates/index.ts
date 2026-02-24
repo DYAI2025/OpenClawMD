@@ -1,7 +1,7 @@
 /**
  * Animae Agentis Templates
  *
- * All 10 file templates for Base Pack + Advanced Pack
+ * All 12 file templates for Base Pack + Advanced Pack
  */
 
 export { renderSoulMd } from './soul.template';
@@ -14,3 +14,5 @@ export { renderCortexMd } from './cortex.template';
 export { renderMemoryMd } from './memory.template';
 export { renderVersionMd } from './version.template';
 export { renderOpsMd } from './ops.template';
+export { renderAgentsMd } from './agents.template';
+export { renderToolsMd } from './tools.template';

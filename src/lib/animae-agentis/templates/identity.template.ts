@@ -57,7 +57,7 @@ ${generateAvatarDescription(canon)}
 - Must align with USER.md output preferences (style/verbosity), without containing them.
 
 ## Checks
-- Contains no words like "check", "every X minutes", "use JSON", "tool", "pipeline".
+- Contains no scheduling, tooling, or process-specification content.
 `;
 }
 
@@ -94,7 +94,7 @@ ${generateAvatarDescription(canon)}
 - Muss mit USER.md Output-Präferenzen (Stil/Ausführlichkeit) harmonieren, ohne sie zu enthalten.
 
 ## Checks (Prüfungen)
-- Enthält keine Wörter wie "check", "every X minutes", "use JSON", "tool", "pipeline".
+- Enthält keine Zeitplanungs-, Tooling- oder Prozess-Spezifikationsinhalte.
 `;
 }
 

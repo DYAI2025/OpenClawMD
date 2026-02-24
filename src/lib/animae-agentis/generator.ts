@@ -1,7 +1,7 @@
 /**
  * Animae Agentis Generator
  *
- * Generates all 10 configuration files from Canon data.
+ * Generates all 12 configuration files from Spirit data.
  * Implements the thrid_embodiment pattern: SOUL + IDENTITY + USER
  */
 
@@ -23,6 +23,8 @@ import {
   renderMemoryMd,
   renderVersionMd,
   renderOpsMd,
+  renderAgentsMd,
+  renderToolsMd,
 } from './templates';
 
 // ============================================================================
@@ -43,6 +45,8 @@ export const ADVANCED_FILES = [
   'MEMORY.md',
   'VERSION.md',
   'OPS.md',
+  'AGENTS.md',
+  'TOOLS.md',
 ] as const;
 
 export type BaseFileName = typeof BASE_FILES[number];
@@ -87,6 +91,8 @@ export function generateAnimaeAgentisFiles(
       { name: 'MEMORY.md', content: renderMemoryMd(canon, language), section: 'advanced' },
       { name: 'VERSION.md', content: renderVersionMd(canon, language), section: 'advanced' },
       { name: 'OPS.md', content: renderOpsMd(language), section: 'advanced' },
+      { name: 'AGENTS.md', content: renderAgentsMd(canon, language), section: 'advanced' },
+      { name: 'TOOLS.md', content: renderToolsMd(canon, language), section: 'advanced' },
     );
   }
 
@@ -132,6 +138,8 @@ export function generateAdvancedPack(
     { name: 'MEMORY.md', content: renderMemoryMd(canon, language), section: 'advanced' },
     { name: 'VERSION.md', content: renderVersionMd(canon, language), section: 'advanced' },
     { name: 'OPS.md', content: renderOpsMd(language), section: 'advanced' },
+    { name: 'AGENTS.md', content: renderAgentsMd(canon, language), section: 'advanced' },
+    { name: 'TOOLS.md', content: renderToolsMd(canon, language), section: 'advanced' },
   ];
 }
 
@@ -154,6 +162,8 @@ export function generateSingleFile(
     'MEMORY.md': renderMemoryMd,
     'VERSION.md': renderVersionMd,
     'OPS.md': (_c, l) => renderOpsMd(l),
+    'AGENTS.md': renderAgentsMd,
+    'TOOLS.md': renderToolsMd,
   };
 
   const renderer = renderers[fileName];
