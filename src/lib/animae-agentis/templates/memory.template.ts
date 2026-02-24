@@ -27,6 +27,7 @@ Store only durable, high-signal facts and preferences. Not a diary.
 ## Invariants
 - Keep small.
 - Prefer "what remains true" over "what happened".
+- **Sync rule**: If SPIRIT.md or USER.md changes, review this file immediately. Remove or update any entries that contradict the new values.
 
 ## Stable Preferences
 
@@ -142,6 +143,7 @@ Nur dauerhafte, hoch-signifikante Fakten und Präferenzen speichern. Kein Tagebu
 ## Invariants (Invarianten)
 - Klein halten.
 - Bevorzuge "was wahr bleibt" gegenüber "was passiert ist".
+- **Sync-Regel**: Wenn SPIRIT.md oder USER.md sich ändert, diese Datei sofort prüfen. Einträge entfernen oder aktualisieren, die den neuen Werten widersprechen.
 
 ## Stable Preferences (Stabile Präferenzen)
 

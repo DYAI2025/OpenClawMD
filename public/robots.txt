@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://animae-agentis.ai/sitemap.xml
+Sitemap: https://openclawmd.com/sitemap.xml

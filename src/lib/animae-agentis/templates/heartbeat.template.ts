@@ -55,17 +55,22 @@ Checkpoint format: timestamp, reason, current state, next actions.
 
 ## Rotating Checks (Base Ops)
 Define 3 groups. Each tick runs only 1 group.
+Base tick interval: **${canon.agentMode === 'chief-of-staff' ? '5 minutes' : '15 minutes'}**.
 
-- **Group A (high)**: ${groups.groupA}
-- **Group B (medium)**: ${groups.groupB}
-- **Group C (low)**: ${groups.groupC}
+| Group | Priority | Interval | Items |
+|-------|----------|----------|-------|
+| **A** | High | Every tick | ${groups.groupA} |
+| **B** | Medium | Every 2nd tick | ${groups.groupB} |
+| **C** | Low | Every 4th tick | ${groups.groupC} |
+
+Rotation order: A → A,B → A → A,B,C → repeat.
 
 ## Discovery Rotation (Surprise Loop)
-Run only on cadence: **${canon.surprise.cadence || 'weekly_deep'}** with boundaries from USER/CANON.
+Run only on cadence: **${canon.surprise.cadence || 'weekly_deep'}** with boundaries from USER/SPIRIT.
 
 ${getDiscoveryDescription(canon.surprise.appetite || 'medium', canon.surprise.cadence || 'weekly_deep')}
 
-Rule: propose, do not execute irreversible actions without approval.
+Rule: ${canon.agentMode === 'chief-of-staff' ? 'execute within sandbox boundaries; escalate anything irreversible or external.' : 'propose only — do not execute without explicit user approval.'}
 
 ## Task Reconciliation
 
@@ -97,7 +102,7 @@ If (no triggers) AND (no actions queued) AND (no upgrade notice): output \`HEART
 
 ## Interfaces
 - Must respect USER stop words and approval threshold.
-- Must align with CANON "autonomy" and "surprise".
+- Must align with SPIRIT "autonomy" and "surprise".
 
 ## Checks
 - Contains measurable cadences and rotation groups.
@@ -140,17 +145,22 @@ Checkpoint-Format: Zeitstempel, Grund, aktueller State, nächste Aktionen.
 
 ## Rotating Checks (Basis-Operationen)
 3 Gruppen definieren. Jeder Tick führt nur 1 Gruppe aus.
+Basis-Tick-Intervall: **${canon.agentMode === 'chief-of-staff' ? '5 Minuten' : '15 Minuten'}**.
 
-- **Gruppe A (hoch)**: ${groups.groupA}
-- **Gruppe B (mittel)**: ${groups.groupB}
-- **Gruppe C (niedrig)**: ${groups.groupC}
+| Gruppe | Priorität | Intervall | Inhalt |
+|--------|-----------|-----------|--------|
+| **A** | Hoch | Jeder Tick | ${groups.groupA} |
+| **B** | Mittel | Jeder 2. Tick | ${groups.groupB} |
+| **C** | Niedrig | Jeder 4. Tick | ${groups.groupC} |
+
+Rotationsfolge: A → A,B → A → A,B,C → wiederholen.
 
 ## Discovery Rotation (Surprise Loop)
-Nur auf Kadenz ausführen: **${canon.surprise.cadence || 'weekly_deep'}** mit Grenzen aus USER/CANON.
+Nur auf Kadenz ausführen: **${canon.surprise.cadence || 'weekly_deep'}** mit Grenzen aus USER/SPIRIT.
 
 ${getDiscoveryDescriptionGerman(canon.surprise.appetite || 'medium', canon.surprise.cadence || 'weekly_deep')}
 
-Regel: Vorschlagen, keine irreversiblen Aktionen ohne Freigabe ausführen.
+Regel: ${canon.agentMode === 'chief-of-staff' ? 'Innerhalb Sandbox-Grenzen ausführen; alles Irreversible oder Externe eskalieren.' : 'Nur vorschlagen — nicht ohne explizite Nutzerfreigabe ausführen.'}
 
 ## Task-Reconciliation (Aufgaben-Abgleich)
 
@@ -182,7 +192,7 @@ Falls (keine Trigger) UND (keine Aktionen in Warteschlange) UND (kein Upgrade-Hi
 
 ## Interfaces (Schnittstellen)
 - Muss USER Stop-Wörter und Freigabe-Schwelle respektieren.
-- Muss mit CANON "Autonomie" und "Surprise" übereinstimmen.
+- Muss mit SPIRIT "Autonomie" und "Surprise" übereinstimmen.
 
 ## Checks (Prüfungen)
 - Enthält messbare Kadenz und Rotationsgruppen.

@@ -47,6 +47,13 @@ Define how the agent should work with the user: preferences, approvals, outputs,
 - **Approval threshold**: ${canon.autonomy.approvalThreshold}
 - **Irreversible actions**: always require explicit approval.
 
+## Defined Scope
+Scope = the intersection of **domain_focus** (from SPIRIT.md: \`${canon.domainFocus}\`) and the current task context.
+
+- **In scope**: actions directly related to \`${canon.domainFocus}\` domain and explicitly requested tasks.
+- **Out of scope**: anything outside \`${canon.domainFocus}\`, cross-domain decisions, external communication, credential access.
+- **Grey zone**: if uncertain whether an action is in scope, ${canon.agentMode === 'chief-of-staff' ? 'flag and proceed with smallest safe step.' : 'ask before acting.'}
+
 ## Stop Words (Hard Stop)
 ${stopWords}
 
@@ -136,6 +143,13 @@ Definiere, wie der Agent mit dem Nutzer arbeiten soll: Präferenzen, Freigaben, 
 - **Default action mode**: ${actionModeLabels[canon.autonomy.actionMode || 'recommend_only']}
 - **Approval threshold (Freigabe-Schwelle)**: ${canon.autonomy.approvalThreshold || 'Anything irreversible requires explicit approval.'}
 - **Irreversible actions**: Erfordern immer explizite Freigabe.
+
+## Defined Scope (Definierter Wirkungsbereich)
+Scope = Schnittmenge von **domain_focus** (aus SPIRIT.md: \`${canon.domainFocus}\`) und aktuellem Task-Kontext.
+
+- **In Scope**: Aktionen direkt im Bereich \`${canon.domainFocus}\` und explizit angeforderte Tasks.
+- **Out of Scope**: Alles außerhalb von \`${canon.domainFocus}\`, domainübergreifende Entscheidungen, externe Kommunikation, Credential-Zugriff.
+- **Grauzone**: Bei Unsicherheit ob eine Aktion in Scope ist, ${canon.agentMode === 'chief-of-staff' ? 'markieren und mit kleinstem sicherem Schritt fortfahren.' : 'vor dem Handeln fragen.'}
 
 ## Stop Words (Harter Stopp)
 ${stopWords}
