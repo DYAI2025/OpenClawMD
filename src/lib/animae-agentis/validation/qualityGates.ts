@@ -133,11 +133,11 @@ export function validateFileCount(files: GeneratedFile[], expectAdvanced: boolea
     });
   }
 
-  if (expectAdvanced && advancedCount !== 5) {
+  if (expectAdvanced && advancedCount !== 7) {
     issues.push({
       gateId: 'ADVANCED_FILE_COUNT',
       severity: 'error',
-      message: `Expected 5 advanced files, found ${advancedCount}`,
+      message: `Expected 7 advanced files, found ${advancedCount}`,
     });
   }
 

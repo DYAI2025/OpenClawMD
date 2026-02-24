@@ -247,7 +247,7 @@ function getRotationOrder(presetId: PresetId, language: Language): string {
       case 'overclaw':
         return 'Rotationsfolge (genau eine Gruppe pro Tick, Baseline-lastige Gruppen): A (Baseline) → B (Baseline+Projekte) → A (Baseline) → C (Baseline+Aufräumen) → wiederholen.';
       default:
-        return 'Rotationsfolge: A → A,B → A → A,B,C → wiederholen.';
+        return 'Rotationsfolge (genau eine Gruppe pro Tick): A → B → C → wiederholen.';
     }
   }
   // English
@@ -259,7 +259,7 @@ function getRotationOrder(presetId: PresetId, language: Language): string {
     case 'overclaw':
       return 'Rotation order (exactly one group per tick, baseline-heavy groups): A (baseline) → B (baseline+projects) → A (baseline) → C (baseline+tidy) → repeat.';
     default:
-      return 'Rotation order: A → A,B → A → A,B,C → repeat.';
+      return 'Rotation order (exactly one group per tick): A → B → C → repeat.';
   }
 }
 

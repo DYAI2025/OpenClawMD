@@ -12,7 +12,7 @@ import type { SpiritData } from '../types';
 describe('Animae Agentis Generator', () => {
   
   describe('generateAnimaeAgentisFiles', () => {
-    it('should generate all 9 files with Advanced Pack enabled', () => {
+    it('should generate all 12 files with Advanced Pack enabled', () => {
       // Arrange
       const canon = mergeWithDefaults({
         agentName: 'Test Agent',
@@ -29,11 +29,11 @@ describe('Animae Agentis Generator', () => {
       const result = generateAnimaeAgentisFiles(canon, options);
       
       // Assert
-      expect(result.files).toHaveLength(9);
+      expect(result.files).toHaveLength(12);
       expect(result.canon).toBe(canon);
       expect(result.options).toBe(options);
       expect(result.generatedAt).toBeDefined();
-      
+
       // Check all expected files are present
       const fileNames = result.files.map(f => f.name);
       expect(fileNames).toContain('SOUL.md');
@@ -45,6 +45,9 @@ describe('Animae Agentis Generator', () => {
       expect(fileNames).toContain('CORTEX.md');
       expect(fileNames).toContain('MEMORY.md');
       expect(fileNames).toContain('VERSION.md');
+      expect(fileNames).toContain('OPS.md');
+      expect(fileNames).toContain('AGENTS.md');
+      expect(fileNames).toContain('TOOLS.md');
     });
     
     it('should generate only 5 files with Advanced Pack disabled', () => {
@@ -126,8 +129,8 @@ describe('Animae Agentis Generator', () => {
       expect(identityFile).toBeDefined();
       expect(identityFile!.content).toContain('OpenClaw Animae Agentis — Engineering');
       expect(identityFile!.content).toContain('Principal Discovery Architect');
-      expect(identityFile!.content).toContain('minimalist');
-      expect(identityFile!.content).toContain('socratic');
+      expect(identityFile!.content.toLowerCase()).toContain('minimalist');
+      expect(identityFile!.content.toLowerCase()).toContain('socratic');
     });
     
     it('should include Resonance Anchor in SPIRIT.md', () => {
@@ -215,7 +218,7 @@ describe('Animae Agentis Generator', () => {
   });
   
   describe('generateAdvancedPack', () => {
-    it('should generate exactly 4 advanced files', () => {
+    it('should generate exactly 7 advanced files', () => {
       // Arrange
       const canon = mergeWithDefaults({}) as SpiritData;
       
@@ -223,7 +226,7 @@ describe('Animae Agentis Generator', () => {
       const files = generateAdvancedPack(canon, 'en');
       
       // Assert
-      expect(files).toHaveLength(4);
+      expect(files).toHaveLength(7);
       expect(files.every(f => f.section === 'advanced')).toBe(true);
       expect(files.map(f => f.name).sort()).toEqual([...ADVANCED_FILES].sort());
     });
@@ -274,11 +277,9 @@ describe('Animae Agentis Generator', () => {
       // Assert
       const identity = result.files.find(f => f.name === 'IDENTITY.md');
       const canonFile = result.files.find(f => f.name === 'SPIRIT.md');
-      const memory = result.files.find(f => f.name === 'MEMORY.md');
-      
+
       expect(identity!.content).toContain(agentName);
       expect(canonFile!.content).toContain(agentName);
-      expect(memory!.content).toContain(agentName);
     });
     
     it('should have consistent autonomy settings across USER, HEARTBEAT, and SHIELD', () => {

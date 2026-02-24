@@ -1,21 +1,25 @@
 /**
  * Animae Agentis Export Page
  *
- * Preview and download generated Animae Agentis configuration files
+ * Preview and download generated Animae Agentis configuration files.
+ * Includes online validator with traffic light scoring,
+ * repair functionality for RED results, and change reports.
  */
 
 import { useState, useMemo, useCallback } from 'react';
 import {
   ArrowLeft, Download, FileText, Sparkles, Copy, Check,
-  Code, Eye, FileJson, Shield, Globe, Zap, Package, AlertTriangle, Sliders,
+  Code, Eye, FileJson, Shield, Globe, Zap, Package, Sliders,
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { ClayButton, ClayCard, ClayTabs } from '@/components/clay';
 import { DownloadConfirmation } from '@/components/safety/DownloadConfirmation';
+import { ValidationPanel } from '@/components/validation/ValidationPanel';
 import type { SpiritData, GeneratedFile } from '@/lib/animae-agentis/types';
 import { generateAnimaeAgentisFiles } from '@/lib/animae-agentis/generator';
-import { validateAnimaeAgentis } from '@/lib/animae-agentis/validation';
+import { runFullValidation, repairFiles } from '@/lib/animae-agentis/validation';
+import type { RepairResult } from '@/lib/animae-agentis/validation';
 import { exportToJson } from '@/lib/animae-agentis/export/json';
 import { toast } from 'sonner';
 
@@ -32,6 +36,9 @@ export function AnimaeAgentisExportPage({ spirit, onBack, onNewConfig, onFineTun
   const [viewModes, setViewModes] = useState<Record<string, 'rendered' | 'raw'>>({});
   const [showConfirmation, setShowConfirmation] = useState(false);
 
+  // Current files (may be repaired)
+  const [repairedFiles, setRepairedFiles] = useState<GeneratedFile[] | null>(null);
+
   const options = useMemo(() => ({
     includeAdvancedPack: true,
     language: (spirit.addressing?.language as 'en' | 'de') || 'en',
@@ -42,11 +49,12 @@ export function AnimaeAgentisExportPage({ spirit, onBack, onNewConfig, onFineTun
     [spirit, options]
   );
 
-  const files = output.files;
+  // Active files: repaired if available, otherwise original
+  const files = repairedFiles ?? output.files;
 
-  // Validation
-  const validation = useMemo(() =>
-    validateAnimaeAgentis(files, spirit),
+  // v2 Validation Report
+  const validationReport = useMemo(() =>
+    runFullValidation(files, spirit),
     [files, spirit]
   );
 
@@ -54,6 +62,9 @@ export function AnimaeAgentisExportPage({ spirit, onBack, onNewConfig, onFineTun
   const isHighRisk =
     spirit.autonomy?.actionMode === 'autonomous_in_sandbox' ||
     spirit.surprise?.appetite === 'high';
+
+  // Download is blocked only for RED (before repair)
+  const canDownload = validationReport.trafficLight !== 'red';
 
   const getViewMode = (fileName: string): 'rendered' | 'raw' =>
     viewModes[fileName] ?? 'rendered';
@@ -63,6 +74,10 @@ export function AnimaeAgentisExportPage({ spirit, onBack, onNewConfig, onFineTun
   };
 
   const downloadFile = useCallback((file: GeneratedFile, silent = false) => {
+    if (!canDownload) {
+      toast.error('Repair required before download');
+      return;
+    }
     const blob = new Blob([file.content], { type: 'text/markdown' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -72,7 +87,7 @@ export function AnimaeAgentisExportPage({ spirit, onBack, onNewConfig, onFineTun
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    
+
     setDownloadedFiles(prev => {
       const next = new Set(prev);
       next.add(file.name);
@@ -80,9 +95,13 @@ export function AnimaeAgentisExportPage({ spirit, onBack, onNewConfig, onFineTun
     });
 
     if (!silent) toast.success(`Downloaded ${file.name}`);
-  }, []);
+  }, [canDownload]);
 
   const executeDownloadAll = useCallback(() => {
+    if (!canDownload) {
+      toast.error('Repair required before download');
+      return;
+    }
     files.forEach((file, index) => {
       setTimeout(() => {
         downloadFile(file, true);
@@ -91,17 +110,25 @@ export function AnimaeAgentisExportPage({ spirit, onBack, onNewConfig, onFineTun
         }
       }, index * 200);
     });
-  }, [files, downloadFile]);
+  }, [files, downloadFile, canDownload]);
 
   const downloadAll = useCallback(() => {
+    if (!canDownload) {
+      toast.error('Repair required before download');
+      return;
+    }
     if (isHighRisk) {
       setShowConfirmation(true);
       return;
     }
     executeDownloadAll();
-  }, [isHighRisk, executeDownloadAll]);
+  }, [isHighRisk, executeDownloadAll, canDownload]);
 
   const exportConfigJson = () => {
+    if (!canDownload) {
+      toast.error('Repair required before download');
+      return;
+    }
     const json = exportToJson(output);
     const blob = new Blob([json], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
@@ -125,6 +152,16 @@ export function AnimaeAgentisExportPage({ spirit, onBack, onNewConfig, onFineTun
       toast.error('Failed to copy to clipboard');
     }
   };
+
+  // Repair handler
+  const handleRepair = useCallback(() => {
+    return repairFiles(output.files, validationReport.findings, spirit);
+  }, [output.files, validationReport.findings, spirit]);
+
+  const handleRepairApplied = useCallback((result: RepairResult) => {
+    setRepairedFiles(result.repairedFiles);
+    toast.success('Configuration repaired successfully');
+  }, []);
 
   const getFileIcon = (fileName: string) => {
     const icons: Record<string, React.ReactNode> = {
@@ -198,6 +235,7 @@ export function AnimaeAgentisExportPage({ spirit, onBack, onNewConfig, onFineTun
                 color="mint"
                 size="sm"
                 onClick={() => downloadFile(file)}
+                disabled={!canDownload}
               >
                 <Download className="w-4 h-4" />
                 Download
@@ -242,7 +280,7 @@ export function AnimaeAgentisExportPage({ spirit, onBack, onNewConfig, onFineTun
               Animae Agentis Export
             </h1>
             <p className="text-sm text-clay-charcoal/60">
-              Preview and download your configuration files
+              Validate, review, and download your configuration files
             </p>
           </div>
           <div className="flex gap-2 flex-wrap">
@@ -250,6 +288,7 @@ export function AnimaeAgentisExportPage({ spirit, onBack, onNewConfig, onFineTun
               variant="pill"
               color="sage"
               onClick={exportConfigJson}
+              disabled={!canDownload}
             >
               <FileJson className="w-4 h-4" />
               Export JSON
@@ -258,6 +297,7 @@ export function AnimaeAgentisExportPage({ spirit, onBack, onNewConfig, onFineTun
               variant="pill"
               color={isHighRisk ? 'coral' : 'mint'}
               onClick={downloadAll}
+              disabled={!canDownload}
             >
               <Package className="w-4 h-4" />
               Download All
@@ -265,35 +305,12 @@ export function AnimaeAgentisExportPage({ spirit, onBack, onNewConfig, onFineTun
           </div>
         </div>
 
-        {/* Validation Status */}
-        {!validation.valid && (
-          <div className="mb-6 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800/30 rounded-xl p-4">
-            <h3 className="font-semibold text-red-800 mb-2 flex items-center gap-2">
-              <AlertTriangle className="w-5 h-5" />
-              Validation Issues Detected
-            </h3>
-            {validation.qualityGateIssues.length > 0 && (
-              <div className="mb-3">
-                <p className="text-sm font-medium text-red-700">Quality Gates:</p>
-                <ul className="text-sm text-red-600 list-disc list-inside">
-                  {validation.qualityGateIssues.slice(0, 3).map((issue, i) => (
-                    <li key={i}>{issue.message}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-            {validation.resonanceGateIssues.length > 0 && (
-              <div>
-                <p className="text-sm font-medium text-red-700">Resonance Gates:</p>
-                <ul className="text-sm text-red-600 list-disc list-inside">
-                  {validation.resonanceGateIssues.slice(0, 3).map((issue, i) => (
-                    <li key={i}>{issue.message}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </div>
-        )}
+        {/* Validation Panel */}
+        <ValidationPanel
+          report={validationReport}
+          onRepair={handleRepair}
+          onRepairApplied={handleRepairApplied}
+        />
 
         {/* Config Summary */}
         <ClayCard padding="md" className="mb-6">
@@ -356,19 +373,21 @@ export function AnimaeAgentisExportPage({ spirit, onBack, onNewConfig, onFineTun
           <h3 className="text-lg font-semibold text-clay-charcoal mb-4">
             Quick Download
           </h3>
-          <div className="grid sm:grid-cols-3 md:grid-cols-5 gap-3">
+          <div className="grid sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
             {files.map((file) => {
               const isDownloaded = downloadedFiles.has(file.name);
               return (
                 <ClayCard
                   key={file.name}
-                  isInteractive
-                  onClick={() => downloadFile(file)}
+                  isInteractive={canDownload}
+                  onClick={() => canDownload && downloadFile(file)}
                   padding="md"
                   className={`text-center transition-all duration-300 ${
-                    isDownloaded 
-                      ? 'bg-clay-mint/40 border-clay-mint shadow-clay-inset' 
-                      : ''
+                    isDownloaded
+                      ? 'bg-clay-mint/40 border-clay-mint shadow-clay-inset'
+                      : !canDownload
+                        ? 'opacity-50'
+                        : ''
                   }`}
                 >
                   <div className={`
