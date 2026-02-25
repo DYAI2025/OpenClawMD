@@ -18,6 +18,8 @@ interface ValidationPanelProps {
   report: ValidatorReport;
   onRepair: () => RepairResult;
   onRepairApplied: (result: RepairResult) => void;
+  onImprove?: () => RepairResult;
+  onImproveApplied?: (result: RepairResult) => void;
 }
 
 // ============================================================================
@@ -174,20 +176,32 @@ function ChangeReport({ actions }: { actions: RepairAction[] }) {
 // Main Panel
 // ============================================================================
 
-export function ValidationPanel({ report, onRepair, onRepairApplied }: ValidationPanelProps) {
+export function ValidationPanel({ report, onRepair, onRepairApplied, onImprove, onImproveApplied }: ValidationPanelProps) {
   const [showFindings, setShowFindings] = useState(report.trafficLight !== 'green');
   const [showPromises, setShowPromises] = useState(false);
   const [repairResult, setRepairResult] = useState<RepairResult | null>(null);
+  const [improveResult, setImproveResult] = useState<RepairResult | null>(null);
   const [isRepairing, setIsRepairing] = useState(false);
+  const [isImproving, setIsImproving] = useState(false);
 
   const handleRepair = () => {
     setIsRepairing(true);
-    // Small delay for visual feedback
     setTimeout(() => {
       const result = onRepair();
       setRepairResult(result);
       setIsRepairing(false);
       onRepairApplied(result);
+    }, 400);
+  };
+
+  const handleImprove = () => {
+    if (!onImprove || !onImproveApplied) return;
+    setIsImproving(true);
+    setTimeout(() => {
+      const result = onImprove();
+      setImproveResult(result);
+      setIsImproving(false);
+      onImproveApplied(result);
     }, 400);
   };
 
@@ -321,10 +335,32 @@ export function ValidationPanel({ report, onRepair, onRepairApplied }: Validatio
         </div>
       )}
 
+      {/* Auto-Improve Button (YELLOW only, before improve) */}
+      {activeReport.trafficLight === 'yellow' && !improveResult && onImprove && (
+        <div className="mt-6 flex justify-center">
+          <ClayButton
+            variant="pill"
+            color="sage"
+            onClick={handleImprove}
+            disabled={isImproving}
+          >
+            <Sparkles className="w-5 h-5" />
+            {isImproving ? 'Improving...' : 'Auto-Improve'}
+          </ClayButton>
+        </div>
+      )}
+
       {/* Change Report (after repair) */}
       {repairResult && repairResult.actions.length > 0 && (
         <div className="mt-6 pt-4 border-t border-clay-stone/20">
           <ChangeReport actions={repairResult.actions} />
+        </div>
+      )}
+
+      {/* Change Report (after improve) */}
+      {improveResult && improveResult.actions.length > 0 && (
+        <div className="mt-6 pt-4 border-t border-clay-stone/20">
+          <ChangeReport actions={improveResult.actions} />
         </div>
       )}
 
@@ -334,6 +370,15 @@ export function ValidationPanel({ report, onRepair, onRepairApplied }: Validatio
           <CheckCircle className="w-4 h-4 shrink-0" />
           Configuration repaired. {repairResult.actions.length} change{repairResult.actions.length !== 1 ? 's' : ''} applied.
           {repairResult.reportAfter.trafficLight !== 'red' && ' Ready to download.'}
+        </div>
+      )}
+
+      {/* Improve success message */}
+      {improveResult && (
+        <div className="mt-4 bg-emerald-50 dark:bg-emerald-950/20 rounded-lg p-3 text-sm text-emerald-700 dark:text-emerald-400 flex items-center gap-2">
+          <CheckCircle className="w-4 h-4 shrink-0" />
+          Configuration improved. {improveResult.actions.length} warning{improveResult.actions.length !== 1 ? 's' : ''} addressed.
+          {improveResult.reportAfter.trafficLight === 'green' && ' All clear!'}
         </div>
       )}
     </ClayCard>

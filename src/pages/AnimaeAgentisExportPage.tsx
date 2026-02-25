@@ -16,9 +16,10 @@ import remarkGfm from 'remark-gfm';
 import { ClayButton, ClayCard, ClayTabs } from '@/components/clay';
 import { DownloadConfirmation } from '@/components/safety/DownloadConfirmation';
 import { ValidationPanel } from '@/components/validation/ValidationPanel';
-import type { SpiritData, GeneratedFile } from '@/lib/animae-agentis/types';
+import { FinalTouchPanel } from '@/components/finaltouch/FinalTouchPanel';
+import type { SpiritData, GeneratedFile, DomainFocus } from '@/lib/animae-agentis/types';
 import { generateAnimaeAgentisFiles } from '@/lib/animae-agentis/generator';
-import { runFullValidation, repairFiles } from '@/lib/animae-agentis/validation';
+import { runFullValidation, repairFiles, improveFiles } from '@/lib/animae-agentis/validation';
 import type { RepairResult } from '@/lib/animae-agentis/validation';
 import { exportToJson } from '@/lib/animae-agentis/export/json';
 import { toast } from 'sonner';
@@ -36,17 +37,20 @@ export function AnimaeAgentisExportPage({ spirit, onBack, onNewConfig, onFineTun
   const [viewModes, setViewModes] = useState<Record<string, 'rendered' | 'raw'>>({});
   const [showConfirmation, setShowConfirmation] = useState(false);
 
-  // Current files (may be repaired)
+  // Mutable spirit copy for FinalTouch edits
+  const [currentSpirit, setCurrentSpirit] = useState<SpiritData>(spirit);
+
+  // Current files (may be repaired/improved)
   const [repairedFiles, setRepairedFiles] = useState<GeneratedFile[] | null>(null);
 
   const options = useMemo(() => ({
     includeAdvancedPack: true,
-    language: (spirit.addressing?.language as 'en' | 'de') || 'en',
-  }), [spirit]);
+    language: (currentSpirit.addressing?.language as 'en' | 'de') || 'en',
+  }), [currentSpirit]);
 
   const output = useMemo(() =>
-    generateAnimaeAgentisFiles(spirit, options),
-    [spirit, options]
+    generateAnimaeAgentisFiles(currentSpirit, options),
+    [currentSpirit, options]
   );
 
   // Active files: repaired if available, otherwise original
@@ -54,14 +58,37 @@ export function AnimaeAgentisExportPage({ spirit, onBack, onNewConfig, onFineTun
 
   // v2 Validation Report
   const validationReport = useMemo(() =>
-    runFullValidation(files, spirit),
-    [files, spirit]
+    runFullValidation(files, currentSpirit),
+    [files, currentSpirit]
   );
+
+  // Handle FinalTouch spirit field updates
+  const handleSpiritFieldUpdate = useCallback((key: string, value: string) => {
+    setCurrentSpirit(prev => {
+      if (key === 'domainFocus') {
+        return { ...prev, domainFocus: value as DomainFocus };
+      }
+      if (key === 'rotatingGroups') {
+        // Value is a suggestion string; apply as groupA (user can further customize)
+        return {
+          ...prev,
+          rotatingGroups: {
+            groupA: value,
+            groupB: prev.rotatingGroups?.groupB ?? '',
+            groupC: prev.rotatingGroups?.groupC ?? '',
+          },
+        };
+      }
+      return { ...prev, [key]: value };
+    });
+    // Reset repaired files since spirit changed
+    setRepairedFiles(null);
+  }, []);
 
   // Risk assessment
   const isHighRisk =
-    spirit.autonomy?.actionMode === 'autonomous_in_sandbox' ||
-    spirit.surprise?.appetite === 'high';
+    currentSpirit.autonomy?.actionMode === 'autonomous_in_sandbox' ||
+    currentSpirit.surprise?.appetite === 'high';
 
   // Download is blocked only for RED (before repair)
   const canDownload = validationReport.trafficLight !== 'red';
@@ -134,7 +161,7 @@ export function AnimaeAgentisExportPage({ spirit, onBack, onNewConfig, onFineTun
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `animae-agentis-config-${spirit.agentMode}-${Date.now()}.json`;
+    a.download = `animae-agentis-config-${currentSpirit.agentMode}-${Date.now()}.json`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -155,12 +182,22 @@ export function AnimaeAgentisExportPage({ spirit, onBack, onNewConfig, onFineTun
 
   // Repair handler
   const handleRepair = useCallback(() => {
-    return repairFiles(output.files, validationReport.findings, spirit);
-  }, [output.files, validationReport.findings, spirit]);
+    return repairFiles(output.files, validationReport.findings, currentSpirit);
+  }, [output.files, validationReport.findings, currentSpirit]);
 
   const handleRepairApplied = useCallback((result: RepairResult) => {
     setRepairedFiles(result.repairedFiles);
     toast.success('Configuration repaired successfully');
+  }, []);
+
+  // Improve handler (for WARN findings)
+  const handleImprove = useCallback(() => {
+    return improveFiles(files, validationReport.findings, currentSpirit);
+  }, [files, validationReport.findings, currentSpirit]);
+
+  const handleImproveApplied = useCallback((result: RepairResult) => {
+    setRepairedFiles(result.repairedFiles);
+    toast.success('Configuration improved successfully');
   }, []);
 
   const getFileIcon = (fileName: string) => {
@@ -310,6 +347,14 @@ export function AnimaeAgentisExportPage({ spirit, onBack, onNewConfig, onFineTun
           report={validationReport}
           onRepair={handleRepair}
           onRepairApplied={handleRepairApplied}
+          onImprove={handleImprove}
+          onImproveApplied={handleImproveApplied}
+        />
+
+        {/* Final Touch Panel */}
+        <FinalTouchPanel
+          spirit={currentSpirit}
+          onSpiritUpdate={handleSpiritFieldUpdate}
         />
 
         {/* Config Summary */}
@@ -318,33 +363,33 @@ export function AnimaeAgentisExportPage({ spirit, onBack, onNewConfig, onFineTun
             <div className="flex items-center gap-3">
               <div className={`
                 w-12 h-12 rounded-full shadow-clay flex items-center justify-center
-                ${spirit.agentMode === 'sidekick' ? 'bg-clay-peach' : ''}
-                ${spirit.agentMode === 'chief-of-staff' ? 'bg-clay-mint' : ''}
-                ${spirit.agentMode === 'coach' ? 'bg-clay-sage' : ''}
+                ${currentSpirit.agentMode === 'sidekick' ? 'bg-clay-peach' : ''}
+                ${currentSpirit.agentMode === 'chief-of-staff' ? 'bg-clay-mint' : ''}
+                ${currentSpirit.agentMode === 'coach' ? 'bg-clay-sage' : ''}
               `}>
-                {spirit.agentMode === 'sidekick' && <Sparkles className="w-6 h-6" />}
-                {spirit.agentMode === 'chief-of-staff' && <Zap className="w-6 h-6" />}
-                {spirit.agentMode === 'coach' && <Shield className="w-6 h-6" />}
+                {currentSpirit.agentMode === 'sidekick' && <Sparkles className="w-6 h-6" />}
+                {currentSpirit.agentMode === 'chief-of-staff' && <Zap className="w-6 h-6" />}
+                {currentSpirit.agentMode === 'coach' && <Shield className="w-6 h-6" />}
               </div>
               <div>
                 <h2 className="font-semibold text-clay-charcoal">
-                  {spirit.agentName}
+                  {currentSpirit.agentName}
                 </h2>
                 <p className="text-sm text-clay-charcoal/60">
-                  {spirit.agentTitle}
+                  {currentSpirit.agentTitle}
                 </p>
               </div>
             </div>
 
             <div className="sm:ml-auto flex flex-wrap gap-2">
               <span className="px-3 py-1 rounded-full text-xs font-medium bg-clay-sand text-clay-charcoal capitalize">
-                {spirit.agentMode}
+                {currentSpirit.agentMode}
               </span>
               <span className={`
                 px-3 py-1 rounded-full text-xs font-medium capitalize
                 ${isHighRisk ? 'bg-red-100 dark:bg-red-950/30 text-red-700 dark:text-red-400' : 'bg-clay-mint text-clay-charcoal'}
               `}>
-                {spirit.autonomy?.actionMode?.replace(/_/g, ' ')}
+                {currentSpirit.autonomy?.actionMode?.replace(/_/g, ' ')}
               </span>
             </div>
           </div>

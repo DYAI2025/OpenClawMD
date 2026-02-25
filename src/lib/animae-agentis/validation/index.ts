@@ -12,6 +12,7 @@ export { validateAnimaeAgentis } from './validator';
 // v2 API
 export { runFullValidation } from './validator';
 export { repairFiles } from './repair';
+export { improveFiles } from './improve';
 export { runAllRules } from './rules';
 export { computeCategoryScores, computeOverallScore, computeTrafficLight } from './scoring';
 export type {

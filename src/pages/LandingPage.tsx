@@ -6,6 +6,7 @@ import knowledgeImg from '../../icons/knowledge.png';
 import { ClayCard } from '@/components/clay';
 import { FilePreviewDialog } from '@/components/FilePreviewDialog';
 import { getLatestWeeklyPost, getEducationalPosts } from '@/lib/blogData';
+import logo1 from '../../icons/logo1.png';
 
 interface LandingPageProps {
   onSelectPreset: () => void;
@@ -46,6 +47,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       {/* Hero Section */}
       <section className="flex-1 flex flex-col items-center justify-center px-6 py-12">
         <div className="max-w-4xl mx-auto text-center">
+          {/* Hero Logo */}
+          <img
+            src={logo1}
+            alt="Animae Agentis"
+            className="w-32 h-32 sm:w-40 sm:h-40 mx-auto mb-8 drop-shadow-lg"
+          />
+
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-clay-mint/50 shadow-clay mb-8">
             <Shield className="w-4 h-4 text-clay-charcoal" />
