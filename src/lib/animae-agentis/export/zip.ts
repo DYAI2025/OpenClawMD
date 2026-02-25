@@ -116,7 +116,7 @@ ${advancedFiles.length > 0 ? '- SPIRIT.md - Source of truth\n- CORTEX.md - Works
 
 ## Support
 
-Visit https://openclaw.io for documentation and updates.
+Visit https://openclawmd.com for documentation and updates.
 `;
 }
 

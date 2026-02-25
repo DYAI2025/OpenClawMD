@@ -4,30 +4,32 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What This Is
 
-OpenClawMD / Animae Agentis is a client-side React app for generating AI agent configuration files (Markdown). It produces 10 files (SOUL.md, IDENTITY.md, USER.md, HEARTBEAT.md, SHIELD.md, SPIRIT.md, CORTEX.md, MEMORY.md, VERSION.md, OPS.md) from a single data model called `SpiritData`.
+OpenClawMD / Animae Agentis is a client-side React app for generating AI agent configuration files (Markdown). It produces 12 files split into a Base Pack (5 files: SOUL, IDENTITY, USER, HEARTBEAT, SHIELD) and an Advanced Pack (7 files: SPIRIT, CORTEX, MEMORY, VERSION, OPS, AGENTS, TOOLS) from a single data model called `SpiritData`.
 
 No backend. All generation is deterministic, client-side only. Exports are downloaded as ZIP or individual Markdown files.
 
 ## Commands
 
 ```bash
-npm run dev       # Start Vite dev server (HMR)
-npm run build     # TypeScript check + Vite production build (tsc -b && vite build)
-npm run lint      # ESLint
-npm run preview   # Preview production build locally
+npm run dev          # Start Vite dev server (HMR)
+npm run build        # TypeScript check + Vite production build (tsc -b && vite build)
+npm run lint         # ESLint
+npm run preview      # Preview production build locally
+npm run test         # vitest run (single run)
+npm run test:watch   # vitest (watch mode)
 ```
 
-No test runner is configured. There is one test file at `src/lib/animae-agentis/__tests__/generator.test.ts` but no test script in package.json.
+Tests live in `src/lib/animae-agentis/__tests__/` (generator.test.ts, validator.test.ts).
 
 ## Deployment
 
-GitHub Actions deploys on push to `main` via FTP to Hostinger (`./dist/` -> `./public_html/`). See `.github/workflows/deploy.yml`. Build uses `base: './'` in `vite.config.ts` (relative paths) for Hostinger compatibility — do not change to absolute paths.
+GitHub Actions deploys on push to `main` via rsync over SSH to Hostinger (`./dist/` -> `/var/www/openclawmd/public_html/`). See `.github/workflows/deploy.yml`. Build uses `base: './'` in `vite.config.ts` (relative paths) for Hostinger compatibility — do not change to absolute paths.
 
 ## Architecture
 
 ### Data Model
 
-`SpiritData` (`src/lib/animae-agentis/types.ts`) is the single source of truth. Key fields: agentMode, agentName, agentTitle, tone, autonomy, surprise, truthPolicy, negativeConstraints, output, addressing, stopWords.
+`SpiritData` (`src/lib/animae-agentis/types.ts`) is the single source of truth. Key fields: agentMode (sidekick | chief-of-staff | coach), agentName, agentTitle, tone, autonomy, surprise, truthPolicy, negativeConstraints, output, addressing, stopWords.
 
 ### Navigation
 
@@ -47,7 +49,7 @@ Interview (6 phases via state machine):
   State machine: src/lib/animae-agentis/interview/stateMachine.ts
 
   -> optional BuilderPage (fine-tune SpiritData fields)
-  -> AnimaeAgentisExportPage (preview + download 10 files)
+  -> AnimaeAgentisExportPage (preview + download 12 files)
 
 Content pages (accessible from sidebar):
   AnimaeVerbaPage - "blog/articles" content
@@ -63,10 +65,20 @@ Defined in `src/lib/presets.ts`. Three presets (Security, Responsible, OverClaw)
 
 - Types: `src/lib/animae-agentis/types.ts`
 - Defaults & utilities: `src/lib/animae-agentis/spirit.ts` (mode defaults, createEmptySpirit, mergeWithDefaults, isSpiritComplete)
-- Templates: `src/lib/animae-agentis/templates/*.template.ts` (one per output file)
-- Generator: `src/lib/animae-agentis/generator.ts` (renders all 10 files from SpiritData)
-- Validation: quality gates + resonance gates in `src/lib/animae-agentis/validation/`
-- Export: ZIP (via jszip) and JSON in `src/lib/animae-agentis/export/`
+- Templates: `src/lib/animae-agentis/templates/*.template.ts` (one per output file, 12 total)
+- Generator: `src/lib/animae-agentis/generator.ts` (renders all files from SpiritData, supports base-only or full pack)
+- Suggestions: `src/lib/animae-agentis/suggestions.ts` (tool/field suggestions by agent mode)
+- Final Touch: `src/lib/animae-agentis/finalTouch.ts` (detects incomplete/default fields, offers suggestions before download)
+- Skeletons: `src/lib/animae-agentis/skeletons.ts`
+
+### Validation Subsystem
+
+Located in `src/lib/animae-agentis/validation/`. Two API generations:
+
+- **Legacy**: `runQualityGates`, `runResonanceGates`, `calculateResonanceScore`
+- **v2**: `runFullValidation`, `repairFiles`, `improveFiles`, `runAllRules`, `computeCategoryScores`, `computeOverallScore`, `computeTrafficLight`
+
+Key types: `ValidatorReport`, `ValidatorFinding`, `RepairResult`, `TrafficLight`. Scoring produces traffic-light ratings (green/yellow/red) per category.
 
 ### UI Layers
 
