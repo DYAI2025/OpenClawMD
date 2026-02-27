@@ -112,7 +112,7 @@ ${advancedFiles.map(f => `- ${f.name}`).join('\n')}
 - USER.md - How to work together
 - HEARTBEAT.md - Operational rhythm
 - SHIELD.md - Safety boundaries
-${advancedFiles.length > 0 ? '- SPIRIT.md - Source of truth\n- CORTEX.md - Workspace map\n- MEMORY.md - Stable facts\n- VERSION.md - Version marker\n- OPS.md - Operational playbook' : ''}
+${advancedFiles.length > 0 ? '- SPIRIT.md - Source of truth\n- CORTEX.md - Workspace map\n- MEMORY.md - Stable facts\n- VERSION.md - Version marker\n- OPS.md - Operational playbook\n- AGENTS.md - Agent coordination\n- TOOLS.md - Tool conventions\n- SKILL.md - Operational kernel (boot, gating, invocation protocol)' : ''}
 
 ## Support
 

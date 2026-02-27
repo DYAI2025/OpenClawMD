@@ -54,6 +54,21 @@ export const QUALITY_GATES: QualityGate[] = [
     mustNotContain: ['how to circumvent'],
     mustContain: ['Default Blocks', 'Policy Gates', 'Emergency Stop'],
   },
+  {
+    id: 'SKILL_KERNEL_COMPLETE',
+    files: ['SKILL.md'],
+    mustNotContain: ['how to circumvent', 'bypass'],
+    mustContain: [
+      'Hard Stops',
+      'Boot Sequence',
+      'Intake',
+      'Action Gating',
+      'Tool Invocation',
+      'Truth Policy',
+      'Heartbeat',
+      'Session End',
+    ],
+  },
 ];
 
 export function runQualityGates(files: GeneratedFile[]): GateIssue[] {
@@ -133,11 +148,11 @@ export function validateFileCount(files: GeneratedFile[], expectAdvanced: boolea
     });
   }
 
-  if (expectAdvanced && advancedCount !== 7) {
+  if (expectAdvanced && advancedCount !== 8) {
     issues.push({
       gateId: 'ADVANCED_FILE_COUNT',
       severity: 'error',
-      message: `Expected 7 advanced files, found ${advancedCount}`,
+      message: `Expected 8 advanced files, found ${advancedCount}`,
     });
   }
 

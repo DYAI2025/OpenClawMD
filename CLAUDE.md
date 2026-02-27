@@ -49,7 +49,7 @@ Interview (6 phases via state machine):
   State machine: src/lib/animae-agentis/interview/stateMachine.ts
 
   -> optional BuilderPage (fine-tune SpiritData fields)
-  -> AnimaeAgentisExportPage (preview + download 12 files)
+  -> AnimaeAgentisExportPage (preview + download 13 files)
 
 Content pages (accessible from sidebar):
   AnimaeVerbaPage - "blog/articles" content

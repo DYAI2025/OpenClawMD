@@ -1,9 +1,11 @@
 /**
- * Animae Agentis Validator (v2)
+ * Animae Agentis Validator (v2.2)
  *
  * Orchestrates rules, scoring, and legacy quality/resonance gates.
  * Returns a ValidatorReport with traffic light, categories, findings,
  * promises, and strengths.
+ *
+ * v2.2: strict mode, configurable green threshold, skill category.
  */
 
 import type { SpiritData, GeneratedFile, ValidationReport } from '../types';
@@ -11,20 +13,21 @@ import { runQualityGates, validateFileCount } from './qualityGates';
 import { runResonanceGates } from './resonanceGates';
 import { runAllRules } from './rules';
 import { computeCategoryScores, computeOverallScore, computeTrafficLight } from './scoring';
-import type { ValidatorReport } from './types';
+import type { ValidatorReport, ValidatorOptions } from './types';
 
 // ============================================================================
-// Full Validation (new v2 API)
+// Full Validation (v2 API)
 // ============================================================================
 
 export function runFullValidation(
   files: GeneratedFile[],
   canon: SpiritData,
+  options?: ValidatorOptions,
 ): ValidatorReport {
-  const { findings, promises, strengths, byCategory } = runAllRules(files, canon);
+  const { findings, promises, strengths, byCategory } = runAllRules(files, canon, options);
   const categories = computeCategoryScores(byCategory);
   const overallScore = computeOverallScore(categories);
-  const trafficLight = computeTrafficLight(findings, overallScore);
+  const trafficLight = computeTrafficLight(findings, overallScore, options);
 
   return {
     trafficLight,
@@ -35,6 +38,7 @@ export function runFullValidation(
     strengths,
     timestamp: new Date().toISOString(),
     presetDetected: canon.presetId ?? null,
+    strict: options?.strict,
   };
 }
 
@@ -46,13 +50,11 @@ export function validateAnimaeAgentis(
   files: GeneratedFile[],
   canon: SpiritData,
 ): ValidationReport {
-  // Run legacy quality gates
   const qualityGateIssues = runQualityGates(files);
   const expectAdvanced = files.some(f => f.section === 'advanced');
   const countIssues = validateFileCount(files, expectAdvanced);
   const allQualityIssues = [...qualityGateIssues, ...countIssues];
 
-  // Run legacy resonance gates
   const resonanceGateIssues = runResonanceGates(files, canon);
 
   const valid =

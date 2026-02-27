@@ -1,5 +1,5 @@
 /**
- * Animae Agentis Validation
+ * Animae Agentis Validation v2.2
  *
  * Export all validation functions and types
  */
@@ -13,15 +13,35 @@ export { validateAnimaeAgentis } from './validator';
 export { runFullValidation } from './validator';
 export { repairFiles } from './repair';
 export { improveFiles } from './improve';
-export { runAllRules } from './rules';
+export { runAllRules, CODE_ALIASES } from './rules';
 export { computeCategoryScores, computeOverallScore, computeTrafficLight } from './scoring';
+
+// Extractor
+export { extractPolicies } from './extractor';
+export type {
+  ExtractedPolicies,
+  ApprovalExtraction,
+  RetryExtraction,
+  TruthPolicyExtraction,
+  StopWordExtraction,
+  HeartbeatActionExtraction,
+  CanonicalClaimExtraction,
+  SkillKernelExtraction,
+  PresetSnapshotExtraction,
+  MaintenancePolicyExtraction,
+  RuntimeAssumptionExtraction,
+} from './extractor';
+
+// Types
 export type {
   TrafficLight,
   FindingSeverity,
   ConstraintType,
   CategoryId,
   CategoryScore,
+  EvidenceLine,
   ValidatorFinding,
+  ValidatorOptions,
   PromiseClaim,
   RepairAction,
   ValidatorReport,

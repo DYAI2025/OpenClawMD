@@ -1,13 +1,15 @@
 /**
- * Repair Engine
+ * Repair Engine v2.2
  *
  * Auto-repairs RED validation results without changing design intent.
- * Uses:
+ * Purpose-preserving: "Nicht glätten, sondern arrangieren".
+ *
+ * Transforms:
  *   - Precedence injection
  *   - Carve-outs (maintenance writes)
  *   - Modality rewrites (propose vs execute)
- *   - Specialization (retry reads vs writes)
- *   - Minimal text patches
+ *   - Scope gating (sandbox / allowlist)
+ *   - Retry specialization (reads vs writes)
  */
 
 import type { SpiritData, GeneratedFile } from '../types';
@@ -38,19 +40,14 @@ function repairRT001(
     ? 'Do **not** retry any failed tool call. Log and report immediately.'
     : 'Retry **once** only for idempotent read-only calls. Never retry writes. Log all failures.';
 
-  // Patch OPS
   const opsPatched = ops.replace(
     /[-•]\s*(?:Do\s+\*\*not\*\*\s+retry|Retry\s+(?:\*\*)?once(?:\*\*)?).*?(?:\.|\n)/i,
     `- ${specializedRetry}`,
   );
-  // Patch TOOLS
   const toolsPatched = tools.replace(
     /\d+\.\s*(?:Do\s+\*\*not\*\*\s+retry|Retry\s+(?:\*\*)?once(?:\*\*)?).*?(?:\.|\n)/i,
     `1. ${specializedRetry}`,
   );
-
-  const before = 'Conflicting retry policies in OPS.md and TOOLS.md.';
-  const after = `Unified retry policy: "${specializedRetry}"`;
 
   if (opsPatched !== ops) files.set('OPS.md', opsPatched);
   if (toolsPatched !== tools) files.set('TOOLS.md', toolsPatched);
@@ -59,8 +56,8 @@ function repairRT001(
     code: 'RT001',
     file: 'OPS.md + TOOLS.md',
     description: 'Specialized retry policy: reads may retry once, writes never retry.',
-    before,
-    after,
+    before: 'Conflicting retry policies in OPS.md and TOOLS.md.',
+    after: `Unified retry policy: "${specializedRetry}"`,
   };
 }
 
@@ -77,7 +74,6 @@ function repairAP001(
     ? '\n\n> **Maintenance carve-out:** Internal checkpoint writes to `memory/checkpoints/*` are pre-approved (propose-only for security preset).'
     : '\n\n> **Maintenance carve-out:** Internal checkpoint writes to `memory/checkpoints/*` and `MEMORY.md` append-only are pre-approved.';
 
-  // Add carve-out to TOOLS if it has approval rules
   if (tools && !tools.includes('pre-approved') && !tools.includes('internal maintenance')) {
     const approvalMatch = tools.match(/(## Approval Baseline.*?\n(?:.*?\n)*?)(\n## )/s);
     if (approvalMatch) {
@@ -87,7 +83,6 @@ function repairAP001(
       );
       files.set('TOOLS.md', patchedTools);
     } else {
-      // Append carve-out at end of tools
       files.set('TOOLS.md', tools + carveOut);
     }
   }
@@ -109,7 +104,6 @@ function repairHB001(
   const hb = files.get('HEARTBEAT.md');
   if (!hb) return null;
 
-  // Replace ambiguous multi-group text with clear single-group rotation
   const patched = hb
     .replace(
       /(?:A\s*[,→+&]\s*B\s*[,→+&]?\s*C?)/gi,
@@ -150,7 +144,6 @@ function repairOC001(
 - **preset:** ${canon.presetId ?? 'custom'}
 `;
 
-  // Insert after first heading
   const firstHeadingEnd = agents.indexOf('\n', agents.indexOf('# '));
   if (firstHeadingEnd === -1) return null;
 
@@ -171,7 +164,6 @@ function repairOC002(
   finding: ValidatorFinding,
   _canon: SpiritData,
 ): RepairAction | null {
-  // Can't create missing files from repair — this requires regeneration
   return {
     code: 'OC002',
     file: finding.where,
@@ -181,16 +173,78 @@ function repairOC002(
   };
 }
 
+function repairCanonRef001(
+  files: Map<string, string>,
+  finding: ValidatorFinding,
+  _canon: SpiritData,
+): RepairAction | null {
+  const fileName = finding.where;
+  const content = files.get(fileName);
+  if (!content) return null;
+
+  const patched = content.replace(/CANON\.md/g, 'SPIRIT.md');
+  if (patched === content) return null;
+  files.set(fileName, patched);
+
+  return {
+    code: 'CANON-REF-001',
+    file: fileName,
+    description: 'Replaced deprecated "CANON.md" references with "SPIRIT.md".',
+    before: 'File references deprecated CANON.md.',
+    after: 'All references now point to SPIRIT.md.',
+  };
+}
+
+function repairSkillKernel001(
+  _files: Map<string, string>,
+  finding: ValidatorFinding,
+  _canon: SpiritData,
+): RepairAction | null {
+  return {
+    code: 'SKILL-KERNEL-001',
+    file: 'SKILL.md',
+    description: 'Missing kernel sections. Cannot auto-fix — SKILL.md must be regenerated.',
+    before: finding.what,
+    after: 'Regenerate SKILL.md with all kernel sections.',
+  };
+}
+
+function repairHBExt001(
+  files: Map<string, string>,
+  finding: ValidatorFinding,
+  _canon: SpiritData,
+): RepairAction | null {
+  const hb = files.get('HEARTBEAT.md');
+  if (!hb) return null;
+
+  const scopeNote = '\n\n> **Scope**: Auto-close applies only to tasks in the local task queue. External state changes require explicit user approval.\n';
+
+  if (hb.includes('Scope') && hb.includes('auto-close')) return null;
+
+  files.set('HEARTBEAT.md', hb + scopeNote);
+
+  return {
+    code: 'HB-EXT-001',
+    file: 'HEARTBEAT.md',
+    description: 'Added scope restriction to auto-close/external actions.',
+    before: finding.what,
+    after: 'Auto-close scoped to local task queue. External changes require approval.',
+  };
+}
+
 // ============================================================================
 // Repair Registry
 // ============================================================================
 
 const REPAIR_REGISTRY: Record<string, RepairFn> = {
-  RT001: repairRT001,
-  AP001: repairAP001,
-  HB001: repairHB001,
-  OC001: repairOC001,
-  OC002: repairOC002,
+  'RT001': repairRT001,
+  'AP001': repairAP001,
+  'HB001': repairHB001,
+  'OC001': repairOC001,
+  'OC002': repairOC002,
+  'CANON-REF-001': repairCanonRef001,
+  'SKILL-KERNEL-001': repairSkillKernel001,
+  'HB-EXT-001': repairHBExt001,
 };
 
 // ============================================================================
@@ -202,7 +256,6 @@ export function repairFiles(
   findings: ValidatorFinding[],
   canon: SpiritData,
 ): RepairResult {
-  // Build mutable map of file contents
   const fileMap = new Map<string, string>();
   for (const f of files) {
     fileMap.set(f.name, f.content);
@@ -210,7 +263,6 @@ export function repairFiles(
 
   const actions: RepairAction[] = [];
 
-  // Only repair ERRORs
   const errors = findings.filter(f => f.severity === 'ERROR');
   for (const finding of errors) {
     const repairFn = REPAIR_REGISTRY[finding.code];
@@ -222,13 +274,11 @@ export function repairFiles(
     }
   }
 
-  // Build repaired files list
   const repairedFiles: GeneratedFile[] = files.map(f => ({
     ...f,
     content: fileMap.get(f.name) ?? f.content,
   }));
 
-  // Re-validate after repair
   const reportAfter = runFullValidation(repairedFiles, canon);
 
   return {

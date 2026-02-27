@@ -212,6 +212,9 @@ export function AnimaeAgentisExportPage({ spirit, onBack, onNewConfig, onFineTun
       'MEMORY.md': <FileText className="w-4 h-4" />,
       'VERSION.md': <FileText className="w-4 h-4" />,
       'OPS.md': <Zap className="w-4 h-4" />,
+      'AGENTS.md': <FileText className="w-4 h-4" />,
+      'TOOLS.md': <FileText className="w-4 h-4" />,
+      'SKILL.md': <Sparkles className="w-4 h-4" />,
     };
     return icons[fileName] || <FileText className="w-4 h-4" />;
   };

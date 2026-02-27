@@ -1,15 +1,15 @@
 /**
- * Scoring Engine
+ * Scoring Engine v2.2
  *
  * Converts findings into category scores and a traffic light rating.
  *
  * Traffic light rules:
- *   GREEN: no ERRORs, max 2 WARNs, score >= 80
- *   YELLOW: 1-2 ERRORs or score 60-79
+ *   GREEN: no ERRORs, max N WARNs (configurable, default 1), score >= 80
+ *   YELLOW: 1-2 ERRORs or score 60-79 or WARNs > threshold
  *   RED: >= 3 ERRORs or any critical contradiction ERROR
  */
 
-import type { ValidatorFinding, CategoryScore, CategoryId, TrafficLight } from './types';
+import type { ValidatorFinding, CategoryScore, CategoryId, TrafficLight, ValidatorOptions } from './types';
 
 const CATEGORY_LABELS: Record<CategoryId, string> = {
   bootstrap: 'Bootstrap / Runtime Fit',
@@ -17,6 +17,7 @@ const CATEGORY_LABELS: Record<CategoryId, string> = {
   heartbeat: 'Heartbeat Correctness',
   security: 'Security Surface',
   purpose: 'Purpose Preservation',
+  skill: 'Skill Kernel Integrity',
 };
 
 const SEVERITY_WEIGHTS = {
@@ -36,7 +37,7 @@ function scoreCategory(findings: ValidatorFinding[]): number {
 export function computeCategoryScores(
   byCategory: Record<CategoryId, ValidatorFinding[]>,
 ): CategoryScore[] {
-  const ids: CategoryId[] = ['bootstrap', 'policy', 'heartbeat', 'security', 'purpose'];
+  const ids: CategoryId[] = ['bootstrap', 'policy', 'heartbeat', 'security', 'purpose', 'skill'];
   return ids.map(id => ({
     id,
     label: CATEGORY_LABELS[id],
@@ -50,15 +51,22 @@ export function computeOverallScore(categories: CategoryScore[]): number {
   return Math.round(sum / categories.length);
 }
 
-const CRITICAL_CONTRADICTION_CODES = new Set(['RT001', 'AP001', 'HB001']);
+const CRITICAL_CONTRADICTION_CODES = new Set([
+  'RT001', 'AP001', 'HB001', 'SKILL-KERNEL-001',
+]);
 
 export function computeTrafficLight(
   findings: ValidatorFinding[],
   overallScore: number,
+  options?: ValidatorOptions,
 ): TrafficLight {
   const errors = findings.filter(f => f.severity === 'ERROR');
   const warns = findings.filter(f => f.severity === 'WARN');
-  const hasCriticalContradiction = errors.some(e => CRITICAL_CONTRADICTION_CODES.has(e.code));
+  const hasCriticalContradiction = errors.some(e =>
+    CRITICAL_CONTRADICTION_CODES.has(e.code)
+    || e.constraintType === 'contradiction',
+  );
+  const maxGreenWarns = options?.maxGreenWarns ?? 1;
 
   // RED: >= 3 errors, or any critical contradiction error
   if (errors.length >= 3 || hasCriticalContradiction) {
@@ -70,13 +78,13 @@ export function computeTrafficLight(
     return 'yellow';
   }
 
-  // GREEN: no errors, max 2 warns, score >= 80
-  if (errors.length === 0 && warns.length <= 2 && overallScore >= 80) {
+  // GREEN: no errors, warns within threshold, score >= 80
+  if (errors.length === 0 && warns.length <= maxGreenWarns && overallScore >= 80) {
     return 'green';
   }
 
-  // Fallback: YELLOW if many warnings
-  if (warns.length > 2) {
+  // Fallback: YELLOW if too many warnings
+  if (warns.length > maxGreenWarns) {
     return 'yellow';
   }
 

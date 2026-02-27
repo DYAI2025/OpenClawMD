@@ -1,7 +1,7 @@
 /**
  * Animae Agentis Generator
  *
- * Generates all 12 configuration files from Spirit data.
+ * Generates all 13 configuration files from Spirit data.
  * Implements the thrid_embodiment pattern: SOUL + IDENTITY + USER
  */
 
@@ -25,6 +25,7 @@ import {
   renderOpsMd,
   renderAgentsMd,
   renderToolsMd,
+  renderSkillMd,
 } from './templates';
 
 // ============================================================================
@@ -47,6 +48,7 @@ export const ADVANCED_FILES = [
   'OPS.md',
   'AGENTS.md',
   'TOOLS.md',
+  'SKILL.md',
 ] as const;
 
 export type BaseFileName = typeof BASE_FILES[number];
@@ -93,6 +95,7 @@ export function generateAnimaeAgentisFiles(
       { name: 'OPS.md', content: renderOpsMd(canon, language), section: 'advanced' },
       { name: 'AGENTS.md', content: renderAgentsMd(canon, language), section: 'advanced' },
       { name: 'TOOLS.md', content: renderToolsMd(canon, language), section: 'advanced' },
+      { name: 'SKILL.md', content: renderSkillMd(canon, language), section: 'advanced' },
     );
   }
 
@@ -140,6 +143,7 @@ export function generateAdvancedPack(
     { name: 'OPS.md', content: renderOpsMd(canon, language), section: 'advanced' },
     { name: 'AGENTS.md', content: renderAgentsMd(canon, language), section: 'advanced' },
     { name: 'TOOLS.md', content: renderToolsMd(canon, language), section: 'advanced' },
+    { name: 'SKILL.md', content: renderSkillMd(canon, language), section: 'advanced' },
   ];
 }
 
@@ -164,6 +168,7 @@ export function generateSingleFile(
     'OPS.md': renderOpsMd,
     'AGENTS.md': renderAgentsMd,
     'TOOLS.md': renderToolsMd,
+    'SKILL.md': renderSkillMd,
   };
 
   const renderer = renderers[fileName];

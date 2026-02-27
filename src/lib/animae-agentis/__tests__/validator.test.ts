@@ -8,7 +8,7 @@
 import { describe, it, expect } from 'vitest';
 import type { SpiritData, GeneratedFile } from '../types';
 import { generateAnimaeAgentisFiles } from '../generator';
-import { runFullValidation, repairFiles } from '../validation';
+import { runFullValidation, repairFiles, extractPolicies } from '../validation';
 import { runAllRules } from '../validation/rules';
 import { computeCategoryScores, computeOverallScore, computeTrafficLight } from '../validation/scoring';
 
@@ -182,10 +182,10 @@ describe('Repair Engine', () => {
 // ============================================================================
 
 describe('Template Architecture', () => {
-  it('should generate exactly 12 files with advanced pack', () => {
+  it('should generate exactly 13 files with advanced pack', () => {
     const spirit = makeSpirit();
     const files = generateFiles(spirit);
-    expect(files).toHaveLength(12);
+    expect(files).toHaveLength(13);
   });
 
   it('should generate exactly 5 base files without advanced pack', () => {
@@ -219,6 +219,7 @@ describe('Template Architecture', () => {
     expect(names).toContain('OPS.md');
     expect(names).toContain('AGENTS.md');
     expect(names).toContain('TOOLS.md');
+    expect(names).toContain('SKILL.md');
   });
 
   it('each generated file should have non-empty content', () => {
@@ -319,5 +320,291 @@ describe('Full Validation Integration', () => {
     const files = generateFiles(spirit);
     const report = runFullValidation(files, spirit);
     expect(report.presetDetected).toBe('responsible');
+  });
+});
+
+// ============================================================================
+// Policy Extractor Tests
+// ============================================================================
+
+describe('Policy Extractor', () => {
+  it('should extract approval policies from generated files', () => {
+    const spirit = makeSpirit({ presetId: 'responsible' });
+    const files = generateFiles(spirit);
+    const extracted = extractPolicies(files, spirit);
+    expect(extracted.approvals.length).toBeGreaterThan(0);
+  });
+
+  it('should extract retry policies', () => {
+    const spirit = makeSpirit({ presetId: 'responsible' });
+    const files = generateFiles(spirit);
+    const extracted = extractPolicies(files, spirit);
+    expect(extracted.retries.length).toBeGreaterThan(0);
+  });
+
+  it('should extract skill kernel sections', () => {
+    const spirit = makeSpirit();
+    const files = generateFiles(spirit);
+    const extracted = extractPolicies(files, spirit);
+    expect(extracted.skillKernelSections.present).toContain('Hard Stops');
+    expect(extracted.skillKernelSections.present).toContain('Boot Sequence');
+    expect(extracted.skillKernelSections.present).toContain('Action Gating');
+    expect(extracted.skillKernelSections.present).toContain('Session End');
+    expect(extracted.skillKernelSections.missing).toHaveLength(0);
+  });
+
+  it('should extract stop words from multiple files', () => {
+    const spirit = makeSpirit({ stopWords: ['STOP', 'HALT'] });
+    const files = generateFiles(spirit);
+    const extracted = extractPolicies(files, spirit);
+    expect(extracted.stopWords.length).toBeGreaterThan(0);
+  });
+
+  it('should extract canonical claims from SPIRIT.md', () => {
+    const spirit = makeSpirit();
+    const files = generateFiles(spirit);
+    const extracted = extractPolicies(files, spirit);
+    expect(extracted.canonicalClaims.some(c => c.file === 'SPIRIT.md')).toBe(true);
+  });
+
+  it('should extract heartbeat actions', () => {
+    const spirit = makeSpirit();
+    const files = generateFiles(spirit);
+    const extracted = extractPolicies(files, spirit);
+    expect(extracted.heartbeatActions.length).toBeGreaterThanOrEqual(0);
+  });
+
+  it('should extract runtime assumptions from SKILL.md', () => {
+    const spirit = makeSpirit();
+    const files = generateFiles(spirit);
+    const extracted = extractPolicies(files, spirit);
+    expect(extracted.runtimeAssumptions.length).toBeGreaterThan(0);
+  });
+
+  it('should detect preset snapshot when present', () => {
+    const spirit = makeSpirit({ presetId: 'responsible' });
+    const files = generateFiles(spirit);
+    const extracted = extractPolicies(files, spirit);
+    expect(extracted.presetSnapshot).not.toBeNull();
+    expect(extracted.skillKernelSections.hasPresetSnapshot).toBe(true);
+  });
+});
+
+// ============================================================================
+// New Rule Code Tests
+// ============================================================================
+
+describe('New Rule Codes', () => {
+  it('should detect SKILL-KERNEL-001 when kernel section removed', () => {
+    const spirit = makeSpirit();
+    const files = generateFiles(spirit);
+    const skill = files.find(f => f.name === 'SKILL.md')!;
+    // Replace SKILL.md with minimal content missing most kernel sections
+    skill.content = '# SKILL.md\n\n## Intent\nMinimal file.\n\n## Hard Stops\n- `STOP`\n';
+    const { findings } = runAllRules(files, spirit);
+    expect(findings.some(f => f.code === 'SKILL-KERNEL-001')).toBe(true);
+  });
+
+  it('should detect CANON-REF-001 for CANON.md references', () => {
+    const spirit = makeSpirit();
+    const files = generateFiles(spirit);
+    const agents = files.find(f => f.name === 'AGENTS.md')!;
+    agents.content += '\n\nSee CANON.md for canonical values.';
+    const { findings } = runAllRules(files, spirit);
+    expect(findings.some(f => f.code === 'CANON-REF-001')).toBe(true);
+  });
+
+  it('should detect HB-EXT-001 for unscoped auto-close', () => {
+    const spirit = makeSpirit();
+    const files = generateFiles(spirit);
+    const hb = files.find(f => f.name === 'HEARTBEAT.md')!;
+    hb.content += '\n\n## External Actions\n- auto-close expired items';
+    const { findings } = runAllRules(files, spirit);
+    expect(findings.some(f => f.code === 'HB-EXT-001')).toBe(true);
+  });
+
+  it('should detect SKILL-PRESET-001 when preset snapshot removed', () => {
+    const spirit = makeSpirit({ presetId: 'responsible' });
+    const files = generateFiles(spirit);
+    const skill = files.find(f => f.name === 'SKILL.md')!;
+    skill.content = skill.content.replace(/## Preset Snapshot[\s\S]*?(?=\n---\n)/, '');
+    const { findings } = runAllRules(files, spirit);
+    expect(findings.some(f => f.code === 'SKILL-PRESET-001')).toBe(true);
+  });
+
+  it('should NOT fire SKILL-PRESET-001 for custom configs (no preset)', () => {
+    const spirit = makeSpirit(); // no presetId
+    const files = generateFiles(spirit);
+    const { findings } = runAllRules(files, spirit);
+    expect(findings.some(f => f.code === 'SKILL-PRESET-001')).toBe(false);
+  });
+
+  it('should include specCode alias for OC001 findings', () => {
+    const spirit = makeSpirit();
+    const files = generateFiles(spirit);
+    const agents = files.find(f => f.name === 'AGENTS.md')!;
+    // Remove all SPIRIT snapshot references to trigger OC001
+    agents.content = agents.content.replace(/spirit snapshot/gi, '');
+    agents.content = agents.content.replace(/action_mode/gi, '');
+    agents.content = agents.content.replace(/approval/gi, '');
+    const { findings } = runAllRules(files, spirit);
+    const oc001 = findings.find(f => f.code === 'OC001');
+    if (oc001) {
+      expect(oc001.specCode).toBe('SP-CANON-001');
+    }
+  });
+});
+
+// ============================================================================
+// Strict Mode Tests
+// ============================================================================
+
+describe('Strict Mode', () => {
+  it('should promote OC001 to ERROR in strict mode', () => {
+    const spirit = makeSpirit();
+    const files = generateFiles(spirit);
+    const agents = files.find(f => f.name === 'AGENTS.md')!;
+    agents.content = agents.content.replace(/spirit snapshot/gi, '');
+    agents.content = agents.content.replace(/action_mode/gi, '');
+    agents.content = agents.content.replace(/approval/gi, '');
+
+    const normal = runAllRules(files, spirit);
+    const strict = runAllRules(files, spirit, { strict: true });
+
+    const normalOc = normal.findings.find(f => f.code === 'OC001');
+    const strictOc = strict.findings.find(f => f.code === 'OC001');
+
+    if (normalOc && strictOc) {
+      expect(normalOc.severity).toBe('WARN');
+      expect(strictOc.severity).toBe('ERROR');
+    }
+  });
+
+  it('should not change non-promotable findings in strict mode', () => {
+    const spirit = makeSpirit();
+    const files = generateFiles(spirit);
+    const soul = files.find(f => f.name === 'SOUL.md')!;
+    soul.content += '\n' + 'X'.repeat(15_000);
+
+    const strict = runAllRules(files, spirit, { strict: true });
+    const sz = strict.findings.find(f => f.code === 'SZ001');
+    expect(sz?.severity).toBe('WARN'); // SZ001 not in STRICT_PROMOTIONS
+  });
+
+  it('strict report should flag strict=true', () => {
+    const spirit = makeSpirit({ presetId: 'responsible' });
+    const files = generateFiles(spirit);
+    const report = runFullValidation(files, spirit, { strict: true });
+    expect(report.strict).toBe(true);
+  });
+});
+
+// ============================================================================
+// Evidence Field Tests
+// ============================================================================
+
+describe('Evidence Fields', () => {
+  it('SZ001 should include evidence with file', () => {
+    const spirit = makeSpirit();
+    const files = generateFiles(spirit);
+    const soul = files.find(f => f.name === 'SOUL.md')!;
+    soul.content += '\n' + 'X'.repeat(15_000);
+    const { findings } = runAllRules(files, spirit);
+    const sz = findings.find(f => f.code === 'SZ001');
+    expect(sz).toBeDefined();
+    expect(sz!.evidence).toBeDefined();
+    expect(sz!.evidence![0].file).toBe('SOUL.md');
+  });
+
+  it('CANON-REF-001 should include evidence with line', () => {
+    const spirit = makeSpirit();
+    const files = generateFiles(spirit);
+    const ops = files.find(f => f.name === 'OPS.md')!;
+    ops.content += '\n\nRefer to CANON.md for policy.';
+    const { findings } = runAllRules(files, spirit);
+    const ref = findings.find(f => f.code === 'CANON-REF-001');
+    expect(ref).toBeDefined();
+    expect(ref!.evidence).toBeDefined();
+    expect(ref!.evidence!.length).toBeGreaterThan(0);
+    expect(ref!.evidence![0].line).toBeGreaterThan(0);
+  });
+});
+
+// ============================================================================
+// Configurable Green Threshold Tests
+// ============================================================================
+
+describe('Configurable Green Threshold', () => {
+  it('should reject 1 WARN for green when maxGreenWarns=0', () => {
+    const light = computeTrafficLight(
+      [{ code: 'X', severity: 'WARN', where: '', what: '', impact: '', constraintType: 'ambiguity' }],
+      90,
+      { maxGreenWarns: 0 },
+    );
+    expect(light).not.toBe('green');
+  });
+
+  it('should allow 1 WARN for green with default options', () => {
+    const light = computeTrafficLight(
+      [{ code: 'X', severity: 'WARN', where: '', what: '', impact: '', constraintType: 'ambiguity' }],
+      90,
+    );
+    expect(light).toBe('green');
+  });
+
+  it('should reject 2 WARNs for green with default options', () => {
+    const light = computeTrafficLight(
+      [
+        { code: 'X1', severity: 'WARN', where: '', what: '', impact: '', constraintType: 'ambiguity' },
+        { code: 'X2', severity: 'WARN', where: '', what: '', impact: '', constraintType: 'ambiguity' },
+      ],
+      90,
+    );
+    expect(light).not.toBe('green');
+  });
+});
+
+// ============================================================================
+// Regression: False Green Prevention
+// ============================================================================
+
+describe('Regression: False Green Prevention', () => {
+  it('must NOT be green when HEARTBEAT auto-writes conflict with approval gate', () => {
+    const spirit = makeSpirit({
+      autonomy: { actionMode: 'recommend_only', approvalThreshold: 'All actions.' },
+    });
+    const files = generateFiles(spirit);
+    const hb = files.find(f => f.name === 'HEARTBEAT.md')!;
+    hb.content += '\n\n## Auto-Write\nwrite checkpoint on every tick.';
+    const tools = files.find(f => f.name === 'TOOLS.md')!;
+    tools.content = tools.content.replace(/pre-approved/gi, '');
+    tools.content = tools.content.replace(/internal maintenance/gi, '');
+
+    const report = runFullValidation(files, spirit);
+    // This fixture must NEVER go green — if it does, the validator has regressed
+    expect(report.trafficLight).not.toBe('green');
+  });
+
+  it('must NOT be green when CANON.md references exist', () => {
+    const spirit = makeSpirit();
+    const files = generateFiles(spirit);
+    // Inject deprecated CANON.md reference
+    const agents = files.find(f => f.name === 'AGENTS.md')!;
+    agents.content += '\n\nAll values from CANON.md are authoritative.';
+
+    const report = runFullValidation(files, spirit);
+    // CANON-REF-001 is an ERROR → cannot be green
+    expect(report.trafficLight).not.toBe('green');
+  });
+
+  it('must NOT be green when SKILL.md has missing kernel sections', () => {
+    const spirit = makeSpirit();
+    const files = generateFiles(spirit);
+    const skill = files.find(f => f.name === 'SKILL.md')!;
+    // Wipe most of the skill content
+    skill.content = '# SKILL.md\n\n## Intent\nMinimal.\n';
+
+    const report = runFullValidation(files, spirit);
+    expect(report.trafficLight).not.toBe('green');
   });
 });

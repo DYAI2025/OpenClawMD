@@ -271,10 +271,11 @@ export type FileName =
   | 'VERSION.md'
   | 'OPS.md'
   | 'AGENTS.md'
-  | 'TOOLS.md';
+  | 'TOOLS.md'
+  | 'SKILL.md';
 
 export type BaseFileName = Extract<FileName, 'SOUL.md' | 'IDENTITY.md' | 'USER.md' | 'HEARTBEAT.md' | 'SHIELD.md'>;
-export type AdvancedFileName = Extract<FileName, 'SPIRIT.md' | 'CORTEX.md' | 'MEMORY.md' | 'VERSION.md' | 'OPS.md' | 'AGENTS.md' | 'TOOLS.md'>;
+export type AdvancedFileName = Extract<FileName, 'SPIRIT.md' | 'CORTEX.md' | 'MEMORY.md' | 'VERSION.md' | 'OPS.md' | 'AGENTS.md' | 'TOOLS.md' | 'SKILL.md'>;
 
 export interface TemplateVariables {
   [key: string]: string | string[] | object;

@@ -12,7 +12,7 @@ import type { SpiritData } from '../types';
 describe('Animae Agentis Generator', () => {
   
   describe('generateAnimaeAgentisFiles', () => {
-    it('should generate all 12 files with Advanced Pack enabled', () => {
+    it('should generate all 13 files with Advanced Pack enabled', () => {
       // Arrange
       const canon = mergeWithDefaults({
         agentName: 'Test Agent',
@@ -29,7 +29,7 @@ describe('Animae Agentis Generator', () => {
       const result = generateAnimaeAgentisFiles(canon, options);
       
       // Assert
-      expect(result.files).toHaveLength(12);
+      expect(result.files).toHaveLength(13);
       expect(result.canon).toBe(canon);
       expect(result.options).toBe(options);
       expect(result.generatedAt).toBeDefined();
@@ -48,6 +48,7 @@ describe('Animae Agentis Generator', () => {
       expect(fileNames).toContain('OPS.md');
       expect(fileNames).toContain('AGENTS.md');
       expect(fileNames).toContain('TOOLS.md');
+      expect(fileNames).toContain('SKILL.md');
     });
     
     it('should generate only 5 files with Advanced Pack disabled', () => {
@@ -218,15 +219,15 @@ describe('Animae Agentis Generator', () => {
   });
   
   describe('generateAdvancedPack', () => {
-    it('should generate exactly 7 advanced files', () => {
+    it('should generate exactly 8 advanced files', () => {
       // Arrange
       const canon = mergeWithDefaults({}) as SpiritData;
-      
+
       // Act
       const files = generateAdvancedPack(canon, 'en');
-      
+
       // Assert
-      expect(files).toHaveLength(7);
+      expect(files).toHaveLength(8);
       expect(files.every(f => f.section === 'advanced')).toBe(true);
       expect(files.map(f => f.name).sort()).toEqual([...ADVANCED_FILES].sort());
     });
