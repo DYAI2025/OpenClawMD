@@ -3,7 +3,7 @@ import { Shield, ChevronRight, Clock } from 'lucide-react';
 import downloadImg from '../../icons/download.png';
 import customImg from '../../icons/custom.png';
 import knowledgeImg from '../../icons/knowledge.png';
-import { ClayCard } from '@/components/clay';
+import { ClayCard, ShareBar } from '@/components/clay';
 import { FilePreviewDialog } from '@/components/FilePreviewDialog';
 import { getLatestWeeklyPost, getEducationalPosts } from '@/lib/blogData';
 import logo1 from '../../icons/logo1.png';
@@ -256,6 +256,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           </div>
         </section>
       )}
+
+      {/* Share Section */}
+      <section className="px-6 py-8">
+        <div className="max-w-6xl mx-auto text-center">
+          <p className="text-sm text-clay-charcoal/50 mb-3">Share OpenClawMD</p>
+          <ShareBar />
+        </div>
+      </section>
 
       {/* File Preview Dialog */}
       <FilePreviewDialog

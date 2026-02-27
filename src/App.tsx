@@ -20,6 +20,7 @@ import { useTheme } from '@/hooks/use-theme';
 import { AnimaeAgentisInterviewPage } from './pages/AnimaeAgentisInterviewPage';
 import { SidebarProvider, SidebarInset, SidebarTrigger } from '@/components/ui/sidebar';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useAdSense } from '@/hooks/use-adsense';
 
 export type AppView = 'landing' | 'presets' | 'interview' | 'builder' | 'export' | 'animae-verba' | 'usus' | 'how-it-works' | 'legal-impressum' | 'legal-privacy' | 'legal-tos';
 
@@ -59,6 +60,7 @@ function App() {
   // Initialize theme (applies .dark class to <html>)
   useTheme();
   const isMobile = useIsMobile();
+
   const [spiritData, setSpiritData] = useState<{ files: GeneratedFile[]; spirit: SpiritData } | null>(null);
 
   // Persist history to localStorage
@@ -67,6 +69,9 @@ function App() {
   }, [history]);
 
   const currentEntry = history[history.length - 1];
+
+  // Pause ads on tool screens, enable on content screens
+  useAdSense(currentEntry.view);
 
   // Push a new view onto the history stack
   const pushView = useCallback((view: AppView, extra?: Partial<HistoryEntry>) => {

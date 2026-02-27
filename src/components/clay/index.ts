@@ -16,3 +16,5 @@ export { ClayTabs } from './ClayTabs';
 export { ClayFlowBreadcrumb } from './ClayFlowBreadcrumb';
 
 export { ClayThemeToggle } from './ClayThemeToggle';
+
+export { ShareBar } from './ShareBar';

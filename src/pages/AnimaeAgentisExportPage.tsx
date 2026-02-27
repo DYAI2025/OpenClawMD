@@ -13,7 +13,7 @@ import {
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { ClayButton, ClayCard, ClayTabs } from '@/components/clay';
+import { ClayButton, ClayCard, ClayTabs, ShareBar } from '@/components/clay';
 import { DownloadConfirmation } from '@/components/safety/DownloadConfirmation';
 import { ValidationPanel } from '@/components/validation/ValidationPanel';
 import { FinalTouchPanel } from '@/components/finaltouch/FinalTouchPanel';
@@ -463,6 +463,15 @@ export function AnimaeAgentisExportPage({ spirit, onBack, onNewConfig, onFineTun
             <Sparkles className="w-5 h-5" />
             Create New Configuration
           </ClayButton>
+        </div>
+
+        {/* Share */}
+        <div className="mt-8 text-center">
+          <p className="text-sm text-clay-charcoal/60 mb-3">Built something cool? Spread the word</p>
+          <ShareBar
+            title={`I just configured an AI agent with OpenClawMD — ${currentSpirit.agentName} (${currentSpirit.agentMode})`}
+            description="OpenClawMD generates and validates 13 Markdown config files for AI agents. No backend, runs in your browser."
+          />
         </div>
 
         {/* Footer */}
