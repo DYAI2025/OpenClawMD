@@ -21,28 +21,46 @@ export const PRIVACY_POLICY_DE = `
 ## 1. Datenschutz auf einen Blick
 
 ### Allgemeine Hinweise
-Die folgenden Hinweise geben einen einfachen Überblick darüber, was mit Ihren personenbezogenen Daten passiert, wenn Sie diese Website besuchen.
+Die folgenden Hinweise geben einen einfachen Überblick darüber, was mit Ihren personenbezogenen Daten passiert, wenn Sie diese Website besuchen. Personenbezogene Daten sind alle Daten, mit denen Sie persönlich identifiziert werden können.
+
+### Verantwortlicher
+Benjamin Poersch, Grazer Damm 207, 12157 Berlin, E-Mail: info@dyai.app
 
 ## 2. Datenerfassung auf dieser Website
 
-### Google AdSense
-Diese Website nutzt Google AdSense, einen Dienst zum Einbinden von Werbeanzeigen. Google AdSense verwendet "Cookies", die auf Ihrem Computer gespeichert werden und eine Analyse der Benutzung der Website ermöglichen. Google AdSense verwendet auch sogenannte Web Beacons (unsichtbare Grafiken). Durch diese Web Beacons können Informationen wie der Besucherverkehr auf diesen Seiten ausgewertet werden.
+### Cookies
+Diese Website verwendet Cookies. Wir holen Ihre Einwilligung vor dem Setzen nicht notwendiger Cookies über unser Cookie-Banner ein. Notwendige Cookies werden auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO gesetzt; alle anderen Cookies nur nach Ihrer ausdrücklichen Einwilligung gemäß Art. 6 Abs. 1 lit. a DSGVO. Sie können Ihre Einwilligung jederzeit mit Wirkung für die Zukunft widerrufen.
 
-Die durch Cookies und Web Beacons erzeugten Informationen über die Benutzung dieser Website (einschließlich Ihrer IP-Adresse) und Auslieferung von Werbeformaten werden an einen Server von Google in den USA übertragen und dort gespeichert. Diese Informationen können von Google an Vertragspartner von Google weitergegeben werden. Google wird Ihre IP-Adresse jedoch nicht mit anderen von Ihnen gespeicherten Daten zusammenführen.
+### Google Analytics
+Diese Website nutzt Google Analytics, einen Webanalysedienst der Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland. Google Analytics verwendet Cookies, die eine Analyse Ihrer Nutzung der Website ermöglichen. Die Verarbeitung erfolgt nur nach Ihrer ausdrücklichen Einwilligung (Art. 6 Abs. 1 lit. a DSGVO). Sie können Ihre Einwilligung jederzeit über unser Cookie-Banner widerrufen.
 
-  Datenschutzanfragen richten Sie bitte an die oben genannte E-Mail-Adresse.
+## 3. Google AdSense (Werbung)
+Wir nutzen auf dieser Website Google AdSense. Dies ist ein Dienst der Google Ireland Limited („Google”), Gordon House, Barrow Street, Dublin 4, Irland. Google AdSense verwendet Cookies und Web Beacons, um personalisierte Werbung auszuspielen.
 
-## 3. Google AdSense (Werbung mit Cookies)
-Wir nutzen auf dieser Website Google AdSense. Dies ist ein Dienst der Google Ireland Limited („Google“), Gordon House, Barrow Street, Dublin 4, Irland. Google AdSense verwendet sog. „Cookies“, Textdateien, die auf Ihrem Computer gespeichert werden und die eine Analyse der Benutzung der Website ermöglichen. Google AdSense verwendet auch sog. Web Beacons (unsichtbare Grafiken). Durch diese Web Beacons können Informationen wie der Besucherverkehr auf diesen Seiten ausgewertet werden.
+Die durch Cookies erzeugten Informationen über Ihre Nutzung dieser Website (einschließlich Ihrer IP-Adresse) werden an Server von Google in den USA übertragen und dort gespeichert. Google kann diese Informationen an Vertragspartner weitergeben.
 
-Die durch Cookies und Web Beacons erzeugten Informationen über die Benutzung dieser Website (einschließlich Ihrer IP-Adresse) und Auslieferung von Werbeformaten werden an einen Server von Google in den USA übertragen und dort gespeichert. Diese Informationen können von Google an Vertragspartner von Google weitergegeben werden. Google wird Ihre IP-Adresse jedoch nicht mit anderen von Ihnen gespeicherten Daten zusammenführen.
+Die Verarbeitung erfolgt ausschließlich auf Grundlage Ihrer ausdrücklichen Einwilligung (Art. 6 Abs. 1 lit. a DSGVO). Sie können Ihre Einwilligung jederzeit über unser Cookie-Banner widerrufen. Ohne Ihre Einwilligung werden keine Werbe-Cookies gesetzt.
 
-Die Speicherung von AdSense-Cookies erfolgt auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO. Der Websitebetreiber hat ein berechtigtes Interesse an der Analyse des Nutzerverhaltens, um sowohl sein Webangebot als auch seine Werbung zu optimieren. Sofern eine entsprechende Einwilligung abgefragt wurde (z. B. eine Einwilligung zur Speicherung von Cookies), erfolgt die Verarbeitung ausschließlich auf Grundlage von Art. 6 Abs. 1 lit. a DSGVO; die Einwilligung ist jederzeit widerrufbar.
-
-Sie können die Installation der Cookies durch eine entsprechende Einstellung Ihrer Browser-Software verhindern; wir weisen Sie jedoch darauf hin, dass Sie in diesem Fall gegebenenfalls nicht sämtliche Funktionen dieser Website voll umfänglich nutzen können. Durch die Nutzung dieser Website erklären Sie sich mit der Bearbeitung der über Sie erhobenen Daten durch Google in der zuvor beschriebenen Art und Weise und zu dem zuvor benannten Zweck einverstanden.
+Sie können personalisierte Werbung zusätzlich über folgende Links deaktivieren:
+- [Google Ads Settings](https://www.google.com/settings/ads)
+- [Network Advertising Initiative Opt-Out](https://optout.networkadvertising.org/)
 
 ## 4. Rechte der betroffenen Person
-Sie haben das Recht auf Auskunft, Berichtigung, Löschung oder Einschränkung der Verarbeitung Ihrer gespeicherten Daten.
+
+Sie haben folgende Rechte bezüglich Ihrer personenbezogenen Daten:
+
+- **Auskunftsrecht** (Art. 15 DSGVO): Sie können Auskunft über die von uns verarbeiteten Daten verlangen.
+- **Berichtigungsrecht** (Art. 16 DSGVO): Sie können die Berichtigung unrichtiger Daten verlangen.
+- **Löschungsrecht** (Art. 17 DSGVO): Sie können die Löschung Ihrer Daten verlangen, sofern keine gesetzlichen Aufbewahrungspflichten entgegenstehen.
+- **Einschränkung der Verarbeitung** (Art. 18 DSGVO): Sie können die Einschränkung der Verarbeitung verlangen.
+- **Datenübertragbarkeit** (Art. 20 DSGVO): Sie haben das Recht, Ihre Daten in einem maschinenlesbaren Format zu erhalten.
+- **Widerspruchsrecht** (Art. 21 DSGVO): Sie können der Verarbeitung Ihrer Daten widersprechen.
+- **Widerruf der Einwilligung** (Art. 7 Abs. 3 DSGVO): Sie können eine erteilte Einwilligung jederzeit mit Wirkung für die Zukunft widerrufen — ohne Angabe von Gründen.
+
+Zur Ausübung Ihrer Rechte wenden Sie sich an: info@dyai.app
+
+### Beschwerderecht
+Sie haben das Recht, sich bei einer Datenschutz-Aufsichtsbehörde über die Verarbeitung Ihrer personenbezogenen Daten zu beschweren (Art. 77 DSGVO). Die zuständige Aufsichtsbehörde in Berlin ist die Berliner Beauftragte für Datenschutz und Informationsfreiheit, Friedrichstr. 219, 10969 Berlin.
 `;
 
 export const TOS_DE = `

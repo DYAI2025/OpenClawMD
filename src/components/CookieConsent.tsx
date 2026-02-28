@@ -49,8 +49,8 @@ export function CookieConsent() {
   const [showSettings, setShowSettings] = useState(false);
   const [preferences, setPreferences] = useState<CookiePreferences>({
     essential: true,
-    analytics: true,
-    advertising: true,
+    analytics: false,
+    advertising: false,
   });
 
   const savePreferences = (prefs: CookiePreferences) => {
@@ -73,6 +73,10 @@ export function CookieConsent() {
     savePreferences({ essential: true, analytics: true, advertising: true });
   };
 
+  const handleRejectAll = () => {
+    savePreferences({ essential: true, analytics: false, advertising: false });
+  };
+
   const handleSaveSettings = () => {
     savePreferences(preferences);
   };
@@ -89,12 +93,15 @@ export function CookieConsent() {
           <div className="flex-1 text-center md:text-left">
             <h3 className="text-lg font-bold text-clay-charcoal mb-2">Cookie Privacy</h3>
             <p className="text-sm text-clay-charcoal/60 leading-relaxed">
-              We use cookies to improve your experience and show personalized ads via Google AdSense.
-              By continuing to use Animae Agentis, you agree to our use of cookies and our privacy policy.
+              We use cookies to improve your experience and to show ads via Google AdSense.
+              Please choose your preferences below.
             </p>
           </div>
           {!showSettings && (
             <div className="flex flex-col sm:flex-row gap-3 shrink-0">
+              <ClayButton size="sm" color="sand" onClick={handleRejectAll}>
+                Reject All
+              </ClayButton>
               <ClayButton size="sm" color="sand" onClick={() => setShowSettings(true)}>
                 Settings
               </ClayButton>
@@ -128,6 +135,9 @@ export function CookieConsent() {
               />
             </div>
             <div className="flex gap-3 justify-end mt-6">
+              <ClayButton size="sm" color="sand" onClick={handleRejectAll}>
+                Reject All
+              </ClayButton>
               <ClayButton size="sm" color="sand" onClick={handleSaveSettings}>
                 Save Preferences
               </ClayButton>
