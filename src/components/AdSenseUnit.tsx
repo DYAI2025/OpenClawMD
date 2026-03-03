@@ -12,13 +12,13 @@ export const ADSENSE_CLIENT = 'ca-pub-1712273263687132';
 
 export const AD_SLOTS = {
   /** Landing page – between file tiles and Animae Verba section */
-  LANDING_MID: 'REPLACE_WITH_SLOT_ID',
+  LANDING_MID: '2954253435',
   /** Article detail view – below the article header */
-  ARTICLE_TOP: 'REPLACE_WITH_SLOT_ID',
+  ARTICLE_TOP: '2954253435',
   /** Article detail view – after article content */
-  ARTICLE_BOTTOM: 'REPLACE_WITH_SLOT_ID',
+  ARTICLE_BOTTOM: '2954253435',
   /** How It Works page – mid content */
-  HOW_IT_WORKS_MID: 'REPLACE_WITH_SLOT_ID',
+  HOW_IT_WORKS_MID: '2954253435',
 } as const;
 
 interface AdSenseUnitProps {
