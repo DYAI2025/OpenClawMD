@@ -3,6 +3,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { getEducationalPosts, type BlogPost } from '../lib/blogData';
 import { ClayCard } from '../components/clay';
+import { AdSenseUnit, AD_SLOTS } from '@/components/AdSenseUnit';
 import { ArrowLeft, Calendar, Clock, Tag, ChevronRight } from 'lucide-react';
 
 interface UsusPageProps {
@@ -46,6 +47,8 @@ export function UsusPage({ onBack, initialPostSlug }: UsusPageProps) {
             </span>
           </div>
 
+          <AdSenseUnit slot={AD_SLOTS.ARTICLE_TOP} format="horizontal" className="mb-6" />
+
           <ClayCard className="p-8 md:p-12 overflow-hidden shadow-clay-lifted border-white/40 dark:border-white/[0.06]">
             <div className="prose-clay max-w-none">
               <ReactMarkdown remarkPlugins={[remarkGfm]}>
@@ -53,6 +56,8 @@ export function UsusPage({ onBack, initialPostSlug }: UsusPageProps) {
               </ReactMarkdown>
             </div>
           </ClayCard>
+
+          <AdSenseUnit slot={AD_SLOTS.ARTICLE_BOTTOM} format="auto" className="mt-8" />
         </article>
       </div>
     );

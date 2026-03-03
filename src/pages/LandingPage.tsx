@@ -5,6 +5,7 @@ import customImg from '../../icons/custom.png';
 import knowledgeImg from '../../icons/knowledge.png';
 import { ClayCard, ShareBar } from '@/components/clay';
 import { FilePreviewDialog } from '@/components/FilePreviewDialog';
+import { AdSenseUnit, AD_SLOTS } from '@/components/AdSenseUnit';
 import { getLatestWeeklyPost, getEducationalPosts } from '@/lib/blogData';
 import logo1 from '../../icons/logo1.png';
 
@@ -28,6 +29,8 @@ const FILE_TILES = [
   { name: 'MEMORY.md', desc: 'Stable facts & learned patterns' },
   { name: 'VERSION.md', desc: 'Migration & compatibility' },
   { name: 'OPS.md', desc: 'Model routing & cost control' },
+  { name: 'AGENTS.md', desc: 'Multi-agent collaboration rules' },
+  { name: 'TOOLS.md', desc: 'Available tool definitions' },
 ];
 
 export const LandingPage: React.FC<LandingPageProps> = ({
@@ -64,7 +67,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
           {/* Title */}
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-clay-charcoal mb-6 leading-tight text-balance">
-            10 Markdown files that define
+            12 Markdown files that define
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-clay-coral to-clay-peach">
               how your AI agent behaves
             </span>
@@ -72,7 +75,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
           {/* Subtitle */}
           <p className="text-xl text-clay-charcoal/70 max-w-2xl mx-auto mb-12">
-            Animae Agentis generates a complete framework based on 10 markdown files that shapes the behavior of your OpenClaw fundamentally. You can select a purpose driven preset, customize them with our guidance in detail from scratch or just downloading each template and fill it on your own. Get in control of your OpenClaw agent.
+            Animae Agentis generates a complete framework of 12 markdown files that shapes the behavior of your OpenClaw agent fundamentally. Select a purpose-driven preset, customize from scratch with our guided interview, or download each template and fill it on your own.
           </p>
 
           {/* Three Cards */}
@@ -139,11 +142,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               What You Get
             </h2>
             <p className="text-clay-charcoal/60">
-              10 individual configurated markdown files that define your agent&apos;s complete behavioral framework. If you are already an expert, you can directly download the templates by simply click them. But we would recommand to customize your full set here.
+              12 individually configured markdown files that define your agent&apos;s complete behavioral framework. Already an expert? Click any file to preview the template directly. Or use our guided interview to customize your full set.
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-4">
             {FILE_TILES.map((file) => (
               <button
                 key={file.name}
@@ -159,6 +162,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               </button>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Ad Unit — between file tiles and editorial content */}
+      <section className="px-6 py-4">
+        <div className="max-w-4xl mx-auto">
+          <AdSenseUnit slot={AD_SLOTS.LANDING_MID} format="horizontal" />
         </div>
       </section>
 
