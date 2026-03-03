@@ -47,7 +47,7 @@ export function UsusPage({ onBack, initialPostSlug }: UsusPageProps) {
             </span>
           </div>
 
-          <AdSenseUnit slot={AD_SLOTS.ARTICLE_TOP} format="horizontal" className="mb-6" />
+          <AdSenseUnit slot={AD_SLOTS.ARTICLE_TOP} className="mb-6" />
 
           <ClayCard className="p-8 md:p-12 overflow-hidden shadow-clay-lifted border-white/40 dark:border-white/[0.06]">
             <div className="prose-clay max-w-none">
@@ -57,7 +57,7 @@ export function UsusPage({ onBack, initialPostSlug }: UsusPageProps) {
             </div>
           </ClayCard>
 
-          <AdSenseUnit slot={AD_SLOTS.ARTICLE_BOTTOM} format="auto" className="mt-8" />
+          <AdSenseUnit slot={AD_SLOTS.ARTICLE_BOTTOM} className="mt-8" />
         </article>
       </div>
     );

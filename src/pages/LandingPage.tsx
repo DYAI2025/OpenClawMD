@@ -168,7 +168,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       {/* Ad Unit — between file tiles and editorial content */}
       <section className="px-6 py-4">
         <div className="max-w-4xl mx-auto">
-          <AdSenseUnit slot={AD_SLOTS.LANDING_MID} format="horizontal" />
+          <AdSenseUnit slot={AD_SLOTS.LANDING_MID} />
         </div>
       </section>
 
