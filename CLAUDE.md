@@ -17,9 +17,33 @@ npm run lint         # ESLint
 npm run preview      # Preview production build locally
 npm run test         # vitest run (single run)
 npm run test:watch   # vitest (watch mode)
+npx vitest run src/lib/animae-agentis/__tests__/generator.test.ts  # run single test file
 ```
 
 Tests live in `src/lib/animae-agentis/__tests__/` (generator.test.ts, validator.test.ts).
+
+### Blog Publishing Pipeline
+
+```bash
+npm run publish -- --file content/posts/my-post.md              # publish + commit + push + deploy
+npm run publish -- --file content/posts/my-post.md --dry-run    # preview without writing
+npm run publish -- --file content/posts/my-post.md --no-push    # commit only, no deploy
+```
+
+Posts are markdown files with frontmatter (`content/posts/_template.md` for format). The pipeline parses frontmatter, injects into `blogData.ts` (ADDITIONAL_POSTS array), archives the source file in `content/posts/`, commits, and pushes to trigger GitHub Actions deploy.
+
+Blog images go in `public/images/blog/` and are referenced via the `image` frontmatter field (e.g., `image: /images/blog/my-image.webp`).
+
+### Social Post Generator
+
+```bash
+npm run posts                  # Generate posts for all platforms
+npm run posts:reddit           # Reddit only
+npm run posts:twitter          # Twitter only
+npm run posts:linkedin         # LinkedIn only
+```
+
+Requires `.env` in `tools/` (see `tools/.env.example`). Uses `tsx` to run `tools/generate-posts.ts`.
 
 ## Deployment
 
@@ -49,7 +73,7 @@ Interview (6 phases via state machine):
   State machine: src/lib/animae-agentis/interview/stateMachine.ts
 
   -> optional BuilderPage (fine-tune SpiritData fields)
-  -> AnimaeAgentisExportPage (preview + download 13 files)
+  -> AnimaeAgentisExportPage (preview + download 12 files)
 
 Content pages (accessible from sidebar):
   AnimaeVerbaPage - "blog/articles" content

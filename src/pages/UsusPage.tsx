@@ -47,6 +47,16 @@ export function UsusPage({ onBack, initialPostSlug }: UsusPageProps) {
             </span>
           </div>
 
+          {selectedPost.image && (
+            <div className="w-full h-64 sm:h-80 rounded-2xl overflow-hidden mb-8 shadow-clay">
+              <img
+                src={selectedPost.image}
+                alt={selectedPost.title}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          )}
+
           <AdSenseUnit slot={AD_SLOTS.ARTICLE_TOP} className="mb-6" />
 
           <ClayCard className="p-8 md:p-12 overflow-hidden shadow-clay-lifted border-white/40 dark:border-white/[0.06]">
@@ -92,7 +102,18 @@ export function UsusPage({ onBack, initialPostSlug }: UsusPageProps) {
             onClick={() => setSelectedPost(post)}
             className="text-left group outline-none focus-visible:ring-2 focus-visible:ring-clay-coral rounded-3xl"
           >
-            <ClayCard className="p-8 h-full flex flex-col transition-all group-hover:shadow-clay-lifted group-hover:-translate-y-1 border-white/20 dark:border-white/[0.06]">
+            <ClayCard className="h-full flex flex-col transition-all group-hover:shadow-clay-lifted group-hover:-translate-y-1 border-white/20 dark:border-white/[0.06] overflow-hidden">
+              {post.image && (
+                <div className="w-full h-48 overflow-hidden">
+                  <img
+                    src={post.image}
+                    alt={post.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                </div>
+              )}
+              <div className={`p-8 flex flex-col flex-1 ${post.image ? '' : ''}`}>
               <div className="flex items-center justify-between mb-4">
                 <span className="px-3 py-1 bg-clay-peach/20 text-clay-coral text-[10px] font-bold rounded-full uppercase tracking-wider">
                   {post.category}
@@ -118,6 +139,7 @@ export function UsusPage({ onBack, initialPostSlug }: UsusPageProps) {
                 <span className="text-clay-coral font-bold flex items-center gap-1 text-sm group-hover:gap-2 transition-[gap]">
                   Read Article <ChevronRight className="w-4 h-4" />
                 </span>
+              </div>
               </div>
             </ClayCard>
           </button>

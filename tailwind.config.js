@@ -71,13 +71,15 @@ module.exports = {
       },
       boxShadow: {
         xs: "0 1px 2px 0 rgb(0 0 0 / 0.05)",
-        clay: "0 2px 4px rgba(61, 58, 54, 0.04), 0 4px 8px rgba(61, 58, 54, 0.03), 0 8px 16px rgba(61, 58, 54, 0.02), 0 1px 2px rgba(61, 58, 54, 0.08), 0 2px 4px rgba(61, 58, 54, 0.06), 0 4px 8px rgba(61, 58, 54, 0.04)",
-        'clay-lifted': "0 4px 8px rgba(61, 58, 54, 0.08), 0 8px 16px rgba(61, 58, 54, 0.06), 0 16px 32px rgba(61, 58, 54, 0.04)",
-        'clay-inset': "inset 0 2px 4px rgba(61, 58, 54, 0.06), inset 0 1px 2px rgba(61, 58, 54, 0.08)",
-        'clay-focus': "0 0 0 3px rgba(217, 130, 80, 0.25)",
+        clay: "0 2px 8px rgba(100, 120, 180, 0.06), 0 4px 16px rgba(100, 120, 180, 0.04), 0 1px 3px rgba(100, 120, 180, 0.10), 0 2px 8px rgba(100, 120, 180, 0.06)",
+        'clay-lifted': "0 4px 12px rgba(100, 120, 180, 0.10), 0 8px 24px rgba(100, 120, 180, 0.08), 0 16px 48px rgba(100, 120, 180, 0.05), 0 0 20px rgba(100, 150, 230, 0.08)",
+        'clay-inset': "inset 0 2px 6px rgba(100, 120, 180, 0.08), inset 0 1px 2px rgba(100, 120, 180, 0.10)",
+        'clay-focus': "0 0 0 3px rgba(100, 140, 230, 0.30)",
+        'glass-glow': "0 0 20px rgba(100, 150, 230, 0.12)",
+        'glass-glow-strong': "0 0 30px rgba(100, 150, 230, 0.20), 0 0 60px rgba(100, 150, 230, 0.08)",
       },
       fontFamily: {
-        sans: ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'Inter', 'Segoe UI', 'Roboto', 'sans-serif'],
+        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'Segoe UI', 'Roboto', 'sans-serif'],
       },
       fontSize: {
         '2xs': '0.625rem',
@@ -119,6 +121,28 @@ module.exports = {
           from: { transform: "scale(0.95)", opacity: "0" },
           to: { transform: "scale(1)", opacity: "1" },
         },
+        "gradient-shift": {
+          "0%": { backgroundPosition: "0% 50%" },
+          "50%": { backgroundPosition: "100% 50%" },
+          "100%": { backgroundPosition: "0% 50%" },
+        },
+        "fade-up": {
+          from: { transform: "translateY(20px)", opacity: "0" },
+          to: { transform: "translateY(0)", opacity: "1" },
+        },
+        "glow-pulse": {
+          "0%, 100%": { opacity: "0.3", transform: "scale(1)" },
+          "50%": { opacity: "0.6", transform: "scale(1.05)" },
+        },
+        "caustic-shift": {
+          "0%, 100%": { transform: "translate(0, 0) rotate(0deg)" },
+          "33%": { transform: "translate(5px, -3px) rotate(1deg)" },
+          "66%": { transform: "translate(-3px, 5px) rotate(-1deg)" },
+        },
+        "shimmer": {
+          "0%": { backgroundPosition: "-200% 0" },
+          "100%": { backgroundPosition: "200% 0" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -129,6 +153,11 @@ module.exports = {
         "slide-up": "slide-up 0.2s ease-out",
         "slide-in-right": "slide-in-right 0.4s ease-out",
         "scale-in": "scale-in 0.3s ease-out",
+        "gradient-shift": "gradient-shift 6s ease infinite",
+        "fade-up": "fade-up 0.5s ease-out both",
+        "glow-pulse": "glow-pulse 3s ease-in-out infinite",
+        "caustic-shift": "caustic-shift 8s ease-in-out infinite",
+        "shimmer": "shimmer 3s ease-in-out infinite",
       },
       transitionTimingFunction: {
         'clay': 'cubic-bezier(0.4, 0, 0.2, 1)',

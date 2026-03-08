@@ -13,12 +13,12 @@ interface ClayButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> 
 }
 
 const colorMap: Record<ClayColor, string> = {
-  peach: 'bg-clay-peach',
-  mint: 'bg-clay-mint',
-  sage: 'bg-clay-sage',
-  coral: 'bg-clay-coral',
-  sand: 'bg-clay-sand',
-  stone: 'bg-clay-stone',
+  peach: 'bg-clay-peach/40',
+  mint: 'bg-clay-mint/40',
+  sage: 'bg-clay-sage/40',
+  coral: 'bg-clay-coral/80',
+  sand: 'bg-clay-sand/40',
+  stone: 'bg-clay-stone/40',
 };
 
 const textColorMap: Record<ClayColor, string> = {
@@ -71,9 +71,9 @@ export const ClayButton = React.forwardRef<HTMLButtonElement, ClayButtonProps>(
       ? 'shadow-clay-inset translate-y-0.5' 
       : 'shadow-clay hover:shadow-clay-lifted hover:-translate-y-0.5 active:shadow-clay-inset active:translate-y-0.5';
     
-    const gradientClasses = 'bg-gradient-to-br from-white/40 dark:from-white/[0.05] via-transparent to-transparent';
+    const gradientClasses = 'backdrop-blur-[12px] backdrop-saturate-[1.2]';
 
-    const borderClasses = 'border border-white/40 dark:border-white/[0.08]';
+    const borderClasses = 'border border-white/50 dark:border-white/[0.08]';
     
     return (
       <button

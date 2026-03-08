@@ -65,7 +65,7 @@ export function AppSidebar({ currentView, onNavigate, onStartFresh }: AppSidebar
           <div className="w-8 h-8 rounded-full shadow-clay flex items-center justify-center overflow-hidden">
             <img src={logoImg} alt="Logo" width={32} height={32} className="w-full h-full object-cover" />
           </div>
-          <span className="text-base font-bold text-sidebar-foreground">Animae Agentis</span>
+          <span className="text-base font-bold text-sidebar-foreground tracking-tight">Animae Agentis</span>
         </button>
         <div className="flex justify-end mt-1">
           <ClayThemeToggle />

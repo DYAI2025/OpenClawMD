@@ -42,6 +42,16 @@ export function AnimaeVerbaPage({ onBack }: AnimaeVerbaPageProps) {
             </span>
           </div>
 
+          {selectedPost.image && (
+            <div className="w-full h-64 sm:h-80 rounded-2xl overflow-hidden mb-8 shadow-clay">
+              <img
+                src={selectedPost.image}
+                alt={selectedPost.title}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          )}
+
           <AdSenseUnit slot={AD_SLOTS.ARTICLE_TOP} className="mb-6" />
 
           <ClayCard className="p-8 md:p-12 overflow-hidden shadow-clay-lifted border-white/40 dark:border-white/[0.06]">

@@ -7,6 +7,7 @@ export interface BlogPost {
   readTime: string;
   content: string;
   type: 'educational' | 'weekly';
+  image?: string;
 }
 
 export const BLOG_POSTS: BlogPost[] = [

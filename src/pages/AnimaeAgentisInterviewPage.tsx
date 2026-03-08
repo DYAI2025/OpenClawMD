@@ -373,18 +373,18 @@ Never make commitments on my behalf`}
           </div>
         )}
 
-        {/* Progress */}
-        <div className="h-2 bg-clay-sand rounded-full overflow-hidden mb-8" role="progressbar" aria-valuenow={currentIndex + 1} aria-valuemin={1} aria-valuemax={steps.length} aria-label="Interview progress">
-          <div
-            className={`h-full bg-clay-mint transition-[width] duration-500 ${
-              currentIndex === 0 ? 'w-1/6' :
-              currentIndex === 1 ? 'w-2/6' :
-              currentIndex === 2 ? 'w-3/6' :
-              currentIndex === 3 ? 'w-4/6' :
-              currentIndex === 4 ? 'w-5/6' :
-              'w-full'
-            }`}
-          />
+        {/* Segmented Progress */}
+        <div className="flex gap-2 mb-8" role="progressbar" aria-valuenow={currentIndex + 1} aria-valuemin={1} aria-valuemax={steps.length} aria-label="Interview progress">
+          {steps.map((_, idx) => (
+            <div
+              key={idx}
+              className={`h-1.5 flex-1 rounded-full transition-all duration-500 ${
+                idx <= currentIndex
+                  ? 'bg-clay-mint shadow-sm'
+                  : 'bg-clay-sand'
+              } ${idx === currentIndex ? 'scale-y-150' : ''}`}
+            />
+          ))}
         </div>
 
         {/* Error */}

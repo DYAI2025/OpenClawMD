@@ -11,7 +11,7 @@ export function GlobalFooter({ onNavigate }: GlobalFooterProps) {
         <div className="flex flex-col items-center gap-4 text-center">
           <div className="flex items-center gap-2">
             <div className="w-6 h-6 rounded-full bg-clay-coral shadow-clay" />
-            <span className="text-lg font-bold text-clay-charcoal">Animae Agentis</span>
+            <span className="text-lg font-bold text-clay-charcoal tracking-tight">Animae Agentis</span>
           </div>
           <p className="text-sm text-clay-charcoal/50 leading-relaxed">
             Agentic Autopoesis. <br />

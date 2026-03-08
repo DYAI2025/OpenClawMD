@@ -10,6 +10,7 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
+    "publish": "tsx tools/publish-post.ts",
     "posts": "tsx tools/generate-posts.ts",
     "posts:reddit": "tsx tools/generate-posts.ts --platform reddit",
     "posts:twitter": "tsx tools/generate-posts.ts --platform twitter",

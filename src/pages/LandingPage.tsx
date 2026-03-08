@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { Shield, ChevronRight, Clock } from 'lucide-react';
 import downloadImg from '../../icons/download.png';
 import customImg from '../../icons/custom.png';
@@ -45,36 +45,49 @@ export const LandingPage: React.FC<LandingPageProps> = ({
   const latestWeekly = getLatestWeeklyPost();
   const educationalPosts = getEducationalPosts().slice(0, 3);
 
+  // Track mouse position for file tile glow
+  const tileGridRef = useRef<HTMLDivElement>(null);
+  const handleTileMouseMove = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    e.currentTarget.style.setProperty('--mouse-x', `${x}%`);
+    e.currentTarget.style.setProperty('--mouse-y', `${y}%`);
+  }, []);
+
   return (
     <div className="min-h-screen flex flex-col">
       {/* Hero Section */}
-      <section className="flex-1 flex flex-col items-center justify-center px-6 py-12">
-        <div className="max-w-4xl mx-auto text-center">
+      <section className="flex-1 flex flex-col items-center justify-center px-6 py-16 lg:py-24 relative">
+        {/* Dot grid background */}
+        <div className="absolute inset-0 dot-grid opacity-60 pointer-events-none" />
+
+        <div className="max-w-4xl mx-auto text-center relative z-10">
           {/* Hero Logo */}
           <img
             src={logo1}
             alt="Animae Agentis"
-            className="w-32 h-32 sm:w-40 sm:h-40 mx-auto mb-8 drop-shadow-lg"
+            className="w-32 h-32 sm:w-40 sm:h-40 mx-auto mb-8 drop-shadow-lg animate-fade-up"
           />
 
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-clay-mint/50 shadow-clay mb-8">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-clay-mint/30 backdrop-blur-[12px] shadow-clay border border-white/40 dark:border-white/[0.08] mb-8 animate-fade-up stagger-2">
             <Shield className="w-4 h-4 text-clay-charcoal" />
-            <span className="text-sm font-medium text-clay-charcoal">
-              Open Standard - No Backend - just Markdown
+            <span className="text-sm font-medium text-clay-charcoal tracking-wide">
+              Open Standard &middot; No Backend &middot; just Markdown
             </span>
           </div>
 
           {/* Title */}
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-clay-charcoal mb-6 leading-tight text-balance">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-clay-charcoal mb-6 leading-tight text-balance animate-fade-up stagger-3">
             12 Markdown files that define
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-clay-coral to-clay-peach">
+            <span className="block gradient-text-animated">
               how your AI agent behaves
             </span>
           </h1>
 
           {/* Subtitle */}
-          <p className="text-xl text-clay-charcoal/70 max-w-2xl mx-auto mb-12">
+          <p className="text-lg sm:text-xl text-clay-charcoal/70 max-w-2xl mx-auto mb-14 leading-relaxed animate-fade-up stagger-4">
             Animae Agentis generates a complete framework of 12 markdown files that shapes the behavior of your OpenClaw agent fundamentally. Select a purpose-driven preset, customize from scratch with our guided interview, or download each template and fill it on your own.
           </p>
 
@@ -84,7 +97,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             <ClayCard
               isInteractive
               onClick={onSelectPreset}
-              className="text-left group"
+              className="text-left group animate-fade-up stagger-5 clay-glow"
             >
               <div className="w-12 h-12 rounded-full shadow-clay flex items-center justify-center mb-4 group-hover:scale-110 transition-transform overflow-hidden">
                 <img src={downloadImg} alt="Download Presets" width={48} height={48} className="w-full h-full object-cover" />
@@ -101,7 +114,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             <ClayCard
               isInteractive
               onClick={onStartFresh}
-              className="text-left group"
+              className="text-left group animate-fade-up stagger-6 clay-glow"
             >
               <div className="w-12 h-12 rounded-full bg-clay-coral shadow-clay flex items-center justify-center mb-4 group-hover:scale-110 transition-transform overflow-hidden">
                 <img src={customImg} alt="Customize Your Files" width={48} height={48} className="w-full h-full object-cover" />
@@ -118,7 +131,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             <ClayCard
               isInteractive
               onClick={onHowItWorks}
-              className="text-left group"
+              className="text-left group animate-fade-up stagger-7 clay-glow"
             >
               <div className="w-12 h-12 rounded-full bg-clay-peach shadow-clay flex items-center justify-center mb-4 group-hover:scale-110 transition-transform overflow-hidden">
                 <img src={knowledgeImg} alt="How It Works" width={48} height={48} className="w-full h-full object-cover" />
@@ -135,28 +148,30 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       </section>
 
       {/* File Tiles Section */}
-      <section className="px-6 py-16">
+      <section className="px-6 py-20">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-2xl font-bold text-clay-charcoal mb-3">
+          <div className="text-center mb-14">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-clay-coral mb-3">The Framework</p>
+            <h2 className="text-3xl sm:text-4xl font-bold text-clay-charcoal mb-4">
               What You Get
             </h2>
-            <p className="text-clay-charcoal/60">
-              12 individually configured markdown files that define your agent&apos;s complete behavioral framework. Already an expert? Click any file to preview the template directly. Or use our guided interview to customize your full set.
+            <p className="text-clay-charcoal/60 max-w-xl mx-auto">
+              12 individually configured markdown files that define your agent&apos;s complete behavioral framework. Click any file to preview the template.
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-4">
-            {FILE_TILES.map((file) => (
+          <div ref={tileGridRef} className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-4">
+            {FILE_TILES.map((file, idx) => (
               <button
                 key={file.name}
                 onClick={() => setPreviewFile(file.name)}
-                className="bg-clay-base rounded-xl p-4 shadow-clay border border-white/50 dark:border-white/[0.06] text-center cursor-pointer hover:shadow-clay-lifted hover:-translate-y-1 hover:scale-[1.02] transition-[box-shadow,transform] duration-250 focus-visible:ring-2 focus-visible:ring-clay-coral/50 focus:outline-none"
+                onMouseMove={handleTileMouseMove}
+                className={`file-tile bg-clay-base/45 backdrop-blur-[14px] backdrop-saturate-[1.2] rounded-xl p-4 shadow-clay border border-white/40 dark:border-white/[0.08] text-center cursor-pointer hover:shadow-clay-lifted hover:-translate-y-1.5 hover:scale-[1.03] transition-[box-shadow,transform] duration-250 focus-visible:ring-2 focus-visible:ring-clay-coral/50 focus:outline-none animate-fade-up stagger-${idx + 1}`}
               >
                 <code className="text-sm font-mono text-clay-coral font-semibold">
                   {file.name}
                 </code>
-                <p className="text-xs text-clay-charcoal/60 mt-2">
+                <p className="text-xs text-clay-charcoal/60 mt-2 leading-relaxed">
                   {file.desc}
                 </p>
               </button>
@@ -174,14 +189,15 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
       {/* Animae Verba Preview */}
       {latestWeekly && (
-        <section className="px-6 py-16">
+        <section className="px-6 py-20">
           <div className="max-w-6xl mx-auto">
-            <div className="flex items-end justify-between mb-8">
+            <div className="flex items-end justify-between mb-10">
               <div>
-                <h2 className="text-2xl font-bold text-clay-charcoal mb-2">
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-clay-sage mb-2">Reflections</p>
+                <h2 className="text-3xl font-bold text-clay-charcoal">
                   Animae Verba
                 </h2>
-                <p className="text-clay-charcoal/60 text-sm">
+                <p className="text-clay-charcoal/60 text-sm mt-1">
                   Weekly reflections on autonomous agency
                 </p>
               </div>
@@ -225,14 +241,15 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
       {/* Educational Articles Preview */}
       {educationalPosts.length > 0 && (
-        <section className="px-6 py-16">
+        <section className="px-6 py-20">
           <div className="max-w-6xl mx-auto">
-            <div className="flex items-end justify-between mb-8">
+            <div className="flex items-end justify-between mb-10">
               <div>
-                <h2 className="text-2xl font-bold text-clay-charcoal mb-2">
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-clay-mint mb-2">Learn</p>
+                <h2 className="text-3xl font-bold text-clay-charcoal">
                   Usus
                 </h2>
-                <p className="text-clay-charcoal/60 text-sm">
+                <p className="text-clay-charcoal/60 text-sm mt-1">
                   Educational deep-dives
                 </p>
               </div>
