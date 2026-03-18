@@ -7,22 +7,17 @@ export const AD_SLOTS = {
   LANDING_MID: '3642158968',
   ARTICLE_TOP: '3642158968',
   ARTICLE_BOTTOM: '3642158968',
+  ARTICLE_IN_FEED: '3642158968', // Specific slot for grid integration
   HOW_IT_WORKS_MID: '3642158968',
 } as const;
 
-/** Desktop: fluid in-feed */
-const DESKTOP_SLOT       = '3642158968';
-const DESKTOP_LAYOUT_KEY = '-ff+f-h-50+aq';
-
-/** Mobile: fluid in-article */
-const MOBILE_SLOT        = '2021450953';
-
 interface AdSenseUnitProps {
-  slot?: string; // ignored — slot is chosen automatically based on viewport
+  slot?: string;
   className?: string;
+  type?: 'fluid' | 'in-article' | 'in-feed' | 'multiplex';
 }
 
-export function AdSenseUnit({ className = '' }: AdSenseUnitProps) {
+export function AdSenseUnit({ className = '', slot = DESKTOP_SLOT, type = 'fluid' }: AdSenseUnitProps) {
   const isMobile = useIsMobile();
   const pushed = useRef(false);
 
@@ -54,10 +49,10 @@ export function AdSenseUnit({ className = '' }: AdSenseUnitProps) {
   if (import.meta.env.DEV) {
     return (
       <div
-        className={`flex items-center justify-center bg-clay-stone/10 border border-dashed border-clay-stone/30 rounded-xl text-clay-charcoal/30 text-xs py-8 px-4 my-4 select-none ${className}`}
+        className={`flex items-center justify-center bg-clay-stone/10 border border-dashed border-clay-stone/30 rounded-2xl text-clay-charcoal/30 text-[10px] font-black uppercase tracking-widest py-12 px-4 my-6 select-none ${className}`}
         aria-hidden="true"
       >
-        📣 AdSense — {isMobile ? `Mobile in-article (${MOBILE_SLOT})` : `Desktop in-feed (${DESKTOP_SLOT})`}
+        📣 AdSense — {type} ({slot})
         {!hasConsent && " (Waiting for Consent)"}
       </div>
     );
@@ -66,30 +61,31 @@ export function AdSenseUnit({ className = '' }: AdSenseUnitProps) {
   // Do not render anything if no consent is given
   if (!hasConsent) return null;
 
-  if (isMobile) {
-    return (
-      <div className={`overflow-hidden my-4 ${className}`}>
-        <ins
-          className="adsbygoogle"
-          style={{ display: 'block', textAlign: 'center' }}
-          data-ad-layout="in-article"
-          data-ad-format="fluid"
-          data-ad-client={ADSENSE_CLIENT}
-          data-ad-slot={MOBILE_SLOT}
-        />
-      </div>
-    );
+  // Manual configuration for different ad types
+  const adProps: any = {
+    'data-ad-client': ADSENSE_CLIENT,
+    'data-ad-slot': slot,
+  };
+
+  if (type === 'in-article') {
+    adProps['data-ad-layout'] = 'in-article';
+    adProps['data-ad-format'] = 'fluid';
+  } else if (type === 'in-feed') {
+    adProps['data-ad-format'] = 'fluid';
+    adProps['data-ad-layout-key'] = DESKTOP_LAYOUT_KEY;
+  } else if (type === 'multiplex') {
+    adProps['data-ad-format'] = 'autorelaxed';
+  } else {
+    adProps['data-ad-format'] = 'auto';
+    adProps['data-responsive'] = 'true';
   }
 
   return (
-    <div className={`overflow-hidden my-4 ${className}`}>
+    <div className={`overflow-hidden my-6 ${className}`}>
       <ins
         className="adsbygoogle"
-        style={{ display: 'block' }}
-        data-ad-format="fluid"
-        data-ad-layout-key={DESKTOP_LAYOUT_KEY}
-        data-ad-client={ADSENSE_CLIENT}
-        data-ad-slot={DESKTOP_SLOT}
+        style={{ display: 'block', minWidth: '250px' }}
+        {...adProps}
       />
     </div>
   );

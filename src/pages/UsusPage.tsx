@@ -47,6 +47,8 @@ export function UsusPage({ onBack, initialPostSlug }: UsusPageProps) {
             </span>
           </div>
 
+          <AdSenseUnit slot={AD_SLOTS.ARTICLE_TOP} type="in-article" className="mb-8" />
+
           {selectedPost.image && (
             <div className="w-full h-64 sm:h-80 rounded-2xl overflow-hidden mb-8 shadow-clay">
               <img
@@ -57,8 +59,6 @@ export function UsusPage({ onBack, initialPostSlug }: UsusPageProps) {
             </div>
           )}
 
-          <AdSenseUnit slot={AD_SLOTS.ARTICLE_TOP} className="mb-6" />
-
           <ClayCard className="p-8 md:p-12 overflow-hidden shadow-clay-lifted border-white/40 dark:border-white/[0.06]">
             <div className="prose-clay max-w-none">
               <ReactMarkdown remarkPlugins={[remarkGfm]}>
@@ -67,7 +67,7 @@ export function UsusPage({ onBack, initialPostSlug }: UsusPageProps) {
             </div>
           </ClayCard>
 
-          <AdSenseUnit slot={AD_SLOTS.ARTICLE_BOTTOM} className="mt-8" />
+          <AdSenseUnit slot={AD_SLOTS.ARTICLE_BOTTOM} type="multiplex" className="mt-12" />
         </article>
       </div>
     );
@@ -94,55 +94,62 @@ export function UsusPage({ onBack, initialPostSlug }: UsusPageProps) {
         </p>
       </div>
 
-      {/* Article Grid */}
+      {/* Article Grid with In-Feed Ad */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {posts.map((post) => (
-          <button
-            key={post.slug}
-            onClick={() => setSelectedPost(post)}
-            className="text-left group outline-none focus-visible:ring-2 focus-visible:ring-clay-coral rounded-3xl"
-          >
-            <ClayCard className="h-full flex flex-col transition-all group-hover:shadow-clay-lifted group-hover:-translate-y-1 border-white/20 dark:border-white/[0.06] overflow-hidden">
-              {post.image && (
-                <div className="w-full h-48 overflow-hidden">
-                  <img
-                    src={post.image}
-                    alt={post.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    loading="lazy"
-                  />
+        {posts.map((post, index) => (
+          <React.Fragment key={post.slug}>
+            <button
+              onClick={() => setSelectedPost(post)}
+              className="text-left group outline-none focus-visible:ring-2 focus-visible:ring-clay-coral rounded-3xl"
+            >
+              <ClayCard className="h-full flex flex-col transition-all group-hover:shadow-clay-lifted group-hover:-translate-y-1 border-white/20 dark:border-white/[0.06] overflow-hidden">
+                {post.image && (
+                  <div className="w-full h-48 overflow-hidden">
+                    <img
+                      src={post.image}
+                      alt={post.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      loading="lazy"
+                    />
+                  </div>
+                )}
+                <div className={`p-8 flex flex-col flex-1 ${post.image ? '' : ''}`}>
+                <div className="flex items-center justify-between mb-4">
+                  <span className="px-3 py-1 bg-clay-peach/20 text-clay-coral text-[10px] font-bold rounded-full uppercase tracking-wider">
+                    {post.category}
+                  </span>
+                  <span className="text-clay-charcoal/30 text-xs font-medium">
+                    {post.date}
+                  </span>
                 </div>
-              )}
-              <div className={`p-8 flex flex-col flex-1 ${post.image ? '' : ''}`}>
-              <div className="flex items-center justify-between mb-4">
-                <span className="px-3 py-1 bg-clay-peach/20 text-clay-coral text-[10px] font-bold rounded-full uppercase tracking-wider">
-                  {post.category}
-                </span>
-                <span className="text-clay-charcoal/30 text-xs font-medium">
-                  {post.date}
-                </span>
-              </div>
 
-              <h3 className="text-2xl font-bold text-clay-charcoal mb-4 group-hover:text-clay-coral transition-colors">
-                {post.title}
-              </h3>
+                <h3 className="text-2xl font-bold text-clay-charcoal mb-4 group-hover:text-clay-coral transition-colors">
+                  {post.title}
+                </h3>
 
-              <p className="text-clay-charcoal/60 mb-8 line-clamp-3">
-                {post.excerpt}
-              </p>
+                <p className="text-clay-charcoal/60 mb-8 line-clamp-3">
+                  {post.excerpt}
+                </p>
 
-              <div className="mt-auto flex items-center justify-between">
-                <span className="text-clay-charcoal/40 text-sm flex items-center gap-1">
-                  <Clock className="w-4 h-4" />
-                  {post.readTime}
-                </span>
-                <span className="text-clay-coral font-bold flex items-center gap-1 text-sm group-hover:gap-2 transition-[gap]">
-                  Read Article <ChevronRight className="w-4 h-4" />
-                </span>
+                <div className="mt-auto flex items-center justify-between">
+                  <span className="text-clay-charcoal/40 text-sm flex items-center gap-1">
+                    <Clock className="w-4 h-4" />
+                    {post.readTime}
+                  </span>
+                  <span className="text-clay-coral font-bold flex items-center gap-1 text-sm group-hover:gap-2 transition-[gap]">
+                    Read Article <ChevronRight className="w-4 h-4" />
+                  </span>
+                </div>
+                </div>
+              </ClayCard>
+            </button>
+            {/* Inject In-Feed Ad after the 2nd article */}
+            {index === 1 && (
+              <div className="md:col-span-2">
+                <AdSenseUnit slot={AD_SLOTS.ARTICLE_IN_FEED} type="in-feed" className="my-2" />
               </div>
-              </div>
-            </ClayCard>
-          </button>
+            )}
+          </React.Fragment>
         ))}
       </div>
     </div>
