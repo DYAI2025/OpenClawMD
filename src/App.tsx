@@ -19,7 +19,6 @@ import { ClayFlowBreadcrumb } from '@/components/clay';
 import { useTheme } from '@/hooks/use-theme';
 import { AnimaeAgentisInterviewPage } from './pages/AnimaeAgentisInterviewPage';
 import { SidebarProvider, SidebarInset, SidebarTrigger } from '@/components/ui/sidebar';
-import { useIsMobile } from '@/hooks/use-mobile';
 import { useAdSense } from '@/hooks/use-adsense';
 
 export type AppView = 'landing' | 'presets' | 'interview' | 'builder' | 'export' | 'animae-verba' | 'usus' | 'how-it-works' | 'legal-impressum' | 'legal-privacy' | 'legal-tos';
@@ -59,7 +58,6 @@ function App() {
 
   // Initialize theme (applies .dark class to <html>)
   useTheme();
-  const isMobile = useIsMobile();
 
   const [spiritData, setSpiritData] = useState<{ files: GeneratedFile[]; spirit: SpiritData } | null>(null);
 
@@ -217,24 +215,51 @@ function App() {
           onStartFresh={startFresh}
         />
 
-        <SidebarInset className="bg-transparent">
-          {/* Mobile header with hamburger */}
-          {isMobile && (
-            <div className="sticky top-0 z-30 flex items-center gap-3 px-4 py-3 bg-clay-base/80 backdrop-blur-sm border-b border-clay-stone/20">
-              <SidebarTrigger className="text-clay-charcoal" aria-label="Toggle sidebar" />
-              <span className="text-sm font-semibold text-clay-charcoal">Animae Agentis</span>
+        <SidebarInset className="bg-transparent flex flex-col min-h-screen">
+          {/* Global Sticky Header */}
+          <div className="sticky top-0 z-40 w-full bg-clay-base/60 backdrop-blur-xl border-b border-clay-stone/10 supports-[backdrop-filter]:bg-clay-base/40">
+            <div className="max-w-7xl mx-auto flex items-center justify-between gap-4 px-4 h-16">
+              <div className="flex items-center gap-3">
+                <SidebarTrigger className="text-clay-charcoal hover:bg-clay-peach/20 rounded-full w-10 h-10 transition-colors" aria-label="Toggle sidebar" />
+                <div className="h-6 w-px bg-clay-stone/20 mx-1 hidden sm:block" />
+                <button 
+                  onClick={resetToLanding}
+                  className="flex items-center gap-2 group transition-all"
+                >
+                  <span className="text-base font-black text-clay-charcoal tracking-tight group-hover:text-clay-coral">Animae Agentis</span>
+                  <span className="hidden sm:inline-block px-2 py-0.5 rounded-full bg-clay-mint/20 text-[10px] font-black text-clay-mint uppercase tracking-widest border border-clay-mint/10">v1.0.0</span>
+                </button>
+              </div>
+
+              <div className="flex items-center gap-4">
+                {/* Secondary actions could go here */}
+                {currentEntry.view !== 'landing' && (
+                  <button
+                    onClick={goBack}
+                    className="hidden sm:flex items-center gap-2 text-sm font-bold text-clay-charcoal/60 hover:text-clay-coral transition-colors"
+                  >
+                    Back
+                  </button>
+                )}
+                <button
+                  onClick={startFresh}
+                  className="px-4 py-2 rounded-full bg-clay-coral text-white text-xs font-black uppercase tracking-widest shadow-clay hover:shadow-clay-lifted hover:-translate-y-0.5 transition-all"
+                >
+                  New Agent
+                </button>
+              </div>
             </div>
-          )}
+          </div>
 
           {/* Breadcrumb - only for flow views */}
           {showBreadcrumb && (
-            <div className="relative z-20 px-6 pt-3 max-w-5xl mx-auto">
+            <div className="relative z-20 px-6 pt-6 max-w-5xl mx-auto w-full">
               <ClayFlowBreadcrumb history={history} onNavigate={goToHistoryIndex} />
             </div>
           )}
 
           {/* Main content */}
-          <main id="main-content" key={currentEntry.view} className="relative z-10 animate-slide-up will-change-transform flex-1 min-h-screen pt-2 md:pt-4">
+          <main id="main-content" key={currentEntry.view} className="relative z-10 animate-slide-up will-change-transform flex-1 pt-2">
             {renderView()}
           </main>
 

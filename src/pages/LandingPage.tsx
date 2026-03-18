@@ -79,67 +79,73 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           </div>
 
           {/* Title */}
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-clay-charcoal mb-6 leading-tight text-balance animate-fade-up stagger-3">
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black text-clay-charcoal mb-8 leading-[1.1] text-balance animate-fade-up stagger-3 tracking-tight">
             12 Markdown files that define
-            <span className="block gradient-text-animated">
+            <span className="block gradient-text-animated mt-2">
               how your AI agent behaves
             </span>
           </h1>
 
           {/* Subtitle */}
-          <p className="text-lg sm:text-xl text-clay-charcoal/70 max-w-2xl mx-auto mb-14 leading-relaxed animate-fade-up stagger-4">
+          <p className="text-xl sm:text-2xl text-clay-charcoal/70 max-w-3xl mx-auto mb-16 leading-relaxed animate-fade-up stagger-4 font-medium">
             Animae Agentis generates a complete framework of 12 markdown files that shapes the behavior of your OpenClaw agent fundamentally. Select a purpose-driven preset, customize from scratch with our guided interview, or download each template and fill it on your own.
           </p>
 
           {/* Three Cards */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {/* Download Presets */}
             <ClayCard
               isInteractive
               onClick={onSelectPreset}
-              className="text-left group animate-fade-up stagger-5 clay-glow"
+              className="text-left group animate-fade-up stagger-5 clay-glow p-8 rounded-[2.5rem]"
             >
-              <div className="w-12 h-12 rounded-full shadow-clay flex items-center justify-center mb-4 group-hover:scale-110 transition-transform overflow-hidden">
-                <img src={downloadImg} alt="Download Presets" width={48} height={48} className="w-full h-full object-cover" />
+              <div className="w-14 h-14 rounded-full shadow-clay flex items-center justify-center mb-6 group-hover:scale-110 transition-transform overflow-hidden bg-clay-peach/20">
+                <img src={downloadImg} alt="Download Presets" width={56} height={56} className="w-full h-full object-cover" />
               </div>
-              <h3 className="text-lg font-semibold text-clay-charcoal mb-2">
+              <h3 className="text-xl font-bold text-clay-charcoal mb-3">
                 Download Presets
               </h3>
-              <p className="text-sm text-clay-charcoal/60">
+              <p className="text-base text-clay-charcoal/60 leading-relaxed">
                 Get pre-configured file sets for common agent types. Ready to use in seconds.
               </p>
             </ClayCard>
 
-            {/* Customize Your Files */}
+            {/* Customize Your Files — THE MAIN CTA */}
             <ClayCard
               isInteractive
               onClick={onStartFresh}
-              className="text-left group animate-fade-up stagger-6 clay-glow"
+              className="text-left group animate-fade-up stagger-6 glass-glow-strong p-8 rounded-[2.5rem] bg-clay-coral text-white border-clay-coral/50 relative overflow-hidden"
             >
-              <div className="w-12 h-12 rounded-full bg-clay-coral shadow-clay flex items-center justify-center mb-4 group-hover:scale-110 transition-transform overflow-hidden">
-                <img src={customImg} alt="Customize Your Files" width={48} height={48} className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent pointer-events-none" />
+              <div className="w-14 h-14 rounded-full bg-white shadow-clay flex items-center justify-center mb-6 group-hover:scale-110 transition-transform overflow-hidden relative z-10">
+                <img src={customImg} alt="Customize Your Files" width={56} height={56} className="w-full h-full object-cover" />
               </div>
-              <h3 className="text-lg font-semibold text-clay-charcoal mb-2">
+              <h3 className="text-xl font-bold mb-3 relative z-10">
                 Customize Your Files
               </h3>
-              <p className="text-sm text-clay-charcoal/60">
+              <p className="text-base text-white/90 leading-relaxed relative z-10">
                 Walk through a guided interview to tailor every field to your agent's purpose.
               </p>
+              <div className="mt-6 flex justify-end relative z-10">
+                <div className="px-4 py-2 rounded-full bg-white text-clay-coral font-bold text-sm shadow-clay flex items-center gap-2 group-hover:gap-3 transition-all">
+                  Get Started <ChevronRight className="w-4 h-4" />
+                </div>
+              </div>
             </ClayCard>
 
             {/* How It Works */}
             <ClayCard
               isInteractive
               onClick={onHowItWorks}
-              className="text-left group animate-fade-up stagger-7 clay-glow"
+              className="text-left group animate-fade-up stagger-7 clay-glow p-8 rounded-[2.5rem]"
             >
-              <div className="w-12 h-12 rounded-full bg-clay-peach shadow-clay flex items-center justify-center mb-4 group-hover:scale-110 transition-transform overflow-hidden">
-                <img src={knowledgeImg} alt="How It Works" width={48} height={48} className="w-full h-full object-cover" />
+              <div className="w-14 h-14 rounded-full bg-clay-peach/20 shadow-clay flex items-center justify-center mb-6 group-hover:scale-110 transition-transform overflow-hidden">
+                <img src={knowledgeImg} alt="How It Works" width={56} height={56} className="w-full h-full object-cover" />
               </div>
-              <h3 className="text-lg font-semibold text-clay-charcoal mb-2">
+              <h3 className="text-xl font-bold text-clay-charcoal mb-3">
                 How It Works
               </h3>
-              <p className="text-sm text-clay-charcoal/60">
+              <p className="text-base text-clay-charcoal/60 leading-relaxed">
                 Understand the architecture: which file controls what, and why it matters.
               </p>
             </ClayCard>
@@ -148,30 +154,30 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       </section>
 
       {/* File Tiles Section */}
-      <section className="px-6 py-20 bg-clay-stone/5">
+      <section className="px-6 py-32 bg-clay-stone/5">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-14">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-clay-coral mb-3">The Framework</p>
-            <h2 className="text-3xl sm:text-4xl font-bold text-clay-charcoal mb-4">
+          <div className="text-center mb-20">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-clay-coral mb-4">The Framework</p>
+            <h2 className="text-4xl sm:text-5xl font-black text-clay-charcoal mb-6">
               What You Get
             </h2>
-            <p className="text-clay-charcoal/60 max-w-xl mx-auto">
+            <p className="text-lg text-clay-charcoal/60 max-w-2xl mx-auto">
               12 individually configured markdown files that define your agent&apos;s complete behavioral framework. Click any file to preview the template.
             </p>
           </div>
 
-          <div ref={tileGridRef} className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-4">
+          <div ref={tileGridRef} className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-6">
             {FILE_TILES.map((file, idx) => (
               <button
                 key={file.name}
                 onClick={() => setPreviewFile(file.name)}
                 onMouseMove={handleTileMouseMove}
-                className={`file-tile bg-clay-base/45 backdrop-blur-[14px] backdrop-saturate-[1.2] rounded-xl p-4 shadow-clay border border-white/40 dark:border-white/[0.08] text-center cursor-pointer hover:shadow-clay-lifted hover:-translate-y-1.5 hover:scale-[1.03] transition-[box-shadow,transform] duration-250 focus-visible:ring-2 focus-visible:ring-clay-coral/50 focus:outline-none animate-fade-up stagger-${idx + 1}`}
+                className={`file-tile bg-clay-base/45 backdrop-blur-[14px] backdrop-saturate-[1.2] rounded-[2rem] p-6 shadow-clay border border-white/40 dark:border-white/[0.08] text-center cursor-pointer hover:shadow-clay-lifted hover:-translate-y-2 hover:scale-[1.05] transition-all duration-300 focus-visible:ring-2 focus-visible:ring-clay-coral/50 focus:outline-none animate-fade-up stagger-${idx + 1}`}
               >
-                <code className="text-sm font-mono text-clay-coral font-semibold">
+                <code className="text-base font-mono text-clay-coral font-bold">
                   {file.name}
                 </code>
-                <p className="text-xs text-clay-charcoal/60 mt-2 leading-relaxed">
+                <p className="text-xs text-clay-charcoal/60 mt-3 leading-relaxed font-medium">
                   {file.desc}
                 </p>
               </button>
@@ -181,15 +187,15 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       </section>
 
       {/* Philosophical Content Section — Critical for AdSense Content Ratio */}
-      <section className="px-6 py-20 relative overflow-hidden">
-        <div className="max-w-4xl mx-auto relative z-10 text-center md:text-left">
-          <div className="flex flex-col md:flex-row gap-12 items-center">
+      <section className="px-6 py-32 relative overflow-hidden">
+        <div className="max-w-5xl mx-auto relative z-10 text-center md:text-left">
+          <div className="flex flex-col md:flex-row gap-16 items-center">
             <div className="flex-1">
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-clay-sage mb-4">Philosophy</p>
-              <h2 className="text-3xl sm:text-4xl font-bold text-clay-charcoal mb-6 leading-tight">
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-clay-sage mb-6">Philosophy</p>
+              <h2 className="text-4xl sm:text-5xl font-black text-clay-charcoal mb-8 leading-tight">
                 The Soul of <span className="text-clay-coral text-balance">Autonomous Agency</span>
               </h2>
-              <div className="space-y-4 text-clay-charcoal/70 leading-relaxed text-lg">
+              <div className="space-y-6 text-clay-charcoal/70 leading-relaxed text-xl font-medium">
                 <p>
                   Most AI implementations today are just sophisticated text predictors. True autonomy requires more than just intelligence—it requires a <strong>constitutional framework</strong>. Without a defined soul, an agent is merely a mirror of its immediate context, drifting without purpose or boundaries.
                 </p>
@@ -201,7 +207,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 </p>
               </div>
             </div>
-            <div className="w-full md:w-1/3 aspect-square rounded-3xl bg-gradient-to-br from-clay-coral/20 to-clay-peach/20 border border-white/40 shadow-clay flex items-center justify-center p-8 animate-pulse-slow">
+            <div className="w-full md:w-1/3 aspect-square rounded-[3rem] bg-gradient-to-br from-clay-coral/20 to-clay-peach/20 border border-white/40 shadow-clay flex items-center justify-center p-12 animate-pulse-slow">
               <Shield className="w-full h-full text-clay-coral/40" />
             </div>
           </div>
@@ -210,48 +216,48 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
       {/* Animae Verba Preview */}
       {latestWeekly && (
-        <section className="px-6 py-20 bg-clay-stone/5">
+        <section className="px-6 py-32 bg-clay-stone/5">
           <div className="max-w-6xl mx-auto">
-            <div className="flex items-end justify-between mb-10">
+            <div className="flex items-end justify-between mb-14">
               <div>
-                <p className="text-xs font-bold uppercase tracking-[0.2em] text-clay-sage mb-2">Reflections</p>
-                <h2 className="text-3xl font-bold text-clay-charcoal">
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-clay-sage mb-3">Reflections</p>
+                <h2 className="text-4xl font-black text-clay-charcoal">
                   Animae Verba
                 </h2>
-                <p className="text-clay-charcoal/60 text-sm mt-1">
+                <p className="text-clay-charcoal/60 text-lg mt-2">
                   Weekly reflections on autonomous agency
                 </p>
               </div>
               <button
                 onClick={onOpenAnimaeVerba}
-                className="text-sm font-semibold text-clay-coral hover:underline flex items-center gap-1"
+                className="text-base font-bold text-clay-coral hover:underline flex items-center gap-2 transition-all hover:gap-3"
               >
-                View all <ChevronRight className="w-4 h-4" />
+                View all <ChevronRight className="w-5 h-5" />
               </button>
             </div>
 
             <button
               onClick={onOpenAnimaeVerba}
-              className="w-full text-left group outline-none focus-visible:ring-2 focus-visible:ring-clay-coral rounded-3xl"
+              className="w-full text-left group outline-none focus-visible:ring-2 focus-visible:ring-clay-coral rounded-[2.5rem]"
             >
-              <ClayCard className="p-8 transition-all group-hover:shadow-clay-lifted group-hover:-translate-y-1 border-white/20 dark:border-white/[0.06]">
-                <div className="flex items-center gap-4 mb-3">
-                  <span className="px-3 py-1 bg-clay-coral/10 text-clay-coral text-[10px] font-bold rounded-full uppercase tracking-wider">
+              <ClayCard className="p-10 transition-all group-hover:shadow-clay-lifted group-hover:-translate-y-2 border-white/20 dark:border-white/[0.06] rounded-[2.5rem]">
+                <div className="flex items-center gap-6 mb-6">
+                  <span className="px-4 py-1.5 bg-clay-coral/10 text-clay-coral text-xs font-black rounded-full uppercase tracking-widest">
                     {latestWeekly.category}
                   </span>
-                  <span className="text-clay-charcoal/30 text-xs">{latestWeekly.date}</span>
+                  <span className="text-clay-charcoal/30 text-sm font-bold">{latestWeekly.date}</span>
                 </div>
-                <h3 className="text-xl font-bold text-clay-charcoal mb-3 group-hover:text-clay-coral transition-colors">
+                <h3 className="text-3xl font-black text-clay-charcoal mb-4 group-hover:text-clay-coral transition-colors">
                   {latestWeekly.title}
                 </h3>
-                <p className="text-clay-charcoal/60 line-clamp-2 mb-4">{latestWeekly.excerpt}</p>
+                <p className="text-clay-charcoal/60 line-clamp-2 mb-8 text-xl font-medium">{latestWeekly.excerpt}</p>
                 <div className="flex items-center justify-between">
-                  <span className="text-clay-charcoal/40 text-sm flex items-center gap-1">
-                    <Clock className="w-4 h-4" />
+                  <span className="text-clay-charcoal/40 text-base font-bold flex items-center gap-2">
+                    <Clock className="w-5 h-5" />
                     {latestWeekly.readTime}
                   </span>
-                  <span className="text-clay-coral font-bold flex items-center gap-1 text-sm group-hover:gap-2 transition-[gap]">
-                    Read <ChevronRight className="w-4 h-4" />
+                  <span className="text-clay-coral font-black flex items-center gap-2 text-base group-hover:gap-3 transition-all">
+                    Read Article <ChevronRight className="w-5 h-5" />
                   </span>
                 </div>
               </ClayCard>
@@ -261,7 +267,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       )}
 
       {/* Ad Unit — moved further down after substantial content */}
-      <section className="px-6 py-12">
+      <section className="px-6 py-16">
         <div className="max-w-4xl mx-auto">
           <AdSenseUnit slot={AD_SLOTS.LANDING_MID} />
         </div>
@@ -269,41 +275,41 @@ export const LandingPage: React.FC<LandingPageProps> = ({
 
       {/* Educational Articles Preview */}
       {educationalPosts.length > 0 && (
-        <section className="px-6 py-20">
+        <section className="px-6 py-32">
           <div className="max-w-6xl mx-auto">
-            <div className="flex items-end justify-between mb-10">
+            <div className="flex items-end justify-between mb-14">
               <div>
-                <p className="text-xs font-bold uppercase tracking-[0.2em] text-clay-mint mb-2">Learn</p>
-                <h2 className="text-3xl font-bold text-clay-charcoal">
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-clay-mint mb-3">Learn</p>
+                <h2 className="text-4xl font-black text-clay-charcoal">
                   Usus
                 </h2>
-                <p className="text-clay-charcoal/60 text-sm mt-1">
+                <p className="text-clay-charcoal/60 text-lg mt-2">
                   Educational deep-dives
                 </p>
               </div>
               <button
                 onClick={onOpenUsus}
-                className="text-sm font-semibold text-clay-coral hover:underline flex items-center gap-1"
+                className="text-base font-bold text-clay-coral hover:underline flex items-center gap-2 transition-all hover:gap-3"
               >
-                View all <ChevronRight className="w-4 h-4" />
+                View all <ChevronRight className="w-5 h-5" />
               </button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {educationalPosts.map((post) => (
                 <button
                   key={post.slug}
                   onClick={() => onOpenUsusArticle(post.slug)}
-                  className="text-left group outline-none focus-visible:ring-2 focus-visible:ring-clay-coral rounded-3xl"
+                  className="text-left group outline-none focus-visible:ring-2 focus-visible:ring-clay-coral rounded-[2rem]"
                 >
-                  <ClayCard className="p-6 h-full flex flex-col transition-all group-hover:shadow-clay-lifted group-hover:-translate-y-1 border-white/20 dark:border-white/[0.06]">
-                    <span className="px-3 py-1 bg-clay-peach/20 text-clay-coral text-[10px] font-bold rounded-full uppercase tracking-wider self-start mb-3">
+                  <ClayCard className="p-8 h-full flex flex-col transition-all group-hover:shadow-clay-lifted group-hover:-translate-y-2 border-white/20 dark:border-white/[0.06] rounded-[2rem]">
+                    <span className="px-3 py-1 bg-clay-peach/20 text-clay-coral text-[10px] font-black rounded-full uppercase tracking-widest self-start mb-4">
                       {post.category}
                     </span>
-                    <h3 className="text-base font-bold text-clay-charcoal mb-2 group-hover:text-clay-coral transition-colors line-clamp-2">
+                    <h3 className="text-xl font-bold text-clay-charcoal mb-3 group-hover:text-clay-coral transition-colors line-clamp-2">
                       {post.title}
                     </h3>
-                    <p className="text-clay-charcoal/60 text-sm line-clamp-2">{post.excerpt}</p>
+                    <p className="text-clay-charcoal/60 text-base line-clamp-2 font-medium">{post.excerpt}</p>
                   </ClayCard>
                 </button>
               ))}
