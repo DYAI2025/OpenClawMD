@@ -26,20 +26,30 @@ export function AdSenseUnit({ className = '' }: AdSenseUnitProps) {
   const isMobile = useIsMobile();
   const pushed = useRef(false);
 
+  // Check for advertising consent
+  const hasConsent = (() => {
+    try {
+      const consent = JSON.parse(localStorage.getItem('animae_agentis_cookie_consent') || '{}');
+      return !!consent.advertising;
+    } catch {
+      return false;
+    }
+  })();
+
   // Reset push flag when viewport type changes so the correct unit can initialise
   useEffect(() => {
     pushed.current = false;
   }, [isMobile]);
 
   useEffect(() => {
-    if (pushed.current) return;
+    if (!hasConsent || pushed.current) return;
     try {
       (window.adsbygoogle = window.adsbygoogle || []).push({});
       pushed.current = true;
     } catch (err) {
       console.warn('AdSense push error:', err);
     }
-  }, [isMobile]);
+  }, [isMobile, hasConsent]);
 
   if (import.meta.env.DEV) {
     return (
@@ -48,9 +58,13 @@ export function AdSenseUnit({ className = '' }: AdSenseUnitProps) {
         aria-hidden="true"
       >
         📣 AdSense — {isMobile ? `Mobile in-article (${MOBILE_SLOT})` : `Desktop in-feed (${DESKTOP_SLOT})`}
+        {!hasConsent && " (Waiting for Consent)"}
       </div>
     );
   }
+
+  // Do not render anything if no consent is given
+  if (!hasConsent) return null;
 
   if (isMobile) {
     return (

@@ -148,7 +148,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       </section>
 
       {/* File Tiles Section */}
-      <section className="px-6 py-20">
+      <section className="px-6 py-20 bg-clay-stone/5">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-14">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-clay-coral mb-3">The Framework</p>
@@ -180,16 +180,37 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         </div>
       </section>
 
-      {/* Ad Unit — between file tiles and editorial content */}
-      <section className="px-6 py-4">
-        <div className="max-w-4xl mx-auto">
-          <AdSenseUnit slot={AD_SLOTS.LANDING_MID} />
+      {/* Philosophical Content Section — Critical for AdSense Content Ratio */}
+      <section className="px-6 py-20 relative overflow-hidden">
+        <div className="max-w-4xl mx-auto relative z-10 text-center md:text-left">
+          <div className="flex flex-col md:flex-row gap-12 items-center">
+            <div className="flex-1">
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-clay-sage mb-4">Philosophy</p>
+              <h2 className="text-3xl sm:text-4xl font-bold text-clay-charcoal mb-6 leading-tight">
+                The Soul of <span className="text-clay-coral text-balance">Autonomous Agency</span>
+              </h2>
+              <div className="space-y-4 text-clay-charcoal/70 leading-relaxed text-lg">
+                <p>
+                  Most AI implementations today are just sophisticated text predictors. True autonomy requires more than just intelligence—it requires a <strong>constitutional framework</strong>. Without a defined soul, an agent is merely a mirror of its immediate context, drifting without purpose or boundaries.
+                </p>
+                <p>
+                  Animae Agentis is built on the belief that for an AI to be truly helpful and safe, its identity must be decoupled from its tasks. By defining 12 distinct behavioral layers—from immutable truth policies in <code>SOUL.md</code> to operational rhythms in <code>HEARTBEAT.md</code>—we create agents that remain coherent across long-term horizons and complex multi-agent collaborations.
+                </p>
+                <p>
+                  This isn't just about prompt engineering; it's about <strong>agentic autopoiesis</strong>—the process of an system defining its own operational boundaries and identity. OpenClaw provides the engine, but Animae Agentis provides the spirit.
+                </p>
+              </div>
+            </div>
+            <div className="w-full md:w-1/3 aspect-square rounded-3xl bg-gradient-to-br from-clay-coral/20 to-clay-peach/20 border border-white/40 shadow-clay flex items-center justify-center p-8 animate-pulse-slow">
+              <Shield className="w-full h-full text-clay-coral/40" />
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Animae Verba Preview */}
       {latestWeekly && (
-        <section className="px-6 py-20">
+        <section className="px-6 py-20 bg-clay-stone/5">
           <div className="max-w-6xl mx-auto">
             <div className="flex items-end justify-between mb-10">
               <div>
@@ -238,6 +259,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           </div>
         </section>
       )}
+
+      {/* Ad Unit — moved further down after substantial content */}
+      <section className="px-6 py-12">
+        <div className="max-w-4xl mx-auto">
+          <AdSenseUnit slot={AD_SLOTS.LANDING_MID} />
+        </div>
+      </section>
 
       {/* Educational Articles Preview */}
       {educationalPosts.length > 0 && (

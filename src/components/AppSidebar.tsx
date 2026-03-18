@@ -75,10 +75,41 @@ export function AppSidebar({ currentView, onNavigate, onStartFresh }: AppSidebar
       <SidebarSeparator />
 
       <SidebarContent>
-        {/* ANIMAE AGENTIS */}
+        {/* LIBRARY */}
+        <SidebarGroup>
+          <SidebarGroupLabel className="text-[10px] font-black uppercase tracking-widest text-clay-coral/60">
+            Library & Reflections
+          </SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  isActive={currentView === 'usus'}
+                  onClick={() => navigate('usus')}
+                  tooltip="Usus — Educational Deep Dives"
+                >
+                  <GraduationCap className="w-4 h-4" />
+                  <span>Educational Articles</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  isActive={currentView === 'animae-verba'}
+                  onClick={() => navigate('animae-verba')}
+                  tooltip="Animae Verba — Weekly Philosophy"
+                >
+                  <BookOpen className="w-4 h-4" />
+                  <span>Weekly Reflections</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        {/* GENERATOR */}
         <SidebarGroup>
           <SidebarGroupLabel className="text-[10px] font-black uppercase tracking-widest">
-            Animae Agentis
+            Agent Generator
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -89,7 +120,7 @@ export function AppSidebar({ currentView, onNavigate, onStartFresh }: AppSidebar
                   tooltip="Presets"
                 >
                   <Download className="w-4 h-4" />
-                  <span>Presets</span>
+                  <span>Download Presets</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
@@ -99,7 +130,7 @@ export function AppSidebar({ currentView, onNavigate, onStartFresh }: AppSidebar
                   tooltip="Customizer"
                 >
                   <Paintbrush className="w-4 h-4" />
-                  <span>Customizer</span>
+                  <span>Start Customizer</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
@@ -109,38 +140,7 @@ export function AppSidebar({ currentView, onNavigate, onStartFresh }: AppSidebar
                   tooltip="Templates"
                 >
                   <FileText className="w-4 h-4" />
-                  <span>Templates</span>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-
-        {/* INTERNA */}
-        <SidebarGroup>
-          <SidebarGroupLabel className="text-[10px] font-black uppercase tracking-widest">
-            Interna
-          </SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton
-                  isActive={currentView === 'animae-verba'}
-                  onClick={() => navigate('animae-verba')}
-                  tooltip="Animae Verba"
-                >
-                  <BookOpen className="w-4 h-4" />
-                  <span>Animae Verba</span>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton
-                  isActive={currentView === 'usus'}
-                  onClick={() => navigate('usus')}
-                  tooltip="Usus"
-                >
-                  <GraduationCap className="w-4 h-4" />
-                  <span>Usus</span>
+                  <span>Architecture Guide</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
