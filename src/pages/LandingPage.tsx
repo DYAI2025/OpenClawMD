@@ -172,14 +172,40 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 key={file.name}
                 onClick={() => setPreviewFile(file.name)}
                 onMouseMove={handleTileMouseMove}
-                className={`file-tile bg-clay-base/45 backdrop-blur-[14px] backdrop-saturate-[1.2] rounded-[2rem] p-6 shadow-clay border border-white/40 dark:border-white/[0.08] text-center cursor-pointer hover:shadow-clay-lifted hover:-translate-y-2 hover:scale-[1.05] transition-all duration-300 focus-visible:ring-2 focus-visible:ring-clay-coral/50 focus:outline-none animate-fade-up stagger-${idx + 1}`}
+                aria-label={`Preview OpenClaw configuration file: ${file.name}`}
+                title={`OpenClaw Standard: ${file.name}`}
+                className={`file-tile group relative bg-clay-base/45 backdrop-blur-[14px] backdrop-saturate-[1.2] rounded-2xl p-0 shadow-clay border border-white/40 dark:border-white/[0.08] text-left cursor-pointer hover:shadow-glass-glow-strong hover:-translate-y-2 hover:scale-[1.02] transition-all duration-300 focus-visible:ring-2 focus-visible:ring-clay-coral/50 focus:outline-none animate-fade-up stagger-${idx + 1} overflow-hidden`}
               >
-                <code className="text-base font-mono text-clay-coral font-bold">
-                  {file.name}
-                </code>
-                <p className="text-xs text-clay-charcoal/60 mt-3 leading-relaxed font-medium">
-                  {file.desc}
-                </p>
+                {/* Markdown Header Strip */}
+                <div className="bg-clay-stone/10 border-b border-white/20 px-3 py-2 flex items-center justify-between">
+                  <div className="flex gap-1">
+                    <div className="w-1.5 h-1.5 rounded-full bg-clay-coral/40" />
+                    <div className="w-1.5 h-1.5 rounded-full bg-clay-peach/40" />
+                  </div>
+                  <span className="text-[9px] font-black text-clay-charcoal/30 uppercase tracking-tighter">OpenClaw 0.1</span>
+                </div>
+
+                <div className="p-5">
+                  <code className="text-sm font-mono text-clay-coral font-black block mb-3">
+                    {file.name}
+                  </code>
+                  
+                  {/* Faux Code Lines for 'Markdown' Look */}
+                  <div className="space-y-1.5 mb-4 opacity-20 group-hover:opacity-40 transition-opacity">
+                    <div className="h-1 w-full bg-clay-charcoal rounded-full" />
+                    <div className="h-1 w-4/5 bg-clay-charcoal rounded-full" />
+                    <div className="h-1 w-2/3 bg-clay-charcoal rounded-full" />
+                  </div>
+
+                  <p className="text-[11px] text-clay-charcoal/60 leading-relaxed font-bold line-clamp-2">
+                    {file.desc}
+                  </p>
+                </div>
+
+                {/* AI Search Semantic Hint (Hidden but Crawlable) */}
+                <span className="sr-only" data-openclaw-meta="config-layer">
+                  Standardized AI Agent {file.name} configuration for {file.desc}
+                </span>
               </button>
             ))}
           </div>
