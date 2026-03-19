@@ -146,11 +146,47 @@ export const PresetsPage: React.FC<PresetsPageProps> = ({
         </div>
 
         {/* Info Banner */}
-        <div className="mt-8 bg-clay-sand/50 rounded-xl p-4 text-center">
-          <p className="text-sm text-clay-charcoal/70">
-            <span className="font-semibold">Tip:</span>{' '}
-            Start with a preset and customize it in the builder for the best experience.
+        <div className="mt-8 bg-clay-sand/50 rounded-2xl p-6 text-center border border-white/40">
+          <p className="text-sm text-clay-charcoal/70 leading-relaxed">
+            <span className="font-bold text-clay-coral">Pro Tip:</span>{' '}
+            Presets are designed as architectural foundations. Once selected, you can fine-tune every parameter in the Customizer to match your specific hardware and safety requirements.
           </p>
+        </div>
+
+        {/* Educational Content Section — Critical for AdSense Publisher Content Compliance */}
+        <div className="mt-20 pt-12 border-t border-clay-stone/10">
+          <h2 className="text-3xl font-black text-clay-charcoal mb-8 text-center md:text-left">
+            How to Choose the Right <span className="text-clay-coral">Agent Architecture</span>
+          </h2>
+          
+          <div className="grid md:grid-cols-2 gap-12 text-clay-charcoal/70 leading-relaxed">
+            <div className="space-y-4">
+              <h3 className="text-xl font-bold text-clay-charcoal">Understanding Risk Profiles</h3>
+              <p>
+                In autonomous agency, risk is defined by the degree of irreversibility. A <strong>High Risk</strong> profile like OverClaw assumes the agent is operating in a sandboxed environment where it can safely experiment with file system changes and tool execution. 
+              </p>
+              <p>
+                For production systems handling sensitive user data, a <strong>Security-First</strong> architecture is mandatory. This preset enforces strict SHIELD.md boundaries and requires human-in-the-loop (HITL) verification for all write operations.
+              </p>
+            </div>
+            
+            <div className="space-y-4">
+              <h3 className="text-xl font-bold text-clay-charcoal">Autonomy vs. Control</h3>
+              <p>
+                Autonomy is not binary; it's a spectrum. The <strong>Responsible AI</strong> preset is optimized for the "Co-Pilot" pattern, where the agent suggests and the user validates. It prioritizes semantic transparency over raw speed.
+              </p>
+              <p>
+                When building multi-agent systems, we recommend starting with a <strong>Security-First Orchestrator</strong> that manages multiple <strong>OverClaw Specialists</strong> in isolated containers. This "Trust-But-Verify" architecture is the current industry standard for agentic reliability.
+              </p>
+            </div>
+          </div>
+
+          <ClayCard className="mt-12 p-8 bg-clay-peach/5 border-clay-peach/20">
+            <h3 className="text-lg font-bold text-clay-charcoal mb-4">A Note on Determinism</h3>
+            <p className="text-sm text-clay-charcoal/60 leading-relaxed">
+              While Large Language Models (LLMs) are inherently probabilistic, Animae Agentis aims to maximize <strong>behavioral determinism</strong>. By using a standardized 12-file framework, we ensure that the agent's identity and safety rules remain stable even as the underlying model fluctuates. This is the core of our "Identity-as-Code" philosophy.
+            </p>
+          </ClayCard>
         </div>
       </div>
     </div>

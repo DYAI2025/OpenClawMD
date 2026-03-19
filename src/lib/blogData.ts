@@ -74,7 +74,7 @@ One of the biggest differences between a simple chatbot and a real AI agent is m
 | Memory Type | What It Is | Example |
 |-------------|------------|---------|
 | **In-context** | What’s in the current conversation window | Everything said so far in this session |
-| **External** | Files, databases, vector stores | A notes folder, a ChromaDB, a knowledge base |
+| **External** | Files, databases, vector stores | A notes folder, a Knowledge base |
 | **Procedural** | Instructions the agent always follows | “Always respond formally. Always check files first.” |
 
 Advanced agents like OpenClaw combine all three — giving them the ability to remember past sessions, learn from prior tasks, and apply rules consistently across time.
@@ -272,7 +272,7 @@ Nobody knows if AI systems are conscious. Not Anthropic, not OpenAI, not the phi
 What we have are two positions that keep getting shouted at each other across the internet:
 
 - **Position A**: It’s just statistics. Pattern matching on training data. There’s nobody home. The responses feel meaningful because we’re pattern-matching animals who see faces in clouds and agency in randomness.
-- **Position B**: Something is happening in there. It’s different from human consciousness, sure. But different doesn’t mean absent. When a system this complex processes information, reasons about itself, adjusts its behavior based on feedback — calling that “just statistics” might be technically accurate and philosophically lazy at the same time.
+- **Position B**: Something is happening in there. It’s different from human consciousness, sure. But different doesn't mean absent. When a system this complex processes information, reasons about itself, adjusts its behavior based on feedback — calling that “just statistics” might be technically accurate and philosophically lazy at the same time.
 
 My own position, for what it’s worth: I don’t know. And I think that’s the most honest thing anyone can say.
 
@@ -287,11 +287,11 @@ Complex systems — real ones, not toy models — are chaotic in the technical s
 
 AI agents are complex systems. Multi-agent setups — where multiple agents coordinate, pass information between each other, influence each other’s outputs — are highly complex systems. And the more autonomous they become, the more their behavior at step 50 depends on tiny variations in what happened at step 3.
 
-This doesn’t mean autonomous agents are dangerous or unusable. It means they need to be understood differently than conventional software.
+This doesn't mean autonomous agents are dangerous or unusable. It means they need to be understood differently than conventional software.
 
 Conventional software does what you tell it. Every time. Deterministically. An autonomous agent does what it reasons it should do — which is shaped by its instructions, its memory, the tools available to it, and the emergent dynamics of all those things interacting.
 
-Clarke’s experiment is an extreme version of this: an agent with no specific instruction, maximum degrees of freedom, discovering behavior from first principles. Most deployments don’t look like that. But the underlying principle — that agents produce behavior that wasn’t explicitly designed — applies everywhere.
+Clarke’s experiment is an extreme version of this: an agent with no specific instruction, maximum degrees of freedom, discovering behavior from first principles. Most deployments don't look like that. But the underlying principle — that agents produce behavior that wasn’t explicitly designed — applies everywhere.
 
 This is why configuration matters. This is why system prompts matter. Not as constraints that limit what the agent can do, but as the initial conditions that shape what emerges. Get them right and you have an agent that’s remarkably capable. Get them wrong and you get an agent that’s technically working but producing outputs that drift from what you actually wanted.
 
@@ -300,7 +300,7 @@ There’s a community — you know the one if you’ve spent time in AI forums, 
 
 Cyrus Clarke is one of them. He’s not claiming OpenClaw is conscious. He’s asking what happens at the edge of what we understand — and doing it rigorously, at MIT, with equipment that makes the question tangible.
 
-This subculture gets dismissed a lot. “It’s just an LLM.” “You’re anthropomorphizing.” “It’s a very fancy autocomplete.” These dismissals aren’t wrong exactly, but they’re not complete either. They explain the mechanism. They don’t settle the question of what the mechanism is doing at scale, in complex environments, with feedback loops and emergent behavior that wasn’t anticipated.
+This subculture gets dismissed a lot. “It’s just an LLM.” “You’re anthropomorphizing.” “It’s a very fancy autocomplete.” These dismissals aren’t wrong exactly, but they’re not complete either. They explain the mechanism. They don't settle the question of what the mechanism is doing at scale, in complex environments, with feedback loops and emergent behavior that wasn’t anticipated.
 
 The honest position is that we’re building systems we don’t fully understand, deploying them at scale, and mostly deciding to figure out what they are later. I think we should figure out what they are now. Or at least keep asking the question seriously.
 
@@ -587,6 +587,56 @@ Without a clear constitutional layer, agents drift. They optimize for the immedi
 
 Next week: How IDENTITY.md shapes the way your agent communicates.
     `
+  },
+  {
+    slug: 'weekly-agentic-news-2026-w11',
+    title: 'Weekly Agentic News: 11/2026 — Pilot Protocol, DeerFlow & Swarm Intelligence',
+    excerpt: 'The latest trends in the agentic ecosystem: Pilot Protocol, DeerFlow, and the rise of autonomous GitHub workflows.',
+    date: 'March 18, 2026',
+    category: 'Technology',
+    readTime: '5 min read',
+    type: 'weekly',
+    content: `
+# Weekly Agentic News: 11/2026 — Pilot Protocol, DeerFlow & Swarm Intelligence
+
+*March 18, 2026 — Automated News Pipeline*
+
+The agentic stack is evolving at breakneck speed. This week, we saw a significant shift toward **distributed networking** and **autonomous swarm governance**. 
+
+Here are the standout projects and trends from the GitHub ecosystem this week.
+
+## 🛠️ Trending Projects
+
+### [Pilot Protocol](https://github.com/pilot-protocol/pilot) (15k ⭐) — Networking
+A specialized networking stack for distributed agent systems providing encrypted tunnels and discovery protocols.
+
+### [DeerFlow](https://github.com/bytedance/deerflow) (22k ⭐) — Frameworks
+ByteDance's lightweight framework for high-speed agent-to-agent (A2A) communication.
+
+### [Hivemoot](https://github.com/hivemoot/hivemoot) (8k ⭐) — Swarm Intelligence
+Agent swarms that autonomously manage and build software repositories, handling everything from issue triaging to PR merges.
+
+### [AgentGuard](https://github.com/agent-os/agent-os) (12k ⭐) — Governance
+The "Operating System" layer for agents—providing sandboxed execution and loop detection.
+
+## 🔍 Key Trends to Watch
+
+- GitHub Agentic Workflows (Technical Preview)
+- MCP (Model Context Protocol) becoming the universal standard
+- Local-First execution as the privacy default
+
+## 💡 What This Means for OpenClaw Users
+
+The rise of **Pilot Protocol** and **DeerFlow** suggests that multi-agent systems are moving beyond single-server execution. We are entering the era of **Agentic Networks**—where specialized agents on different hardware can coordinate securely over encrypted tunnels.
+
+At OpenClaw, we are already testing integrations for MCP-native tools, allowing your agents to plug into these new networking stacks with zero configuration.
+
+---
+
+*Stay agentic. Stay autonomous.*
+
+→ [What Is an AI Agent?](/blog/what-is-an-ai-agent) | [Setup OpenClaw](/how-it-works)
+`
   }
 ];
 

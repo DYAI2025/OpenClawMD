@@ -223,8 +223,34 @@ export const HowItWorksPage: React.FC<HowItWorksPageProps> = ({
           </div>
         </ClayCard>
 
+        {/* Standardization Section — Critical for AdSense Content Depth */}
+        <div className="mb-24 pt-12 border-t border-clay-stone/10">
+          <h2 className="text-3xl font-black text-clay-charcoal mb-10 text-center">
+            Standardization & <span className="text-clay-coral">AI Governance</span>
+          </h2>
+          
+          <div className="grid md:grid-cols-2 gap-12 text-clay-charcoal/70 leading-relaxed text-lg">
+            <div className="space-y-6">
+              <p>
+                As AI agents move from experimental scripts to production-grade infrastructure, the need for standardized configuration becomes paramount. Without a unified way to define identity and safety, every agent becomes a "black box," impossible to audit or migrate.
+              </p>
+              <p>
+                <strong>Animae Agentis</strong> implements the OpenCLAW 0.1 standard, which treats behavioral configuration as a first-class citizen. By separating concerns into distinct files, we enable <strong>fine-grained governance</strong>. Security teams can manage <code>SHIELD.md</code>, while product teams focus on <code>IDENTITY.md</code>.
+              </p>
+            </div>
+            <div className="space-y-6">
+              <p>
+                This modular approach also solves the "Context Bloat" problem. Instead of feeding a single 5,000-word prompt to an LLM, the agent can dynamically load only the configuration layers it needs for the current task, reducing token costs and improving reasoning accuracy.
+              </p>
+              <p>
+                By adopting this framework, you are not just building an agent; you are building a <strong>self-documenting autonomous system</strong>. This ensures that your AI implementation remains compliant with emerging regulations and internal safety standards.
+              </p>
+            </div>
+          </div>
+        </div>
+
         {/* CTA */}
-        <div className="text-center">
+        <div className="text-center pb-12">
           <h2 className="text-2xl font-bold text-clay-charcoal mb-4">
             Ready to build?
           </h2>

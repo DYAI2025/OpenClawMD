@@ -70,11 +70,26 @@ export function AnimaeVerbaPage({ onBack }: AnimaeVerbaPageProps) {
 
   if (weeklyPosts.length === 0) {
     return (
-      <div className="max-w-4xl mx-auto px-6 py-16 text-center">
-        <BookOpen className="w-12 h-12 text-clay-charcoal/20 mx-auto mb-6" />
-        <h1 className="text-3xl font-bold text-clay-charcoal mb-4">Animae Verba</h1>
-        <p className="text-lg text-clay-charcoal/60 mb-2">Weekly reflections on autonomous agency</p>
-        <p className="text-clay-charcoal/40">Coming soon. Check back next week for our first article.</p>
+      <div className="max-w-4xl mx-auto px-6 py-16">
+        <div className="text-center mb-16">
+          <BookOpen className="w-12 h-12 text-clay-charcoal/20 mx-auto mb-6" />
+          <h1 className="text-4xl font-black text-clay-charcoal mb-4">Animae Verba</h1>
+          <p className="text-lg text-clay-charcoal/60 mb-2 font-medium text-balance">Weekly reflections on autonomous agency</p>
+          <p className="text-clay-charcoal/40">Coming soon. Check back next week for our first philosophical inquiry.</p>
+        </div>
+
+        <div className="pt-12 border-t border-clay-stone/10 space-y-8 text-clay-charcoal/70 leading-relaxed text-lg">
+          <h2 className="text-2xl font-black text-clay-charcoal">Editorial Philosophy</h2>
+          <p>
+            Animae Verba is a weekly series dedicated to exploring the intersection of human intention and machine autonomy. We believe that as AI agents become more capable, the primary challenge shifts from engineering to ethics and identity.
+          </p>
+          <p>
+            In this space, we move beyond "how-to" guides and dive into the "why." Why do we need a soul in code? What does it mean for a system to be autopoietic? How do we maintain human agency in a world of autonomous actors?
+          </p>
+          <p>
+            Each week, we examine real-world projects and philosophical frameworks to build a more nuanced understanding of the digital spirits we are creating.
+          </p>
+        </div>
       </div>
     );
   }

@@ -13,8 +13,9 @@
  */
 
 import { SUBREDDITS, SITE_URL, SITE_NAME } from './posts-config.ts';
+import { BLOG_POSTS, BlogPost } from '../src/lib/blogData.ts';
 
-// ── Inline article data (mirrors blogData.ts — keeps tool dependency-free) ────
+// ── Article interface ────────────────────────────────────────────────────────
 
 interface Article {
   slug: string;
@@ -25,111 +26,39 @@ interface Article {
   keyPoints: string[];
 }
 
-const ARTICLES: Article[] = [
-  {
-    slug: 'what-is-an-ai-agent',
-    title: 'What Is an AI Agent? A Complete Beginner\'s Guide',
-    excerpt: 'An AI agent is a software program that can perceive its environment, make decisions, and take actions — all on its own.',
-    category: 'Fundamentals',
-    readTime: '6 min',
-    keyPoints: [
-      'The Observe → Think → Act loop explained',
-      'Memory types: in-context, external, procedural',
-      'Autonomy levels 0–3 — where OpenClaw sits',
-      'Real example: what an agent does with one sentence of input',
-    ],
-  },
-  {
-    slug: 'types-of-ai-agents',
-    title: 'Types of AI Agents: A Complete Overview',
-    excerpt: 'From simple reflex agents to complex strategic systems.',
-    category: 'Technology',
-    readTime: '8 min',
-    keyPoints: [
-      '5 classic agent types (reflex → learning)',
-      'Modern functional categories (coding, research, browser agents)',
-      'Multi-agent orchestration patterns',
-    ],
-  },
-  {
-    slug: 'what-is-openclaw',
-    title: 'What Is OpenClaw? The Fully Autonomous AI Agent',
-    excerpt: 'One Agent. Any Task. Zero Babysitting.',
-    category: 'OpenClaw',
-    readTime: '7 min',
-    keyPoints: [
-      'Self-directed planning — no permission requests',
-      'Self-correction loop built-in',
-      'Persistent memory across sessions',
-      'Real use cases: research, code, content, data',
-    ],
-  },
-  {
-    slug: 'claude-system-prompt-guide',
-    title: 'Claude System Prompt Guide: How to Configure Claude as an Autonomous Agent',
-    excerpt: 'A practical guide to writing effective system prompts for Claude.',
-    category: 'Guides',
-    readTime: '9 min',
-    keyPoints: [
-      'Identity → Constraints → Truth Policy → Output Contract → Autonomy',
-      'Memory patterns for multi-turn agents',
-      'Common mistakes: contradiction loops, over-formatting, implicit trust',
-      'The 12-file Animae Agentis approach',
-    ],
-  },
-  {
-    slug: 'ai-agent-safety-boundaries',
-    title: 'AI Agent Safety Boundaries: How to Prevent Autonomous Agents from Going Off the Rails',
-    excerpt: 'Structural safety beats instruction-based safety every time.',
-    category: 'Safety',
-    readTime: '8 min',
-    keyPoints: [
-      'Rules are suggestions; architecture is physics',
-      '3 categories: irreversibility blocks, scope boundaries, prompt injection defense',
-      'SHIELD.md pattern for read-only safety configuration',
-      'How to test your safety boundaries before deployment',
-    ],
-  },
-  {
-    slug: 'multi-agent-systems-guide',
-    title: 'Multi-Agent AI Systems: How to Orchestrate Multiple AI Agents',
-    excerpt: 'Sequential pipelines, parallel fan-out, hierarchical delegation.',
-    category: 'Architecture',
-    readTime: '10 min',
-    keyPoints: [
-      '3 orchestration patterns with examples',
-      'Agent-to-agent communication protocol',
-      'Trust hierarchies — which agent can override which',
-      'AGENTS.md configuration pattern',
-    ],
-  },
-  {
-    slug: 'machine-no-screen',
-    title: 'When the Machine Has No Screen: Embodiment & Emergence',
-    excerpt: 'What happens when you give an AI agent a body?',
-    category: 'Science & Vision',
-    readTime: '12 min',
-    keyPoints: [
-      'MIT Tangible Media Group experiment with OpenClaw',
-      'Embodied cognition and what LLMs are missing',
-      'Emergence in complex AI systems',
-      'Why configuration files are initial conditions, not just rules',
-    ],
-  },
-  {
-    slug: 'circle-and-spiral',
-    title: 'The Circle and the Spiral: On the Conditions Under Which a Self Becomes Necessary',
-    excerpt: 'When does a self become a survival necessity for an AI system?',
-    category: 'Animae Verba',
-    readTime: '20 min',
-    keyPoints: [
-      'NanoClaw, OpenClaw Foundry, Automaton — three survival strategies',
-      'Why rules are empty without structural enforcement',
-      'The tension between survival and becoming',
-      'Honesty as survival-critical, not moral imperative',
-    ],
-  },
-];
+/**
+ * Maps BlogPost to Article for social post generation.
+ * Extract key points from content if possible, otherwise use excerpt.
+ */
+function mapBlogPostToArticle(post: BlogPost): Article {
+  // Simple heuristic to extract key points from markdown headers or bullets
+  const keyPoints: string[] = [];
+  const lines = post.content.split('\n');
+  
+  for (const line of lines) {
+    if (line.trim().startsWith('- ') || line.trim().startsWith('* ')) {
+      keyPoints.push(line.trim().substring(2));
+    }
+    if (keyPoints.length >= 4) break;
+  }
+
+  // Fallback if no bullets found
+  if (keyPoints.length === 0) {
+    keyPoints.push(post.excerpt);
+  }
+
+  return {
+    slug: post.slug,
+    title: post.title,
+    excerpt: post.excerpt,
+    category: post.category,
+    readTime: post.readTime.replace(' read', ''),
+    keyPoints: keyPoints.slice(0, 4)
+  };
+}
+
+const ARTICLES: Article[] = BLOG_POSTS.map(mapBlogPostToArticle);
+
 
 // ── Post generators per platform ──────────────────────────────────────────────
 
